@@ -1,0 +1,16 @@
+[
+{
+  "modid": "lotweakr",
+  "name": "LOTweakR",
+  "description": "Opinionated tweaks and a couple bugfixes, all for the LOTR mod.",
+  "version": "1.0",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Lilirine"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
