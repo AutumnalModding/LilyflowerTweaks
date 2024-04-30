@@ -23,13 +23,13 @@ public enum Mixin {
     ATTACK_TIMINGS_SERVER("entity.ServerSideAttackTimingsRemoval", TargetedMod.LOTR),
     ENABLE_GW_DEATH("entity.EnableGreyWandererDeath", TargetedMod.LOTR),
     INVASION_ENUM_FIXER("misc.InvasionEnumFixer", TargetedMod.LOTR),
-    FACTION_RELATION_OVERRIDES("entity.RelationOverrideController"),
-    RENDER_SCRAP_TRADERS_PROPERLY("client.FixScrapTraderRenderer"),
+    FACTION_RELATION_OVERRIDES("entity.RelationOverrideController", TargetedMod.LOTR),
+    RENDER_SCRAP_TRADERS_PROPERLY("client.FixScrapTraderRenderer", TargetedMod.LOTR),
 
     // Interop
-    FIX_VAMPIRE_RITUAL("interop.witchery.FixVampireRitual"),
-    SAFE_VAMPIRE_BIOMES("interop.witchery.SafeVampireBiomes"),
-    ENTITY_RENDERER_PATCH("interop.witchery.EntityRendererPatch")
+    FIX_VAMPIRE_RITUAL("interop.witchery.FixVampireRitual", TargetedMod.WITCHERY),
+    SAFE_VAMPIRE_BIOMES("interop.witchery.SafeVampireBiomes", TargetedMod.WITCHERY),
+    ENTITY_RENDERER_PATCH("interop.witchery.EntityRendererPatch", TargetedMod.WITCHERY)
     ;
 
     public final String mixinClass;
