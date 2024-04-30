@@ -20,8 +20,9 @@ public interface LTRIntegrationLoader {
     }
 
     static void runAllPre() {
-        add(new LTRIntegrationThaumcraft(), IntegrationFeatureConfig.THAUMCRAFT_ENABLED);
-        add(new LTRIntegrationWitchery(), IntegrationFeatureConfig.WITCHERY_ENABLED);
+        if (Loader.isModLoaded("Thaumcraft")) {
+            add(new LTRIntegrationThaumcraft(), IntegrationFeatureConfig.THAUMCRAFT_ENABLED);
+        }
 
         LOADERS.forEach((loader, enabled) -> {
             boolean shouldLoad = Loader.isModLoaded(loader.requiredMod());
