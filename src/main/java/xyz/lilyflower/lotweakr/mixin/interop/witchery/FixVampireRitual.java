@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import xyz.lilyflower.lotweakr.util.config.IntegrationFeatureConfig;
 
-@Mixin(value = ItemGlassGoblet.class, remap = false)
+@Mixin(value = ItemGlassGoblet.class)
 public abstract class FixVampireRitual {
     @Shadow protected abstract boolean hasBloodType(ItemStack stack, ItemGlassGoblet.BloodSource source);
 

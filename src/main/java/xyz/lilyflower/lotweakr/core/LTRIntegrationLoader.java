@@ -23,9 +23,7 @@ public interface LTRIntegrationLoader {
         try {
             add(new LTRIntegrationThaumcraft(), IntegrationFeatureConfig.THAUMCRAFT_ENABLED);
             add(new LTRIntegrationWitchery(), IntegrationFeatureConfig.WITCHERY_ENABLED);
-        } catch (NoClassDefFoundError ignored) {
-
-        }
+        } catch (NoClassDefFoundError ignored) {}
 
         LOADERS.forEach((loader, enabled) -> {
             boolean shouldLoad = Loader.isModLoaded(loader.requiredMod());

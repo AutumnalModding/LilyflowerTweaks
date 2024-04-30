@@ -7,5 +7,5 @@ dependencies {
     implementation deobfCurse("thaumcraft-223628:2227552")
     implementation deobfCurse("baubles-227083:2224857")
     implementation deobfCurse("witchery-69673:2234410")
-    implementation 'org.reflections:reflections:0.10.2'
+    shadowImplementation 'org.reflections:reflections:0.10.2'
 }
