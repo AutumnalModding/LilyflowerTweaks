@@ -28,6 +28,7 @@ Any changes that would modify the vanilla LOTR experience are disabled by defaul
   - Mirk-oak rods (ditto, but Terra)
   - Mallorn staff cores (a whopping 280 vis!)
   - Mithril-trimmed thaumaturge's robes (7% vis discount; boots 3%)
+  - NOTE: all items are missing textures! Robes use the regular ones, for now.
 
 - `enableWitcheryIntegration` - Self-explanatory. This toggle is useless, for now.
 - `fixVampireRitual` - Makes Witchery's vampire ritual work in the LOTR dim. Go take Elle to Mount Doom.
