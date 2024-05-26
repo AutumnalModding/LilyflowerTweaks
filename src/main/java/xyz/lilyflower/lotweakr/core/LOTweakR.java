@@ -62,6 +62,7 @@ public class LOTweakR
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         LTRIntegrationLoader.runAllPost();
+        CombatFeatureConfig.registerModdedWeapons();
     }
 
     @EventHandler
