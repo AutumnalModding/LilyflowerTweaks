@@ -18,7 +18,7 @@ public class LOTRFactionRelationLoader implements LOTRCustomDataLoader {
 
     @Override
     public void run() {
-        File relations = new File(System.getProperty("user.dir") + "/config/lilytweaks/relations.txt");
+        File relations = new File(System.getProperty("user.dir") + "/config/lilytweaks/lotr/relations.txt");
 
         if (relations.exists()) {
             try (Stream<String> stream = Files.lines(relations.toPath(), StandardCharsets.UTF_8)) {

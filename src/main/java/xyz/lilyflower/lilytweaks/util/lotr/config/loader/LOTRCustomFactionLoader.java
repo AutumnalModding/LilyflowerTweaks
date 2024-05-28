@@ -31,7 +31,7 @@ public class LOTRCustomFactionLoader implements LOTRCustomDataLoader {
 
     @Override
     public void run() {
-        File customFactionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/factions/");
+        File customFactionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/lotr/factions/");
 
         if (!customFactionList.exists()) {
             customFactionList.mkdirs();

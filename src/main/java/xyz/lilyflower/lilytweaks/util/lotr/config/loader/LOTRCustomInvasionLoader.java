@@ -20,7 +20,7 @@ public class LOTRCustomInvasionLoader implements LOTRCustomDataLoader {
 
     @Override
     public void run() {
-        File customInvasionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/invasions/");
+        File customInvasionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/lotr/invasions/");
 
         if (!customInvasionList.exists()) {
             customInvasionList.mkdirs();

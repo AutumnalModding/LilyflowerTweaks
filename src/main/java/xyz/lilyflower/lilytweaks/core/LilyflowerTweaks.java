@@ -29,7 +29,11 @@ public class LilyflowerTweaks
     public static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks");
 
     private static File getFeatureConfig(String mod, String base, String feature) {
-        return new File(base + "/lilytweaks/" + mod + "/" + feature + ".cfg");
+        File config = new File(base + "/lilytweaks/" + mod + "/" + feature + ".cfg");
+        if (!config.getParentFile().exists()) {
+            config.getParentFile().mkdirs();
+        }
+        return config;
     }
 
     @EventHandler
