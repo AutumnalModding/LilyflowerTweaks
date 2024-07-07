@@ -1,24 +1,25 @@
-This mod includes many tweaks for the LOTR mod.
+This mod includes many tweaks - primarily for the LOTR mod, but other mods are included as well.
 Additionally included are some cross-mod bugfixes.
-Any changes that would modify the vanilla LOTR experience are disabled by default.
+Any changes that would modify the vanilla experience of any mod are disabled by default.
 
-# FEATURES
-### FORMAT: `featureFlag - featureName`
+# LOTR features
 
-## COMBAT
+### Format: `featureFlag - featureName`
+
+## Combat
 - `removeNewCombat` - Disable 1.9-style combat. Off by default.
 - `enableGWDeath` - Enable Grey Wanderer death. Off by default.
 - `enableWarCrimes` - All factions support war crimes. Off by default.
 - `enableOmnitarget` - LOTR NPCs attack anything. Off by default.
 - `additionalCombatItems` - Items to add to the LOTR combat system. Empty by default.
 
-## GENERIC
+## Generic
 - `unlockCosmetics` - Unlocks all 'exclusive' LOTR titles & shields. Off by default.
 - `fixOreDictionary` - Adds Mithril to the oredict. On by default.
 - `timeMultiplier` - Day length multiplier for LOTR days. Default is 1x (no change).
 - `allowOddmentScreenshots` - Makes the Oddment Collector show up in screenshots. Off by default.
 
-## INTEGRATION
+## Integration
 ### All of these are on by default.
 - `enableThaumIntegration` - Self-explanatory. Adds:
   - Mithril caps (15% better than void metal)
@@ -34,19 +35,19 @@ Any changes that would modify the vanilla LOTR experience are disabled by defaul
 - `fixVampireRitual` - Makes Witchery's vampire ritual work in the LOTR dim. Go take Elle to Mount Doom.
 - `safeBiomes` - Allows specified LOTR biomes to count as "not in sunlight" (like Mordor, which has no sun.) Empty by default.
 
-## FAST TRAVEL
+## Fast Travel
 - `disabledWaypoints` - List of waypoints to disable. Run `/ltdebug dumpWaypoints` for a list. Empty by default.
 - `unlockAllWaypoints` - Self-explanatory. Off by default.
 - `disableWaypointLocking` - Disables alignment-based waypoint locking. Off by default.
 
-## BUGFIXES
+## Bugfixes
 ### None of these can be turned off. Why would you want to??
 - Fix Witchery bat form being a black screen in first-person.
 - Fix DragonAPI incompatibility. Why does LOTR even patch `BlockFire`???
 
-## CUSTOM CONTENT
-### FACTIONS
-File: File: `config/lotweakr/factions/<NAME>.txt`
+## Custom Content
+### Factions
+File: File: `config/lotweakr/lotr/factions/<NAME>.txt`
 ```
 CoolFac
 FF00FF
@@ -83,8 +84,8 @@ RANK CoolGuy 100 false true false
 RANK EpicGuy 250 true true false
 ```
 
-### INVASIONS
-File: `config/lotweakr/invasions/<NAME>.txt`
+### Invasions
+File: `config/lotweakr/lotr/invasions/<NAME>.txt`
 ```
 EpicFactionInvasion
 CoolFac
@@ -94,8 +95,8 @@ LOTREntityBalrog 50
 LOTREntityBandit 25
 ```
 
-### RELATIONS
-File: `config/lotweakr/relations.txt`
+### Relations
+File: `config/lotweakr/lotr/relations.txt`
 These are one-way!
 ```
 CoolFac ALLY MORDOR
