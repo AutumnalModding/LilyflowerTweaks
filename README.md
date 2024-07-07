@@ -4,8 +4,6 @@ Any changes that would modify the vanilla experience of any mod are disabled by 
 
 # LOTR features
 
-### Format: `featureFlag - featureName`
-
 ## Combat
 - `removeNewCombat` - Disable 1.9-style combat. Off by default.
 - `enableGWDeath` - Enable Grey Wanderer death. Off by default.
