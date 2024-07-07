@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.lotr.config;
+package xyz.lilyflower.lilytweaks.util.config.lotr;
 
 import cpw.mods.fml.common.Loader;
 import java.io.File;

@@ -50,7 +50,7 @@ public class LTCore implements IFMLLoadingPlugin {
                     set.remove("lotr.common.coremod");
                 }
 
-                loader.registerTransformer("xyz.lilyflower.lilytweaks.core.LOTweakRTransformer");
+                loader.registerTransformer("xyz.lilyflower.lilytweaks.core.LilyflowerTransformer");
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }

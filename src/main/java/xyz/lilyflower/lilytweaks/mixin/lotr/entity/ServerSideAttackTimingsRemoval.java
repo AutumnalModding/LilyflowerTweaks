@@ -1,6 +1,6 @@
 package xyz.lilyflower.lilytweaks.mixin.lotr.entity;
 
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
 import lotr.common.item.LOTRWeaponStats;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

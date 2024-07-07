@@ -13,18 +13,19 @@ import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRCombatFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRGenericFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRIntegrationFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRTravelFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.lotr.config.loader.LOTRCustomDataLoader;
+import xyz.lilyflower.lilytweaks.util.config.combat.GenericCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRGenericFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 
 @Mod(modid = LilyflowerTweaks.MODID, version = LilyflowerTweaks.VERSION, dependencies = "after:lotr;after:Thaumcraft")
 public class LilyflowerTweaks
 {
     public static final String MODID = "lilytweaks";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "2.1";
 
     public static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks");
 
@@ -50,6 +51,8 @@ public class LilyflowerTweaks
 
             LOTRCustomDataLoader.runAll();
         }
+
+        GenericCombatFeatureConfig.synchronizeConfiguration(getFeatureConfig("generic", baseConfigPath, "combat"));
 
         IntegrationLoader.runAllPre();
     }

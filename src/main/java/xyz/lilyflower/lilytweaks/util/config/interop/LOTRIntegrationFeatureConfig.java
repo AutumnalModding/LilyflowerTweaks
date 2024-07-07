@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.lotr.config;
+package xyz.lilyflower.lilytweaks.util.config.interop;
 
 import java.io.File;
 import java.util.Arrays;

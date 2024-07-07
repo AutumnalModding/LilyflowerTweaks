@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.lotr.config;
+package xyz.lilyflower.lilytweaks.util.config.combat;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.io.File;
@@ -8,9 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaks;
 
-/**
- * <strong>NOTE:</strong> FO here stands for "Faction Override".
- */
 public class LOTRCombatFeatureConfig {
 
     public static boolean DISABLE_ATTACK_TIMINGS = false;
@@ -57,7 +54,7 @@ public class LOTRCombatFeatureConfig {
             Item item = GameRegistry.findItem(modID, itemID);
 
             if (item != null) {
-                LilyflowerTweaks.LOGGER.debug("Registering item '" + modID + ":" + itemID + "' to the LOTR combat system (speed " + speed + "x, reach " + reach + "x)...");
+                LilyflowerTweaks.LOGGER.debug("Registering item '{}:{}' to the LOTR combat system (speed {}x, reach {}x)...", modID, itemID, speed, reach);
 
                 LOTRWeaponStats.registerMeleeSpeed(item, speed);
                 LOTRWeaponStats.registerMeleeReach(item, reach);

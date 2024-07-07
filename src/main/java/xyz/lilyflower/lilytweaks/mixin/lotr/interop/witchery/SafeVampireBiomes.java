@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRIntegrationFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 
 @Mixin(CreatureUtil.class)
 public class SafeVampireBiomes {

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
 
 @Mixin(LOTRAttackTiming.class)
 public abstract class ClientSideAttackTimingsRemoval {

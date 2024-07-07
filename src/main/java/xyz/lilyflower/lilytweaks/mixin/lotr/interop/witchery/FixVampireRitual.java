@@ -19,19 +19,19 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRIntegrationFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 
 @Mixin(value = ItemGlassGoblet.class)
 public abstract class FixVampireRitual {
-    @Shadow protected abstract boolean hasBloodType(ItemStack stack, ItemGlassGoblet.BloodSource source);
+    @Shadow(remap = false) protected abstract boolean hasBloodType(ItemStack stack, ItemGlassGoblet.BloodSource source);
 
-    @Shadow public abstract void setBloodOwner(ItemStack stack, ItemGlassGoblet.BloodSource source);
+    @Shadow(remap = false) public abstract void setBloodOwner(ItemStack stack, ItemGlassGoblet.BloodSource source);
 
-    @Shadow protected abstract boolean isRitual(World world, int x, int y, int z);
+    @Shadow(remap = false) protected abstract boolean isRitual(World world, int x, int y, int z);
 
-    @Shadow public abstract int getMaxItemUseDuration(ItemStack stack);
+    @Shadow(remap = false) public abstract int getMaxItemUseDuration(ItemStack stack);
 
-    @Shadow protected abstract boolean isElleNear(World world, double x, double y, double z, double range);
+    @Shadow(remap = false) protected abstract boolean isElleNear(World world, double x, double y, double z, double range);
 
     /**
      * @author Lilyflower

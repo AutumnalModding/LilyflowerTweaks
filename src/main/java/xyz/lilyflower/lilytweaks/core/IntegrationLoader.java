@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import xyz.lilyflower.lilytweaks.integration.lotr.thaumcraft.IntegrationThaumcraft;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRIntegrationFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 
 public interface IntegrationLoader {
     Map<IntegrationLoader, Boolean> LOADERS = new HashMap<>();

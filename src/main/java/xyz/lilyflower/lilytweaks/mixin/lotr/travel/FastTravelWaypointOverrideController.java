@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.lotr.config.LOTRTravelFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
 
 @Mixin(LOTRWaypoint.class)
 public class FastTravelWaypointOverrideController {

@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.lotr.config.loader;
+package xyz.lilyflower.lilytweaks.util.lotr.loader;
 
 import java.util.EnumSet;
 import lotr.common.LOTRDimension;

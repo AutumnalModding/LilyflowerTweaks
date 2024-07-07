@@ -25,9 +25,17 @@ public enum Mixin {
     RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", TargetedMod.LOTR),
 
     // Interop
-    FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", TargetedMod.LOTR, TargetedMod.WITCHERY),
+    //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", TargetedMod.LOTR, TargetedMod.WITCHERY),
     SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", TargetedMod.LOTR, TargetedMod.WITCHERY),
-    ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", TargetedMod.LOTR, TargetedMod.WITCHERY)
+    ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", TargetedMod.LOTR, TargetedMod.WITCHERY),
+
+    // Witchery
+    DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
+    CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", TargetedMod.WITCHERY),
+
+    // Vanilla
+    REMOVE_IFRAMES("vanilla.RemoveImmunityFrames", TargetedMod.VANILLA),
+
     ;
 
     public final String mixinClass;

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.lotr.config.loader.LOTRFactionRelationLoader;
+import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRFactionRelationLoader;
 
 @Mixin(LOTRFactionRelations.class)
 public class RelationOverrideController {
