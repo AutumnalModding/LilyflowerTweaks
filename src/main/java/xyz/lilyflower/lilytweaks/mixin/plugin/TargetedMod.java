@@ -16,6 +16,7 @@ public enum TargetedMod {
     VANILLA("Minecraft", "unused", true),
     LOTR("The Lord of the Rings Mod", "LOTRMod", true),
     WITCHERY("Witchery", "Witchery", true),
+    BACKHAND("backhand", "backhand", true),
 
     ;
 

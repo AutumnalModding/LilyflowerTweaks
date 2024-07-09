@@ -33,6 +33,9 @@ public enum Mixin {
     DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
     CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", TargetedMod.WITCHERY),
 
+    // Backhand
+    FAKE_PLAYER_COMPAT("backhand.FakePlayerCompat", TargetedMod.BACKHAND),
+
     // Vanilla
     REMOVE_IFRAMES("vanilla.RemoveImmunityFrames", TargetedMod.VANILLA),
 
