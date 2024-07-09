@@ -90,7 +90,7 @@ public class IntegrationThaumcraft implements IntegrationLoader {
                         .add(Aspect.TOOL, 1)
                         .add(Aspect.MAGIC, 2)
                         .add(Aspect.GREED, 2),
-                0, 10, 1,
+                0, 5, 1,
                 new ResourceLocation("lilytweaks", "textures/items/cap_mithril.png"))
                 .registerResearchItem();
 
@@ -100,7 +100,7 @@ public class IntegrationThaumcraft implements IntegrationLoader {
                         .add(Aspect.TOOL, 1)
                         .add(Aspect.DARKNESS, 3)
                         .add(Aspect.DEATH, 3),
-                0, -10, 1,
+                0, -5, 1,
                 new ResourceLocation("lilytweaks", "textures/items/cap_morgul.png"))
                 .registerResearchItem();
 
@@ -110,7 +110,7 @@ public class IntegrationThaumcraft implements IntegrationLoader {
                         .add(Aspect.TREE, 2)
                         .add(Aspect.LIFE, 3)
                         .add(Aspect.TOOL, 1),
-                10, 0, 2,
+                5, 0, 2,
                 new ResourceLocation("lilytweaks", "textures/items/rod_mallorn.png"))
                 .registerResearchItem();
 
@@ -121,7 +121,7 @@ public class IntegrationThaumcraft implements IntegrationLoader {
                         .add(Aspect.DEATH, 3)
                         .add(Aspect.TOOL, 1)
                         .add(Aspect.DARKNESS, 1),
-                -10, 0, 1,
+                -5, 0, 1,
                 new ResourceLocation("lilytweaks", "textures/items/rod_charred.png"))
                 .registerResearchItem();
 
