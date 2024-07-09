@@ -15,7 +15,7 @@ public class FakePlayerCompat {
     @Inject(method = "getOffhandItem", at = @At("HEAD"), cancellable = true)
     private static void fakePlayerCompat(EntityPlayer player, CallbackInfoReturnable<ItemStack> cir) {
         if (player instanceof FakePlayer) {
-            cir.setReturnValue(new ItemStack(Blocks.air));
+            cir.setReturnValue(null);
         }
     }
 }

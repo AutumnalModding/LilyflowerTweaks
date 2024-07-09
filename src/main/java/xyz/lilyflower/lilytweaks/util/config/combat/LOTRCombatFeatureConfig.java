@@ -10,7 +10,7 @@ import xyz.lilyflower.lilytweaks.core.LilyflowerTweaks;
 
 public class LOTRCombatFeatureConfig {
 
-    public static boolean DISABLE_ATTACK_TIMINGS = false;
+    public static boolean DISABLE_ATTACK_TIMINGS = true;
     public static boolean ENABLE_GW_DEATH = false;
     public static boolean ENABLE_WAR_CRIMES = false;
     public static boolean ENABLE_OMNITARGET = false;
@@ -20,7 +20,7 @@ public class LOTRCombatFeatureConfig {
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
 
-        DISABLE_ATTACK_TIMINGS = configuration.getBoolean("removeNewCombat", "combat", false, "Removes the 1.9-style combat changes.");
+        DISABLE_ATTACK_TIMINGS = configuration.getBoolean("removeNewCombat", "combat", true, "Removes the 1.9-style combat changes.");
         ENABLE_GW_DEATH = configuration.getBoolean("enableGWDeath", "combat", false, "Allows the Grey Wanderer to die.");
 
         ENABLE_WAR_CRIMES = configuration.getBoolean("enableWarCrimes", "combat", false, "Makes all LOTR factions permit war crimes.");
