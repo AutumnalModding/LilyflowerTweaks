@@ -29,6 +29,8 @@ public enum Mixin {
     SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", TargetedMod.LOTR, TargetedMod.WITCHERY),
     ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", TargetedMod.LOTR, TargetedMod.WITCHERY),
 
+    RPLE_COMPUTRONICS_LAMP("rple.RPLEComputronicsLamp", TargetedMod.RPLE, TargetedMod.COMPUTRONICS),
+
     // Witchery
     DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
     CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", TargetedMod.WITCHERY),

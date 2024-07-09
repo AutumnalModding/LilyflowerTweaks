@@ -3,10 +3,12 @@
 //file:noinspection GroovyAssignabilityCheck
 
 dependencies {
-    implementation rfg.deobf(files("libs/backhand.jar")) //TODO: yell at eigen to fix this
+    implementation rfg.deobf(files("libs/backhand.jar")) //TODO: falsepattern cursemaven this
+    implementation files("libs/computronics.jar") //TODO: find vexatos maven
     implementation deobfCurse("baubles-227083:2224857")
     implementation deobfCurse("witchery-69673:2234410")
     implementation deobfCurse("thaumcraft-223628:2227552")
+    implementation deobfCurse("rple-1050511:5494077")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
 
     shadowImplementation 'org.reflections:reflections:0.10.2'

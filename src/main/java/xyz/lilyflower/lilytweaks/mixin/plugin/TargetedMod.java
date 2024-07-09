@@ -17,6 +17,8 @@ public enum TargetedMod {
     LOTR("The Lord of the Rings Mod", "LOTRMod", true),
     WITCHERY("Witchery", "Witchery", true),
     BACKHAND("backhand", "backhand", true),
+    RPLE("rple", "rple", true),
+    COMPUTRONICS("computronics", "Computronics", true),
 
     ;
 
