@@ -13,11 +13,12 @@ public enum TargetedMod {
     //
 
     // Replace with your injected mods here, but always keep VANILLA:
-    VANILLA("Minecraft", "unused", true),
+    RPLE("rple", "rple", true),
     LOTR("The Lord of the Rings Mod", "LOTRMod", true),
+    ALFHEIM("alfheim", "Alfheim", true),
+    VANILLA("Minecraft", "unused", true),
     WITCHERY("Witchery", "Witchery", true),
     BACKHAND("backhand", "backhand", true),
-    RPLE("rple", "rple", true),
     COMPUTRONICS("computronics", "Computronics", true),
 
     ;

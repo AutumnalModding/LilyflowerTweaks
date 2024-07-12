@@ -20,9 +20,10 @@ import java.util.stream.Collectors;
 
 import static java.nio.file.Files.walk;
 
+@SuppressWarnings({"deprecation", "CallToPrintStackTrace"})
 public class MixinPlugin implements IMixinConfigPlugin {
 
-    private static final Logger LOG = LogManager.getLogger("LOTweakR Mixins");
+    private static final Logger LOG = LogManager.getLogger("LT Mixins");
     private static final Path MODS_DIRECTORY_PATH = new File(Launch.minecraftHome, "mods/").toPath();
 
     @Override
@@ -58,10 +59,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
         for (TargetedMod mod : TargetedMod.values()) {
             if(loadedMods.contains(mod)) {
-                LOG.info("Found " + mod.modName + "! Integrating now...");
+                LOG.info("Found {}! Integrating now...", mod.modName);
             }
             else {
-                LOG.info("Could not find " + mod.modName + "! Skipping integration....");
+                LOG.info("Could not find {}! Skipping integration....", mod.modName);
             }
         }
 
@@ -69,7 +70,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
         for (Mixin mixin : Mixin.values()) {
             if (mixin.shouldLoad(loadedMods)) {
                 mixins.add(mixin.mixinClass);
-                LOG.debug("Loading mixin: " + mixin.mixinClass);
+                LOG.debug("Loading mixin: {}", mixin.mixinClass);
             }
         }
         return mixins;
@@ -79,11 +80,11 @@ public class MixinPlugin implements IMixinConfigPlugin {
         try {
             File jar = findJarOf(mod);
             if(jar == null) {
-                LOG.info("Jar not found for " + mod);
+                LOG.info("Jar not found for {}", mod);
                 return false;
             }
 
-            LOG.info("Attempting to add " + jar + " to the URL Class Path");
+            LOG.info("Attempting to add {} to the URL Class Path", jar);
             if(!jar.exists()) {
                 throw new FileNotFoundException(jar.toString());
             }
@@ -96,6 +97,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
         }
     }
 
+    @SuppressWarnings("resource")
     public static File findJarOf(final TargetedMod mod) {
         try {
             return walk(MODS_DIRECTORY_PATH)

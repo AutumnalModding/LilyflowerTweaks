@@ -4,6 +4,18 @@ repositories {
     mavenCentral()
 
     maven {
-        url = "https://api.modrinth.com/maven"
+        url = "https://mvn.falsepattern.com/cursemaven"
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://mvn.falsepattern.com/cursemaven"
+            }
+        }
+
+        filter {
+            includeModule("curse.maven", "backhand-654404")
+        }
     }
 }

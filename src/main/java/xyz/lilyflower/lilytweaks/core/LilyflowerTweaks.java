@@ -15,7 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.util.config.combat.GenericCombatFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRGenericFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.generic.BandaidFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.generic.LOTRGenericFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
@@ -29,30 +30,23 @@ public class LilyflowerTweaks
 
     public static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks");
 
-    private static File getFeatureConfig(String mod, String base, String feature) {
-        File config = new File(base + "/lilytweaks/" + mod + "/" + feature + ".cfg");
-        if (!config.getParentFile().exists()) {
-            config.getParentFile().mkdirs();
-        }
-        return config;
-    }
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        String baseConfigPath = event.getSuggestedConfigurationFile().getParent();
+        File config = event.getSuggestedConfigurationFile();
 
         if (Loader.isModLoaded("lotr")) {
-            LOTRGenericFeatureConfig.synchronizeConfiguration(getFeatureConfig("lotr", baseConfigPath, "misc"));
-            LOTRCombatFeatureConfig.synchronizeConfiguration(getFeatureConfig("lotr", baseConfigPath, "combat"));
-            LOTRTravelFeatureConfig.synchronizeConfiguration(getFeatureConfig("lotr", baseConfigPath, "travel"));
-            LOTRIntegrationFeatureConfig.synchronizeConfiguration(getFeatureConfig("lotr", baseConfigPath, "integration"));
+            LOTRGenericFeatureConfig.synchronizeConfiguration(config);
+            LOTRCombatFeatureConfig.synchronizeConfiguration(config);
+            LOTRTravelFeatureConfig.synchronizeConfiguration(config);
+            LOTRIntegrationFeatureConfig.synchronizeConfiguration(config);
 
-            LOTRTime.DAY_LENGTH = (int) (LOTRTime.DAY_LENGTH * LOTRGenericFeatureConfig.TIME_MULTIPLIER);
+            LOTRTime.DAY_LENGTH = (int) (LOTRGenericFeatureConfig.TIME_BASE * LOTRGenericFeatureConfig.TIME_MULTIPLIER);
 
             LOTRCustomDataLoader.runAll();
         }
 
-        GenericCombatFeatureConfig.synchronizeConfiguration(getFeatureConfig("generic", baseConfigPath, "combat"));
+        BandaidFeatureConfig.synchronizeConfiguration(config);
+        GenericCombatFeatureConfig.synchronizeConfiguration(config);
 
         IntegrationLoader.runAllPre();
     }

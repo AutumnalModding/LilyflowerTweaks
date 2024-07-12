@@ -1,6 +1,6 @@
 package xyz.lilyflower.lilytweaks.mixin.lotr.misc;
 
-import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRGenericFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.generic.LOTRGenericFeatureConfig;
 import lotr.common.playerdetails.ExclusiveGroup;
 import lotr.common.playerdetails.PlayerDetails;
 import org.spongepowered.asm.mixin.Mixin;

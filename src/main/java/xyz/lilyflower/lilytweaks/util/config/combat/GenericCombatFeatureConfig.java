@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.HashMap;
 import net.minecraftforge.common.config.Configuration;
 
+@SuppressWarnings("unchecked")
 public class GenericCombatFeatureConfig {
     public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
     public static String[] NO_IFRAME_DAMAGETYPES;
