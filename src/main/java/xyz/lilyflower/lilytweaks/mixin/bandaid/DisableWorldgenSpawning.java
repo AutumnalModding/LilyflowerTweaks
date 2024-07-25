@@ -8,13 +8,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaks;
 import xyz.lilyflower.lilytweaks.util.config.generic.BandaidFeatureConfig;
 
 @Mixin(SpawnerAnimals.class)
-public class DisableWorldGenSpawning {
+public class DisableWorldgenSpawning {
     @Inject(method = "performWorldGenSpawning", at = @At("HEAD"), cancellable = true)
-    private static void disableSpawning(World world, BiomeGenBase biome, int idont, int knowwhat, int theseare, Random random, CallbackInfo info) {
+    private static void disableSpawning(World world, BiomeGenBase biome, int idk, int what, int these, int are, Random random, CallbackInfo info) {
         if (BandaidFeatureConfig.DISABLE_WORLDGEN_SPAWNING) {
+            LilyflowerTweaks.LOGGER.info("Stopping chunkgen-time animal spawn");
             info.cancel();
         }
     }

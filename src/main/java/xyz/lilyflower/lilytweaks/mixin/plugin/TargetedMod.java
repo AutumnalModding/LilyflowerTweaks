@@ -13,19 +13,20 @@ public enum TargetedMod {
     //
 
     // Replace with your injected mods here, but always keep VANILLA:
-    RPLE("rple", "rple", true),
+    RPLE("rple", "rple", false),
     LOTR("The Lord of the Rings Mod", "LOTRMod", true),
-    ALFHEIM("alfheim", "Alfheim", true),
+    ALFHEIM("alfheim", "Alfheim", false),
     VANILLA("Minecraft", "unused", true),
     WITCHERY("Witchery", "Witchery", true),
     BACKHAND("backhand", "backhand", true),
     COMPUTRONICS("computronics", "Computronics", true),
+    OPENCOMPUTERS("OpenComputers", "OpenComputers", true),
+    OPENLIGHTS("openlights", "OpenLights", true),
 
     ;
 
     public final String modName;
     public final String jarNamePrefixLowercase;
-    // Optional dependencies can be omitted in development. Especially skipping GT5U will drastically speed up your game start!
     public final boolean loadInDevelopment;
 
     TargetedMod(String modName, String jarNamePrefix, boolean loadInDevelopment) {

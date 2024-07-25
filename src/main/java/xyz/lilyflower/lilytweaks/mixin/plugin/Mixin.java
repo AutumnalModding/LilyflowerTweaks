@@ -31,6 +31,7 @@ public enum Mixin {
 
     // RPLE mixins - usually these get merged to upstream quickly
     //RPLE_COMPUTRONICS_LAMP("rple.RPLEComputronicsLamp", TargetedMod.RPLE, TargetedMod.COMPUTRONICS),
+    RPLE_OPENLIGHT("rple.RPLEOpenLight", TargetedMod.RPLE, TargetedMod.OPENLIGHTS),
 
     // Witchery
     DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
@@ -45,6 +46,10 @@ public enum Mixin {
     // Bandaids
     DISABLE_SNOW_UPDATES("bandaid.DisableSnowUpdates", TargetedMod.VANILLA),
     FIX_NULL_ENTITY_MAP("bandaid.FixNullEntityMap", TargetedMod.VANILLA),
+    DISABLE_WORLDGEN_SPAWNING("bandaid.DisableWorldgenSpawning", TargetedMod.VANILLA),
+
+    // OpenComputers
+    TRANSPOSER_IGNORE_SIDEDNESS("opencomputers.TransposerIgnoreSidedness", TargetedMod.OPENCOMPUTERS),
 
     ;
 

@@ -14,10 +14,10 @@ public class LOTRIntegrationFeatureConfig {
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
 
-        THAUMCRAFT_ENABLED = configuration.getBoolean("enableThaumIntegration", "thaumcraft", false, "Enables Thaumcraft integration (unfinished!).");
+        THAUMCRAFT_ENABLED = configuration.getBoolean("enableThaumIntegration", "lotr.integration", false, "Enables Thaumcraft integration (unfinished!).");
 
-        FIX_RITUAL = configuration.getBoolean("fixVampireRitual", "witchery", true, "Allow Witchery's vampire ritual in the LOTR dimension.");
-        SAFE_BIOMES = Arrays.asList(configuration.getStringList("safeBiomes", "witchery", new String[]{}, "Safe LOTR biomes for vampires. Use display names, like 'Mordor' or 'Gorgoroth'."));
+        FIX_RITUAL = configuration.getBoolean("fixVampireRitual", "lotr.integration", true, "Allow Witchery's vampire ritual in the LOTR dimension.");
+        SAFE_BIOMES = Arrays.asList(configuration.getStringList("safeBiomes", "lotr.integration", new String[]{}, "Safe LOTR biomes for vampires. Use display names, like 'Mordor' or 'Gorgoroth'."));
 
         if (configuration.hasChanged()) {
             configuration.save();

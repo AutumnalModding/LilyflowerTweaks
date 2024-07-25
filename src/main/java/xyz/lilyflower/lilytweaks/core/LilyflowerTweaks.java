@@ -48,6 +48,10 @@ public class LilyflowerTweaks
         BandaidFeatureConfig.synchronizeConfiguration(config);
         GenericCombatFeatureConfig.synchronizeConfiguration(config);
 
+        if (Loader.isModLoaded("OpenComputers")) {
+
+        }
+
         IntegrationLoader.runAllPre();
     }
 

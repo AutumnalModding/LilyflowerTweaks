@@ -13,14 +13,14 @@ public class LOTRTravelFeatureConfig {
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
-        DISABLED_WAYPOINTS = Arrays.asList(configuration.getStringList("disabledWaypoints", "travel", new String[]{},
+        DISABLED_WAYPOINTS = Arrays.asList(configuration.getStringList("disabledWaypoints", "lotr.travel", new String[]{},
                 "List of waypoints to disable.\n" +
                 "Format: Internal waypoint name - run `/ltdebug dumpWaypoints` for a list.\n" +
                 "Example: 'MORANNON' would disable the Black Gate waypoint (display names and internal names often do not match!)"
         ));
 
-        LOTRTravelFeatureConfig.UNLOCK_WAYPOINTS = configuration.getBoolean("unlockAllWaypoints", "travel", false, "Unlocks all fast travel waypoints.");
-        LOTRTravelFeatureConfig.NO_WAYPOINT_LOCKING = configuration.getBoolean("disableWaypointLocking", "travel", false, "Disables alignment-based waypoint locking.");
+        LOTRTravelFeatureConfig.UNLOCK_WAYPOINTS = configuration.getBoolean("unlockAllWaypoints", "lotr.travel", false, "Unlocks all fast travel waypoints.");
+        LOTRTravelFeatureConfig.NO_WAYPOINT_LOCKING = configuration.getBoolean("disableWaypointLocking", "lotr.travel", false, "Disables alignment-based waypoint locking.");
 
         if (configuration.hasChanged()) {
             configuration.save();

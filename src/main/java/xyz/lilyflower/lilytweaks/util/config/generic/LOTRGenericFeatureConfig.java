@@ -14,11 +14,11 @@ public class LOTRGenericFeatureConfig {
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
 
-        UNLOCK_COSMETICS = configuration.getBoolean("unlockCosmetics", "misc", false, "Unlocks all player-specific LOTR cosmetics.");
-        FIX_ORE_DICTIONARY = configuration.getBoolean("fixOreDictionary", "misc", true, "Registers LOTR ores to the Forge ore dictionary.");
-        TIME_MULTIPLIER = configuration.getFloat("timeMultiplier", "misc", 1.0F, Float.MIN_VALUE, Float.MAX_VALUE, "Day length multiplier for LOTR days.");
-        ALLOW_SCRAP_TRADER_SCREENSHOTS = configuration.getBoolean("allowOddmentScreenshots", "misc", false, "Allow taking screenshots of the Oddment Collector.");
-        TIME_BASE = configuration.getInt("timeBase", "misc", 48000, 1, Integer.MAX_VALUE, "LOTR day length (base)");
+        UNLOCK_COSMETICS = configuration.getBoolean("unlockCosmetics", "lotr.misc", false, "Unlocks all player-specific LOTR cosmetics.");
+        FIX_ORE_DICTIONARY = configuration.getBoolean("fixOreDictionary", "lotr.misc", true, "Registers LOTR ores to the Forge ore dictionary.");
+        TIME_MULTIPLIER = configuration.getFloat("timeMultiplier", "lotr.misc", 1.0F, Float.MIN_VALUE, Float.MAX_VALUE, "Day length multiplier for LOTR days.");
+        ALLOW_SCRAP_TRADER_SCREENSHOTS = configuration.getBoolean("allowOddmentScreenshots", "lotr.misc", false, "Allow taking screenshots of the Oddment Collector.");
+        TIME_BASE = configuration.getInt("timeBase", "lotr.misc", 48000, 1, Integer.MAX_VALUE, "LOTR day length (base)");
 
         if (configuration.hasChanged()) {
             configuration.save();
