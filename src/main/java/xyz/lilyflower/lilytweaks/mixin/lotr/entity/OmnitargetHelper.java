@@ -6,13 +6,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.core.LTConfig;
 
 @Mixin(LOTRNPCTargetSelector.class)
 public class OmnitargetHelper {
     @Inject(method = "isEntityApplicable", at = @At("HEAD"), remap = false, cancellable = true)
     public void enableBloodbathMode(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (LOTRCombatFeatureConfig.ENABLE_OMNITARGET) {
+        if (LTConfig.ENABLE_OMNITARGET) {
             cir.setReturnValue(true);
         }
     }

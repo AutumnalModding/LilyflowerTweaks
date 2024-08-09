@@ -7,19 +7,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import java.io.File;
 import lotr.common.LOTRMod;
 import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.config.alfheim.AlfheimMiscConfig;
-import xyz.lilyflower.lilytweaks.util.config.combat.GenericCombatFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.generic.BandaidFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.generic.LOTRGenericFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 
@@ -33,24 +25,11 @@ public class LilyflowerTweaks
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        File config = event.getSuggestedConfigurationFile();
+        LTConfig.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
         if (Loader.isModLoaded("lotr")) {
-            LOTRGenericFeatureConfig.synchronizeConfiguration(config);
-            LOTRCombatFeatureConfig.synchronizeConfiguration(config);
-            LOTRTravelFeatureConfig.synchronizeConfiguration(config);
-            LOTRIntegrationFeatureConfig.synchronizeConfiguration(config);
-
-            LOTRTime.DAY_LENGTH = (int) (LOTRGenericFeatureConfig.TIME_BASE * LOTRGenericFeatureConfig.TIME_MULTIPLIER);
-
+            LOTRTime.DAY_LENGTH = (int) (LTConfig.TIME_BASE * LTConfig.TIME_MULTIPLIER);
             LOTRCustomDataLoader.runAll();
-        }
-
-        BandaidFeatureConfig.synchronizeConfiguration(config);
-        GenericCombatFeatureConfig.synchronizeConfiguration(config);
-
-        if (Loader.isModLoaded("alfheim")) {
-            AlfheimMiscConfig.synchronizeConfiguration(config);
         }
 
         IntegrationLoader.runAllPre();
@@ -58,7 +37,7 @@ public class LilyflowerTweaks
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        if (LOTRGenericFeatureConfig.FIX_ORE_DICTIONARY) {
+        if (LTConfig.FIX_ORE_DICTIONARY) {
             OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
             OreDictionary.registerOre("oreMythril", LOTRMod.oreMithril);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
@@ -75,7 +54,7 @@ public class LilyflowerTweaks
         IntegrationLoader.runAllPost();
 
         if (Loader.isModLoaded("lotr")) {
-            LOTRCombatFeatureConfig.registerModdedWeapons();
+            LTConfig.registerModdedWeapons();
         }
     }
 

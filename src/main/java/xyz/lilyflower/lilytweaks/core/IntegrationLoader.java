@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import xyz.lilyflower.lilytweaks.integration.lotr.thaumcraft.IntegrationThaumcraft;
-import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 
 public interface IntegrationLoader {
     Map<IntegrationLoader, Boolean> LOADERS = new HashMap<>();
@@ -21,7 +20,7 @@ public interface IntegrationLoader {
 
     static void runAllPre() {
         try {
-            add(new IntegrationThaumcraft(), LOTRIntegrationFeatureConfig.THAUMCRAFT_ENABLED);
+            add(new IntegrationThaumcraft(), LTConfig.THAUMCRAFT_ENABLED);
         } catch (NoClassDefFoundError ignored) {}
 
         LOADERS.forEach((loader, enabled) -> {

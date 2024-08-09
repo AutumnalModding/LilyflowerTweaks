@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
+import xyz.lilyflower.lilytweaks.core.LTConfig;
 
 @Mixin(LOTREntityGandalf.class)
 public abstract class EnableGreyWandererDeath extends EntityLivingBase {
@@ -18,7 +18,7 @@ public abstract class EnableGreyWandererDeath extends EntityLivingBase {
 
     @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true, remap = false)
     public void allowKillingGandalf(DamageSource damagesource, float f, CallbackInfoReturnable<Boolean> cir) {
-        if (LOTRCombatFeatureConfig.ENABLE_GW_DEATH) {
+        if (LTConfig.ENABLE_GW_DEATH) {
             System.out.println("damaging GW");
             cir.setReturnValue(super.attackEntityFrom(damagesource, f));
         }

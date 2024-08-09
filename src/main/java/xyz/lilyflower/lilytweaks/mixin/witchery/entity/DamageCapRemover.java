@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import static xyz.lilyflower.lilytweaks.util.config.combat.GenericCombatFeatureConfig.WITCHERY_DAMAGE_CAPS;
+import static xyz.lilyflower.lilytweaks.core.LTConfig.WITCHERY_DAMAGE_CAPS;
 
 
 public class DamageCapRemover {
