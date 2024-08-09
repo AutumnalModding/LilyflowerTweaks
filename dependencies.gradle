@@ -16,7 +16,7 @@ dependencies {
     implementation deobfCurse("backhand-654404:5475047")
     implementation deobfCurse("thaumcraft-223628:2227552")
     implementation deobfCurse("openlights-225225:2264437")
-    implementation deobfCurse("opencomputers-223008:5274233")
+    //implementation deobfCurse("opencomputers-223008:5274233")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
 
     shadowImplementation 'org.reflections:reflections:0.10.2'

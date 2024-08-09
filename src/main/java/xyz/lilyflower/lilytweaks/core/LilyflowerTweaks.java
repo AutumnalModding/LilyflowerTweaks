@@ -50,10 +50,6 @@ public class LilyflowerTweaks
         BandaidFeatureConfig.synchronizeConfiguration(config);
         GenericCombatFeatureConfig.synchronizeConfiguration(config);
 
-        if (Loader.isModLoaded("OpenComputers")) {
-            OpencomputersMiscFeatureConfig.synchronizeConfiguration(config);
-        }
-
         if (Loader.isModLoaded("alfheim")) {
             AlfheimMiscConfig.synchronizeConfiguration(config);
         }
