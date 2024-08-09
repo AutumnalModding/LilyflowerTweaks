@@ -49,8 +49,10 @@ public enum Mixin {
     DISABLE_WORLDGEN_SPAWNING("bandaid.DisableWorldgenSpawning", TargetedMod.VANILLA),
 
     // OpenComputers
-    TRANSPOSER_IGNORE_SIDEDNESS("opencomputers.TransposerIgnoreSidedness", TargetedMod.OPENCOMPUTERS),
 
+    // Alfheim
+    //ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", TargetedMod.ALFHEIM),
+    ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", TargetedMod.ALFHEIM),
     ;
 
     public final String mixinClass;

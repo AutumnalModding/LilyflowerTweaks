@@ -13,12 +13,14 @@ import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.lilyflower.lilytweaks.util.config.alfheim.AlfheimMiscConfig;
 import xyz.lilyflower.lilytweaks.util.config.combat.GenericCombatFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.combat.LOTRCombatFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.generic.BandaidFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.generic.LOTRGenericFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
+import xyz.lilyflower.lilytweaks.util.config.opencomputers.OpencomputersMiscFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 
@@ -49,7 +51,11 @@ public class LilyflowerTweaks
         GenericCombatFeatureConfig.synchronizeConfiguration(config);
 
         if (Loader.isModLoaded("OpenComputers")) {
+            OpencomputersMiscFeatureConfig.synchronizeConfiguration(config);
+        }
 
+        if (Loader.isModLoaded("alfheim")) {
+            AlfheimMiscConfig.synchronizeConfiguration(config);
         }
 
         IntegrationLoader.runAllPre();

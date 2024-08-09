@@ -22,6 +22,7 @@ public enum TargetedMod {
     COMPUTRONICS("computronics", "Computronics", true),
     OPENCOMPUTERS("OpenComputers", "OpenComputers", true),
     OPENLIGHTS("openlights", "OpenLights", true),
+    ENDLESSIDS("endlessids", "endlessids", false)
 
     ;
 

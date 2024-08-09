@@ -3,9 +3,8 @@
 repositories {
     mavenCentral()
 
-    maven {
-        url = "https://mvn.falsepattern.com/cursemaven"
-    }
+    maven { url = "https://maven.bawnorton.com/releases/" }
+    maven { url = "https://mvn.falsepattern.com/cursemaven" }
 
     exclusiveContent {
         forRepository {

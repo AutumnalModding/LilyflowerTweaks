@@ -9,7 +9,7 @@ import pcl.openlights.tileentity.OpenLightTE;
 
 import static com.falsepattern.rple.api.common.color.LightValueColor.LIGHT_VALUE_0;
 
-@Mixin(OpenLightTE.class)
+@Mixin(value = OpenLightTE.class, remap = false)
 public abstract class RPLEOpenLight implements RPLECustomBlockBrightness {
     @Shadow public int color;
     @Shadow public int brightness;
@@ -29,7 +29,6 @@ public abstract class RPLEOpenLight implements RPLECustomBlockBrightness {
         int red = (((this.color >> 16) & 0x1f) >> 1) & this.brightness;
         int green = (((this.color >> 8) & 0x1f) >> 1) & this.brightness;
         int blue = ((this.color & 0x1f) >> 1) & this.brightness;
-
 
         return ServerColorHelper.RGB16FromRGBChannel4Bit(red, green, blue);
     }
