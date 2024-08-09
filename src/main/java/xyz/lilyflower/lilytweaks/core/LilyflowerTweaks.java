@@ -20,7 +20,6 @@ import xyz.lilyflower.lilytweaks.util.config.generic.BandaidFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.generic.LOTRGenericFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.interop.LOTRIntegrationFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.config.lotr.LOTRTravelFeatureConfig;
-import xyz.lilyflower.lilytweaks.util.config.opencomputers.OpencomputersMiscFeatureConfig;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 

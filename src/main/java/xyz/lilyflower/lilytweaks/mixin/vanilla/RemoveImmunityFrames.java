@@ -17,6 +17,10 @@ public class RemoveImmunityFrames {
             if (source.isProjectile() && GenericCombatFeatureConfig.NO_IFRAME_PROJECTILES) {
                 living.hurtResistantTime = 0;
             }
+
+            if (GenericCombatFeatureConfig.NO_IFRAME_DAMAGETYPES.contains(source.getDamageType())) {
+                living.hurtResistantTime = 0;
+            }
         }
     }
 }

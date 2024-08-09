@@ -2,13 +2,15 @@ package xyz.lilyflower.lilytweaks.util.config.combat;
 
 import com.emoniph.witchery.util.IHandleDT;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import net.minecraftforge.common.config.Configuration;
 
 @SuppressWarnings("unchecked")
 public class GenericCombatFeatureConfig {
     public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
-    public static String[] NO_IFRAME_DAMAGETYPES;
+    public static ArrayList<String> NO_IFRAME_DAMAGETYPES;
     public static boolean NO_IFRAME_PROJECTILES = false;
 
     public static void synchronizeConfiguration(File configFile) {
@@ -19,9 +21,9 @@ public class GenericCombatFeatureConfig {
                 "Valid entity names: see https://i.imgur.com/CbQZ1ko.png (exclude semicolons!)"
         );
 
-        NO_IFRAME_DAMAGETYPES = configuration.getStringList("noImmunityDamageTypes", "damage", new String[]{},
+        NO_IFRAME_DAMAGETYPES = (ArrayList<String>) Arrays.asList(configuration.getStringList("noImmunityDamageTypes", "damage", new String[]{},
                 "List of damage sources for which iframes aren't applied."
-        );
+        ));
 
         NO_IFRAME_PROJECTILES = configuration.getBoolean("noImmunityForProjectiles", "damage", false, "Make projectiles ignore iframes.");
 
