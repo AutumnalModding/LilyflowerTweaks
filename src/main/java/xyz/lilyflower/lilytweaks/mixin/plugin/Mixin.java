@@ -30,7 +30,6 @@ public enum Mixin {
     ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", TargetedMod.LOTR, TargetedMod.WITCHERY),
 
     // RPLE mixins - usually these get merged to upstream quickly
-    //RPLE_COMPUTRONICS_LAMP("rple.RPLEComputronicsLamp", TargetedMod.RPLE, TargetedMod.COMPUTRONICS),
     RPLE_OPENLIGHT("rple.RPLEOpenLight", TargetedMod.RPLE, TargetedMod.OPENLIGHTS),
 
     // Witchery
@@ -48,10 +47,8 @@ public enum Mixin {
     FIX_NULL_ENTITY_MAP("bandaid.FixNullEntityMap", TargetedMod.VANILLA),
     DISABLE_WORLDGEN_SPAWNING("bandaid.DisableWorldgenSpawning", TargetedMod.VANILLA),
 
-    // OpenComputers
-
     // Alfheim
-    //ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", TargetedMod.ALFHEIM),
+    ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", TargetedMod.ALFHEIM),
     ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", TargetedMod.ALFHEIM),
     ;
 

@@ -32,7 +32,6 @@ public class GenericCombatFeatureConfig {
 
             try {
                 // all witchery bosses implement this
-                //noinspection unchecked
                 WITCHERY_DAMAGE_CAPS.put((Class<? extends IHandleDT>) Class.forName(classname), value);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
