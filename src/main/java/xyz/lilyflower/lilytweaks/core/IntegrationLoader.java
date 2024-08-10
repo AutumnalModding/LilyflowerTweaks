@@ -35,7 +35,7 @@ public interface IntegrationLoader {
             }
             if (shouldLoad && enabled) {
                 String integration = name.substring(0, name.length() - 1);
-                LilyflowerTweaks.LOGGER.info("Enabling {} integration!", integration);
+                LTInit.LOGGER.info("Enabling {} integration!", integration);
                 loader.runPre();
             }
         });

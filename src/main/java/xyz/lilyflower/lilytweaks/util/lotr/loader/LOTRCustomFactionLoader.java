@@ -22,7 +22,7 @@ import lotr.common.world.map.LOTRWaypoint;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaks;
+import xyz.lilyflower.lilytweaks.core.LTInit;
 import xyz.lilyflower.lilytweaks.util.lotr.data.CustomFactionRank;
 
 @SuppressWarnings({"ConstantConditions", "unchecked"})
@@ -191,7 +191,7 @@ public class LOTRCustomFactionLoader implements LOTRCustomDataLoader {
 
                     Collections.sort(rankList);
 
-                    LilyflowerTweaks.LOGGER.info("Added faction '{}'", name);
+                    LTInit.LOGGER.info("Added faction '{}'", name);
                 } else {
                     LOGGER.error("File {} is invalid! Ignoring.", path);
                 }

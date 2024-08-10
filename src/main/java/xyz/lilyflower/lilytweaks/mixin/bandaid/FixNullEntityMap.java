@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaks;
+import xyz.lilyflower.lilytweaks.core.LTInit;
 
 @Mixin(WorldServer.class)
 public class FixNullEntityMap {
@@ -18,7 +18,7 @@ public class FixNullEntityMap {
     @Inject(method = "onEntityAdded", at = @At("HEAD"))
     public void fixNullMap(Entity entity, CallbackInfo ci) {
         if (this.entityIdMap == null) {
-            LilyflowerTweaks.LOGGER.warn("Fixing null entity map!");
+            LTInit.LOGGER.warn("Fixing null entity map!");
             this.entityIdMap = new IntHashMap();
         }
     }

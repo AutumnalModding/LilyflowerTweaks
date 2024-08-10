@@ -8,15 +8,13 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import lotr.common.LOTRMod;
-import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 
-@Mod(modid = LilyflowerTweaks.MODID, version = LilyflowerTweaks.VERSION, dependencies = "after:lotr;after:Thaumcraft")
-public class LilyflowerTweaks
+@Mod(modid = LTInit.MODID, version = LTInit.VERSION, dependencies = "after:lotr;after:Thaumcraft")
+public class LTInit
 {
     public static final String MODID = "lilytweaks";
     public static final String VERSION = "2.1";
@@ -25,12 +23,11 @@ public class LilyflowerTweaks
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        LTConfigRunners.Vanilla.init();
+        LTConfigRunners.LOTR.init();
+        LTConfigRunners.Witchery.init();
+        LTConfigRunners.Alfheim.init();
         LTConfig.synchronizeConfiguration(event.getSuggestedConfigurationFile());
-
-        if (Loader.isModLoaded("lotr")) {
-            LOTRTime.DAY_LENGTH = (int) (LTConfig.TIME_BASE * LTConfig.TIME_MULTIPLIER);
-            LOTRCustomDataLoader.runAll();
-        }
 
         IntegrationLoader.runAllPre();
     }
