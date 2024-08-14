@@ -82,9 +82,6 @@ public class LTConfigRunners {
             LTConfig.add("lotr", GENERIC_TWEAKS);
             LTConfig.add("lotr", CROSS_MOD_INTEGRATION);
             LTConfig.add("lotr", FAST_TRAVEL_TWEAKS);
-
-            LOTRTime.DAY_LENGTH = (int) (LTConfig.TIME_BASE * LTConfig.TIME_MULTIPLIER);
-            LOTRCustomDataLoader.runAll();
         }
     }
 

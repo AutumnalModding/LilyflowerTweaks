@@ -50,6 +50,10 @@ public enum Mixin {
     // Alfheim
     ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", TargetedMod.ALFHEIM),
     ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", TargetedMod.ALFHEIM),
+
+    // EndlessIDs fixes
+    HBM_CRATER("endlessids.HBMCraterFix", TargetedMod.ENDLESSIDS, TargetedMod.NUCLEARTECH),
+    HBM_PACKET("endlessids.HBMPacketFix", TargetedMod.ENDLESSIDS, TargetedMod.NUCLEARTECH)
     ;
 
     public final String mixinClass;

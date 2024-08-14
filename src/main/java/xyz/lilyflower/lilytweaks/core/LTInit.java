@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.core;
 
+import com.hbm.packet.PacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -8,10 +9,13 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import lotr.common.LOTRMod;
+import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.lilyflower.lilytweaks.util.fixes.BiomeSyncPacketButNotShit;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
+import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 
 @Mod(modid = LTInit.MODID, version = LTInit.VERSION, dependencies = "after:lotr;after:Thaumcraft")
 public class LTInit
@@ -52,6 +56,8 @@ public class LTInit
 
         if (Loader.isModLoaded("lotr")) {
             LTConfig.registerModdedWeapons();
+            LOTRTime.DAY_LENGTH = (int) (LTConfig.TIME_BASE * LTConfig.TIME_MULTIPLIER);
+            LOTRCustomDataLoader.runAll();
         }
     }
 
