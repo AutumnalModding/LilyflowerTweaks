@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.util.fixes.BiomeSyncPacketButNotShit;
+import xyz.lilyflower.lilytweaks.util.fixes.ExtendedBiomeSyncPacket;
 
 @Mixin(value = PacketDispatcher.class, remap = false)
 public class HBMPacketFix {
@@ -17,6 +17,6 @@ public class HBMPacketFix {
 
     @Inject(method = "registerPackets", at = @At("TAIL"))
     private static void register(CallbackInfo ci) {
-        wrapper.registerMessage(BiomeSyncPacketButNotShit.Handler.class, BiomeSyncPacketButNotShit.class, 36, Side.CLIENT);
+        wrapper.registerMessage(ExtendedBiomeSyncPacket.Handler.class, ExtendedBiomeSyncPacket.class, 36, Side.CLIENT);
     }
 }

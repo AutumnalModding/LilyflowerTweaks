@@ -1,6 +1,5 @@
 package xyz.lilyflower.lilytweaks.core;
 
-import com.hbm.packet.PacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -13,7 +12,6 @@ import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.fixes.BiomeSyncPacketButNotShit;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 

@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-public class BiomeSyncPacketButNotShit implements IMessage {
+public class ExtendedBiomeSyncPacket implements IMessage {
     int chunkX;
     int chunkZ;
     byte blockX;
@@ -19,15 +19,16 @@ public class BiomeSyncPacketButNotShit implements IMessage {
     short biome;
     short[] biomeArray;
 
-    public BiomeSyncPacketButNotShit() {}
+    @SuppressWarnings("unused")
+    public ExtendedBiomeSyncPacket() {}
 
-    public BiomeSyncPacketButNotShit(int chunkX, int chunkZ, short[] biomeArray) {
+    public ExtendedBiomeSyncPacket(int chunkX, int chunkZ, short[] biomeArray) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.biomeArray = biomeArray;
     }
 
-    public BiomeSyncPacketButNotShit(int blockX, int blockZ, short biome) {
+    public ExtendedBiomeSyncPacket(int blockX, int blockZ, short biome) {
         this.chunkX = blockX >> 4;
         this.chunkZ = blockZ >> 4;
         this.blockX = (byte)(blockX & 15);
@@ -70,12 +71,12 @@ public class BiomeSyncPacketButNotShit implements IMessage {
 
     }
 
-    public static class Handler implements IMessageHandler<BiomeSyncPacketButNotShit, IMessage> {
+    public static class Handler implements IMessageHandler<ExtendedBiomeSyncPacket, IMessage> {
         public Handler() {
         }
 
         @SideOnly(Side.CLIENT)
-        public IMessage onMessage(BiomeSyncPacketButNotShit m, MessageContext ctx) {
+        public IMessage onMessage(ExtendedBiomeSyncPacket m, MessageContext ctx) {
             World world = Minecraft.getMinecraft().theWorld;
             if (world.getChunkProvider().chunkExists(m.chunkX, m.chunkZ)) {
                 Chunk chunk = world.getChunkFromChunkCoords(m.chunkX, m.chunkZ);
