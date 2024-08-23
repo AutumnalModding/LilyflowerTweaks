@@ -5,6 +5,7 @@ import net.minecraft.util.IntHashMap;
 import net.minecraft.world.WorldServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,7 +19,6 @@ public class FixNullEntityMap {
     @Inject(method = "onEntityAdded", at = @At("HEAD"))
     public void fixNullMap(Entity entity, CallbackInfo ci) {
         if (this.entityIdMap == null) {
-            LTInit.LOGGER.warn("Fixing null entity map!");
             this.entityIdMap = new IntHashMap();
         }
     }

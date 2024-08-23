@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.mixin.endlessids;
+package xyz.lilyflower.lilytweaks.mixin.endlessids.hbm;
 
 import com.falsepattern.endlessids.mixin.helpers.ChunkBiomeHook;
 import com.hbm.packet.PacketDispatcher;

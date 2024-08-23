@@ -5,10 +5,8 @@ import com.emoniph.witchery.util.IHandleDT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
-import lotr.common.LOTRTime;
 import lotr.common.fac.LOTRFaction;
 import net.minecraftforge.common.config.Configuration;
-import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 
 public class LTConfigRunners {
     public static final class Vanilla {
@@ -112,7 +110,9 @@ public class LTConfigRunners {
 
     public static final class Alfheim {
         public static final Consumer<Configuration> GENERIC_TWEAKS = configuration -> {
-            LTConfig.ESM_TELEPORT_DIMENSION = configuration.getInt("esmTeleportDimension", "alfheim", AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim(), 0, Integer.MAX_VALUE, "ESM dimension ID for teleportation.");
+            LTConfig.ESM_TELEPORT_DIMENSION = configuration.getInt("esmTeleportDimension", "alfheim", AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim(), Integer.MIN_VALUE, Integer.MAX_VALUE, "ESM dimension ID for teleportation.");
+            LTConfig.DISABLE_TPDIM = configuration.getBoolean("disableTPDim", "alfheim", false, "Disable /tpdim command.");
+            LTConfig.DISABLE_ESM_RACES = configuration.getBoolean("esmRacesToggle", "alfheim", false, "Disable ESM races. Useful if you want to have MMO without ESM.");
         };
 
         public static void init() {

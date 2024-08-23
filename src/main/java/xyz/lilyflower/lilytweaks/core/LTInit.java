@@ -1,11 +1,14 @@
 package xyz.lilyflower.lilytweaks.core;
 
+import alfheim.common.core.handler.AlfheimConfigHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import lotr.common.LOTRMod;
 import lotr.common.LOTRTime;
@@ -15,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 
-@Mod(modid = LTInit.MODID, version = LTInit.VERSION, dependencies = "after:lotr;after:Thaumcraft")
+@Mod(modid = LTInit.MODID, version = LTInit.VERSION, dependencies = "after:lotr;after:Thaumcraft;after:alfheim")
 public class LTInit
 {
     public static final String MODID = "lilytweaks";

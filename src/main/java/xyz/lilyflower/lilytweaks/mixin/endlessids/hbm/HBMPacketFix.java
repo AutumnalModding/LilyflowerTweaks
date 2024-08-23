@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.mixin.endlessids;
+package xyz.lilyflower.lilytweaks.mixin.endlessids.hbm;
 
 import com.hbm.packet.PacketDispatcher;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;

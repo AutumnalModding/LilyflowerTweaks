@@ -19,7 +19,6 @@ public abstract class EnableGreyWandererDeath extends EntityLivingBase {
     @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true, remap = false)
     public void allowKillingGandalf(DamageSource damagesource, float f, CallbackInfoReturnable<Boolean> cir) {
         if (LTConfig.ENABLE_WANDERER_DEATH) {
-            System.out.println("damaging GW");
             cir.setReturnValue(super.attackEntityFrom(damagesource, f));
         }
     }

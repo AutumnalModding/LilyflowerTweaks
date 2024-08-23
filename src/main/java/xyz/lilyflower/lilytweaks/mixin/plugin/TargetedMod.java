@@ -24,7 +24,6 @@ public enum TargetedMod {
     OPENLIGHTS("openlights", "OpenLights", true),
     ENDLESSIDS("endlessids", "endlessids", false),
     NUCLEARTECH("hbm", "HBM-NTM", true)
-
     ;
 
     public final String modName;
