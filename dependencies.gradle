@@ -4,8 +4,6 @@
 
 dependencies {
     // Anything marked compileOnly is broken in dev
-
-    implementation files("libs/computronics.jar") //TODO: find vexatos maven
     compileOnly deobfCurse("rple-1050511:5494077")
     compileOnly deobfCurse("asjcore-445557:5155187")
     compileOnly deobfCurse("alfheim-284811:5189478")

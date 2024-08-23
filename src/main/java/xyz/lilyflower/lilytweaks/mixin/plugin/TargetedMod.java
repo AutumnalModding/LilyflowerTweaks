@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 
 import java.nio.file.Path;
 
+@SuppressWarnings("UnstableApiUsage")
 public enum TargetedMod {
 
     //
@@ -19,7 +20,6 @@ public enum TargetedMod {
     VANILLA("Minecraft", "unused", true),
     WITCHERY("Witchery", "Witchery", true),
     BACKHAND("backhand", "backhand", true),
-    COMPUTRONICS("computronics", "Computronics", true),
     OPENCOMPUTERS("OpenComputers", "OpenComputers", true),
     OPENLIGHTS("openlights", "OpenLights", true),
     ENDLESSIDS("endlessids", "endlessids", false),
