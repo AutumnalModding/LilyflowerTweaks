@@ -16,8 +16,8 @@ public abstract class FixScrapTraderRenderer extends LOTRRenderBiped {
     }
 
     /**
-     * @author
-     * @reason
+     * @author LilyflowerFDL
+     * @reason Fix scrap trader rendering
      */
     @Overwrite
     public void doRender(EntityLiving entity, double d, double d1, double d2, float f, float f1) {
@@ -27,7 +27,7 @@ public abstract class FixScrapTraderRenderer extends LOTRRenderBiped {
                 for (int k = -r; k <= r; ++k) {
                     if (Math.abs(i) + Math.abs(k) <= 2) continue;
                     GL11.glPushMatrix();
-                    GL11.glScalef((float)1.0f, (float)3.0f, (float)1.0f);
+                    GL11.glScalef(1.0f, 3.0f, 1.0f);
                     double g = 6.0;
                     super.doRender(entity, (double)i * g, 0.0, (double)k * g, f, f1);
                     GL11.glPopMatrix();
@@ -35,9 +35,9 @@ public abstract class FixScrapTraderRenderer extends LOTRRenderBiped {
             }
             GL11.glPushMatrix();
             float s = 6.0f;
-            GL11.glScalef((float)1.0f, (float)s, (float)1.0f);
-            GL11.glColor3f((float)0.0f, (float)0.0f, (float)0.0f);
-            super.doRender(entity, d, d1 /= (double)s, d2, f, f1);
+            GL11.glScalef(1.0f, s, 1.0f);
+            GL11.glColor3f(0.0f, 0.0f, 0.0f);
+            super.doRender(entity, d, d1 / s, d2, f, f1);
             GL11.glPopMatrix();
             return;
         }

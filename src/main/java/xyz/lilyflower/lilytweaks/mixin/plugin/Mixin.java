@@ -14,15 +14,18 @@ public enum Mixin {
     // Exception: Tags.java, as long as it is used for Strings only!
     //
 
-    COSMETIC_UNLOCKER("lotr.misc.CosmeticUnlockerMixin", TargetedMod.LOTR),
-    FT_WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", TargetedMod.LOTR),
-    OMNITARGET("lotr.entity.OmnitargetHelper", TargetedMod.LOTR),
+    // LOTR
+
+    COSMETIC_UNLOCKER("lotr.misc.CosmeticUnlocker", TargetedMod.LOTR),
+    WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", TargetedMod.LOTR),
+    OMNITARGET_HELPER("lotr.entity.OmnitargetHelper", TargetedMod.LOTR),
     ATTACK_TIMINGS_CLIENT("lotr.client.ClientSideAttackTimingsRemoval", TargetedMod.LOTR),
     ATTACK_TIMINGS_SERVER("lotr.entity.ServerSideAttackTimingsRemoval", TargetedMod.LOTR),
     ENABLE_GW_DEATH("lotr.entity.EnableGreyWandererDeath", TargetedMod.LOTR),
     INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", TargetedMod.LOTR),
     FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", TargetedMod.LOTR),
     RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", TargetedMod.LOTR),
+    METAFACTION_FIXES("lotr.misc.MetafactionFixes"),
 
     // Interop
     //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", TargetedMod.LOTR, TargetedMod.WITCHERY),

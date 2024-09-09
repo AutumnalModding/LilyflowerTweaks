@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerDetails.class)
-public class CosmeticUnlockerMixin {
+public class CosmeticUnlocker {
     @Inject(method = "hasExclusiveGroup", at = @At("HEAD"), cancellable = true, remap = false)
     public void unlock(ExclusiveGroup group, CallbackInfoReturnable<Boolean> cir) {
         if (LTConfig.UNLOCK_COSMETICS) {

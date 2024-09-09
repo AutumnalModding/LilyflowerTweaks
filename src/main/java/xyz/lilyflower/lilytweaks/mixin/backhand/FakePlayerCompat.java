@@ -1,6 +1,8 @@
 package xyz.lilyflower.lilytweaks.mixin.backhand;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +16,7 @@ public class FakePlayerCompat {
     @Inject(method = "getOffhandItem", at = @At("HEAD"), cancellable = true)
     private static void fakePlayerCompat(EntityPlayer player, CallbackInfoReturnable<ItemStack> cir) {
         if (player instanceof FakePlayer) {
-            cir.setReturnValue(null);
+            cir.setReturnValue(new ItemStack(new ItemBlock(Blocks.air)));
         }
     }
 }

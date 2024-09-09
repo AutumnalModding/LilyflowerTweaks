@@ -24,7 +24,7 @@ public class LOTRFactionRelationLoader implements LOTRCustomDataLoader {
             try (Stream<String> stream = Files.lines(relations.toPath(), StandardCharsets.UTF_8)) {
                 stream.forEach(line -> {
                     String[] split = line.split(" ");
-                    if (split.length > 2) {
+                    if (split.length >= 3) {
                         LOTRFactionRelations.FactionPair pair = new LOTRFactionRelations.FactionPair(LOTRFaction.forName(split[0]), LOTRFaction.forName(split[2]));
                         LOTRFactionRelations.Relation relation = LOTRFactionRelations.Relation.forName(split[1]);
 

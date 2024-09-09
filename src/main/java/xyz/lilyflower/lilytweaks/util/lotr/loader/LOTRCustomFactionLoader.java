@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.util.lotr.loader;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -25,9 +26,12 @@ import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.core.LTInit;
 import xyz.lilyflower.lilytweaks.util.lotr.data.CustomFactionRank;
 
-@SuppressWarnings({"ConstantConditions", "unchecked"})
+@SuppressWarnings({"ConstantConditions"})
 public class LOTRCustomFactionLoader implements LOTRCustomDataLoader {
-    private static final Logger LOGGER = LogManager.getLogger("LOTweakR Custom Factions Loader");
+    public static final HashMap<LOTRFaction, ArrayList<LOTRFaction>> META_FACTIONS = new HashMap<>();
+    public static final HashMap<LOTRFaction, LOTRFaction> MFRL = new HashMap<>();
+
+    private static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks Custom Factions Loader");
 
     @Override
     public void run() {
@@ -45,115 +49,149 @@ public class LOTRCustomFactionLoader implements LOTRCustomDataLoader {
         for (String path : customFactionList.list()) {
             try (Stream<String> stream = Files.lines(Paths.get(customFactionList + "/" + path), StandardCharsets.UTF_8)) {
                 Object[] array = stream.toArray();
-                if (array.length >= 8) {
-                    int lineNo = 1;
+                int entries = 0;
 
-                    String name = "PLACEHOLDER_NAME_THIS_SHOULD_NEVER_APPEAR";
-                    int colour = 0xFFFFFF;
-                    LOTRDimension.DimensionRegion region = LOTRDimension.DimensionRegion.WEST;
-                    LOTRMapRegion map = null;
-                    EnumSet<LOTRFaction.FactionType> types = EnumSet.noneOf(LOTRFaction.FactionType.class);
-                    boolean warCrimes = true;
-                    boolean isolation = false;
-                    boolean canGetRank = true;
+                String name = "PLACEHOLDER_NAME_THIS_SHOULD_NEVER_APPEAR";
+                int colour = Integer.MIN_VALUE;
+                LOTRDimension.DimensionRegion region = null;
+                LOTRMapRegion map = null;
+                EnumSet<LOTRFaction.FactionType> types = null;
+                boolean warCrimes = false;
+                boolean isolation = false;
+                boolean canGetRank = true;
 
-                    ArrayList<LOTRControlZone> controlZones = new ArrayList<>();
-                    ArrayList<CustomFactionRank> ranks = new ArrayList<>();
-                    HashMap<LOTRFactionRelations.Relation, ArrayList<LOTRFaction>> relations = new HashMap<>();
+                boolean ISMETA = false;
+                ArrayList<LOTRFaction> metamembers = new ArrayList<>();
 
-                    for (Object obj : array) {
-                        String line = (String) obj;
+                ArrayList<LOTRControlZone> controlZones = new ArrayList<>();
+                ArrayList<CustomFactionRank> ranks = new ArrayList<>();
+                HashMap<LOTRFactionRelations.Relation, ArrayList<LOTRFaction>> relations = new HashMap<>();
 
-                        switch (lineNo++) {
-                            case 1:
-                                name = line;
-                                break;
+                for (Object obj : array) {
+                    String line = (String) obj;
 
-                            case 2:
-                                colour = Integer.parseInt(line, 16);
-                                break;
+                    String key = line.replaceAll(" .*", "");
+                    String value = line.replace(key + " ", "");
 
-                            case 3:
-                                region = LOTRDimension.DimensionRegion.valueOf(line);
-                                break;
+                    switch (key) {
+                        case "NAME":
+                            if (name.equals("PLACEHOLDER_NAME_THIS_SHOULD_NEVER_APPEAR")) {
+                                name = value;
+                                entries++;
+                            }
+                            break;
 
-                            case 4:
-                                String[] mapRegionParams = line.split(" ");
+                        case "COLOUR":
+                            if (colour == Integer.MIN_VALUE) {
+                                colour = Integer.parseInt(value.replace("0x", ""), 16);
+                                entries++;
+                            }
+                            break;
+
+                        case "REGION":
+                            if (region == null) {
+                                region = LOTRDimension.DimensionRegion.valueOf(value);
+                                entries++;
+                            }
+                            break;
+
+                        case "LOCATION":
+                            if (map == null) {
+                                String[] mapRegionParams = value.split(" ");
                                 if (mapRegionParams.length >= 3) {
                                     int x = Integer.parseInt(mapRegionParams[0]);
                                     int y = Integer.parseInt(mapRegionParams[1]);
                                     int r = Integer.parseInt(mapRegionParams[2]);
-                                    
+
                                     map = new LOTRMapRegion(x, y, r);
                                 }
+                                entries++;
+                            }
 
-                                break;
+                            break;
 
-                            case 5:
-                                String[] factionTypes = line.split(" ");
+                        case "TYPE":
+                            if (types == null) {
+                                types = EnumSet.noneOf(LOTRFaction.FactionType.class);
+                                String[] factionTypes = value.split(" ");
                                 for (String type : factionTypes) {
                                     LOTRFaction.FactionType parsed = LOTRFaction.FactionType.valueOf("TYPE_" + type.toUpperCase());
                                     types.add(parsed);
                                 }
+                                entries++;
+                            }
 
-                                break;
+                            break;
 
-                            case 6:
-                                warCrimes = Boolean.parseBoolean(line);
-                                break;
+                        case "WARCRIMES":
+                            warCrimes = Boolean.parseBoolean(value);
+                            break;
 
-                            case 7:
-                                isolation = Boolean.parseBoolean(line);
-                                break;
+                        case "ISOLATIONIST":
+                            isolation = Boolean.parseBoolean(value);
+                            break;
 
-                            case 8:
-                                canGetRank = Boolean.parseBoolean(line);
-                                break;
-                        }
+                        case "JOINABLE":
+                            canGetRank = Boolean.parseBoolean(value);
+                            break;
 
-                        if (line.startsWith("CONTROL ")) {
-                            String desc = line.replace("CONTROL ", "");
-                            String[] split = desc.split(" ");
-                            if (split.length >= 2) {
-                                LOTRWaypoint waypoint = LOTRWaypoint.valueOf(split[0].toUpperCase());
-                                int radius = Integer.parseInt(split[1]);
+                        case "CONTROL":
+                            String[] zone = value.split(" ");
+                            if (zone.length >= 2) {
+                                LOTRWaypoint waypoint = LOTRWaypoint.valueOf(zone[0].toUpperCase());
+                                int radius = Integer.parseInt(zone[1]);
+                                System.out.println(waypoint + ", " + radius);
 
                                 controlZones.add(new LOTRControlZone(waypoint, radius));
                             }
-                        }
+                            break;
 
-                        if (line.startsWith("RANK ")) {
-                            String desc = line.replace("RANK ", "");
-                            String[] split = desc.split(" ");
-                            if (split.length >= 5) {
-                                String title = split[0];
-                                int alignment = Integer.parseInt(split[1]);
-                                boolean needsPledge = Boolean.parseBoolean(split[2]);
-                                boolean makeChatTitle = Boolean.parseBoolean(split[3]);
-                                boolean makeAchievement = Boolean.parseBoolean(split[4]);
+                        case "RANK":
+                            String[] rank = value.split(" ");
+                            if (rank.length >= 5) {
+                                String title = rank[0];
+                                int alignment = Integer.parseInt(rank[1]);
+                                boolean needsPledge = Boolean.parseBoolean(rank[2]);
+                                boolean makeChatTitle = Boolean.parseBoolean(rank[3]);
+                                boolean makeAchievement = Boolean.parseBoolean(rank[4]);
 
                                 ranks.add(new CustomFactionRank(title, alignment, needsPledge, makeChatTitle, makeAchievement));
                             }
-                        }
+                            break;
 
-                        if (line.startsWith("RELATION ")) {
-                            String desc = line.replace("RELATION ", "");
-                            String[] split = desc.split(" ");
-                            if (split.length >= 2) {
-                                LOTRFaction target = LOTRFaction.valueOf(split[0]);
-                                LOTRFactionRelations.Relation relation = LOTRFactionRelations.Relation.valueOf(split[1]);
+                        case "RELATION":
+                            String[] rel = value.split(" ");
+                            if (rel.length >= 2) {
+                                LOTRFaction target = LOTRFaction.valueOf(rel[0]);
+                                LOTRFactionRelations.Relation relation = LOTRFactionRelations.Relation.valueOf(rel[1]);
 
                                 ArrayList<LOTRFaction> factions = relations.getOrDefault(relation, new ArrayList<>());
                                 factions.add(target);
                                 relations.put(relation, factions);
                             }
-                        }
-                    }
+                            break;
 
+                        case "METAMEMBER":
+                            ISMETA = true;
+                            if (LOTRFaction.forName(value.toUpperCase()) != null) {
+                                metamembers.add(LOTRFaction.forName(value.toUpperCase()));
+                            }
+                            break;
+                    }
+                }
+
+                if (entries >= 5) {
                     LOTRFaction faction = EnumHelper.addEnum(EnumHelperMappings.LOTR_EH_MAPPINGS, LOTRFaction.class, name, colour, LOTRDimension.MIDDLE_EARTH, region, map, types);
                     faction.approvesWarCrimes = warCrimes;
                     faction.isolationist = isolation;
                     faction.allowPlayer = canGetRank;
+
+                    if (ISMETA) {
+                        META_FACTIONS.put(faction, metamembers);
+                        for (LOTRFaction member : metamembers) {
+                            MFRL.put(member, faction);
+                        }
+                    }
 
                     relations.forEach((relation, factions) -> factions.forEach(fac -> LOTRFactionRelations.setDefaultRelations(faction, fac, relation)));
 
@@ -192,8 +230,6 @@ public class LOTRCustomFactionLoader implements LOTRCustomDataLoader {
                     Collections.sort(rankList);
 
                     LTInit.LOGGER.info("Added faction '{}'", name);
-                } else {
-                    LOGGER.error("File {} is invalid! Ignoring.", path);
                 }
 
             } catch (IOException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException exception) {
