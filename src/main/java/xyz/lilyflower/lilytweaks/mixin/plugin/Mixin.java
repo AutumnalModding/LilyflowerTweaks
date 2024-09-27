@@ -57,8 +57,6 @@ public enum Mixin {
     DISABLE_FLIGHT("alfheim.ESMFlightDisabler"),
 
     // EndlessIDs fixes
-    HBM_CRATER("endlessids.hbm.HBMCraterFix", TargetedMod.ENDLESSIDS, TargetedMod.NUCLEARTECH),
-    HBM_PACKET("endlessids.hbm.HBMPacketFix", TargetedMod.ENDLESSIDS, TargetedMod.NUCLEARTECH),
 
     ;
 
