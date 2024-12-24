@@ -19,8 +19,7 @@ import xyz.lilyflower.lilytweaks.util.lotr.debug.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomDataLoader;
 
 @Mod(modid = LTInit.MODID, version = LTInit.VERSION, dependencies = "after:lotr;after:Thaumcraft;after:alfheim")
-public class LTInit
-{
+public class LTInit {
     public static final String MODID = "lilytweaks";
     public static final String VERSION = "2.1";
 
