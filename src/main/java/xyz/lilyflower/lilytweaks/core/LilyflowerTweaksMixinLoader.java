@@ -137,8 +137,9 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         RPLE_OPENLIGHT("rple.RPLEOpenLight", MixinTarget.RPLE, MixinTarget.OPENLIGHTS),
 
         // Witchery
-        //DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", MixinTarget.WITCHERY),
-        //CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", MixinTarget.WITCHERY),
+        DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", MixinTarget.WITCHERY),
+        CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", MixinTarget.WITCHERY),
+        CAP_VAMPIRE("witchery.entity.DamageCapRemover$VampireDTCapRemover", MixinTarget.WITCHERY),
 
         // Backhand
         FAKE_PLAYER_COMPAT("backhand.FakePlayerCompat", MixinTarget.BACKHAND),
@@ -156,6 +157,9 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", MixinTarget.ALFHEIM),
         DISABLE_DIMTP("alfheim.DisableTPDIM", MixinTarget.ALFHEIM),
         DISABLE_FLIGHT("alfheim.ESMFlightDisabler", MixinTarget.ALFHEIM),
+
+        // Advanced Rocketry
+        RESPECT_AVG_TEMP("advrocketry.ActuallyRespectAverageTemperature", MixinTarget.ADVANCED_ROCKETRY)
         ;
 
         public final String mixinClass;
@@ -198,6 +202,7 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         OPENCOMPUTERS("OpenComputers", "OpenComputers", true),
         OPENLIGHTS("openlights", "OpenLights", true),
         ENDLESSIDS("endlessids", "endlessids", false),
+        ADVANCED_ROCKETRY("advancedRocketry", "AdvancedRocketry", true),
         ;
 
         public final String modName;

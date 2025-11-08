@@ -7,13 +7,14 @@ import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.config.ConfigRunner;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 
+@SuppressWarnings("unused")
 public final class VanillaConfig implements ConfigRunner {
     public static final Consumer<Configuration> COMBAT_TWEAKS = configuration -> {
-        LilyflowerTweaksConfigSystem.NO_IFRAME_DAMAGETYPES = new ArrayList<>(Arrays.asList(configuration.getStringList("noImmunityDamageTypes", "damage", new String[]{},
+        LilyflowerTweaksConfigSystem.NO_IFRAME_DAMAGETYPES = new ArrayList<>(Arrays.asList(configuration.getStringList("noImmunityDamageTypes", "vanilla.damage", new String[]{},
                 "List of damage sources for which iframes aren't applied."
         )));
 
-        LilyflowerTweaksConfigSystem.NO_IFRAME_PROJECTILES = configuration.getBoolean("noImmunityForProjectiles", "damage", false, "Make projectiles ignore iframes.");
+        LilyflowerTweaksConfigSystem.NO_IFRAME_PROJECTILES = configuration.getBoolean("noImmunityForProjectiles", "vanilla.damage", false, "Make projectiles ignore iframes.");
     };
 
     public static final Consumer<Configuration> BANDAID_FIXES = configuration -> {

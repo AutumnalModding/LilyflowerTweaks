@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 
+@SuppressWarnings("ALL") // TODO: replace with the correct inspections
 @Mixin(EntityLivingBase.class)
 public class RemoveImmunityFrames {
     @Inject(method = "attackEntityFrom", at = @At("TAIL"))

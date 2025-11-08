@@ -24,10 +24,11 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import org.reflections.Reflections;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "CallToPrintStackTrace"})
 public class LilyflowerTweaksTransformerLoader {
     private static final HashMap<String, Class<? extends LilyflowerTweaksClassTransformer>> TRANSFORMERS = new HashMap<>();
 
+    @SuppressWarnings("unused")
     public static byte[] run(String name, byte[] bytes) {
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
@@ -61,8 +62,8 @@ public class LilyflowerTweaksTransformerLoader {
                 node.accept(writer);
                 bytes = writer.toByteArray();
             }
-        } catch (NoSuchMethodException | NullPointerException ignored) {
-            ignored.printStackTrace();
+        } catch (NoSuchMethodException | NullPointerException exception) {
+            exception.printStackTrace();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
             LilyflowerTweaksCoremodLoader.LOGGER.fatal("// LAUNCH FAILED //");
             exception.printStackTrace();
@@ -88,9 +89,7 @@ public class LilyflowerTweaksTransformerLoader {
             TRANSFORMERS.put(transformer, clazz);
         }
 
-        TRANSFORMERS.forEach((transformer, clazz) -> {
-            LilyflowerTweaksCoremodLoader.LOGGER.debug("Added class transformer for {}", transformer);
-        });
+        TRANSFORMERS.forEach((transformer, clazz) -> LilyflowerTweaksCoremodLoader.LOGGER.debug("Added class transformer for {}", transformer));
     }
 
     public interface LilyflowerTweaksClassTransformer {}
@@ -98,6 +97,7 @@ public class LilyflowerTweaksTransformerLoader {
     @Desugar
     public record ClassTransformerData(ClassNode node, MethodNode method) {}
 
+    @SuppressWarnings("unused")
     public static class ClassTransformerUtils {
         public static void NoopClassTransformerMethod(ClassTransformerData data) {
             InsnList instructions = new InsnList();

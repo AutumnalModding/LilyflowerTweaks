@@ -20,10 +20,8 @@ import lotr.common.fac.LOTRFactionRelations;
 import lotr.common.fac.LOTRMapRegion;
 import lotr.common.world.map.LOTRWaypoint;
 import net.minecraftforge.common.util.EnumHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksModLoader;
-import xyz.lilyflower.lilytweaks.util.data.CustomFactionRank;
+import xyz.lilyflower.lilytweaks.util.data.LOTRFactionRankData;
 import xyz.lilyflower.lilytweaks.util.loader.EnumHelperMappings;
 import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
 
@@ -32,9 +30,8 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
     public static final HashMap<LOTRFaction, ArrayList<LOTRFaction>> META_FACTIONS = new HashMap<>();
     public static final HashMap<LOTRFaction, LOTRFaction> MFRL = new HashMap<>();
 
-    private static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks Custom Factions Loader");
-
     @Override
+    @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
     public void run() {
         File customFactionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/lotr/factions/");
 
@@ -49,6 +46,9 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
 
         for (String path : customFactionList.list()) {
             try (Stream<String> stream = Files.lines(Paths.get(customFactionList + "/" + path), StandardCharsets.UTF_8)) {
+                Field czl = LOTRFaction.class.getDeclaredField("controlZones"); czl.setAccessible(true);
+                Field rsd = LOTRFaction.class.getDeclaredField("ranksSortedDescending"); rsd.setAccessible(true);
+
                 Object[] array = stream.toArray();
                 int entries = 0;
 
@@ -64,8 +64,8 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                 boolean ISMETA = false;
                 ArrayList<LOTRFaction> metamembers = new ArrayList<>();
 
-                ArrayList<LOTRControlZone> controlZones = new ArrayList<>();
-                ArrayList<CustomFactionRank> ranks = new ArrayList<>();
+                ArrayList<LOTRControlZone> zones = new ArrayList<>();
+                ArrayList<LOTRFactionRankData> data = new ArrayList<>();
                 HashMap<LOTRFactionRelations.Relation, ArrayList<LOTRFaction>> relations = new HashMap<>();
 
                 for (Object obj : array) {
@@ -143,7 +143,7 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                                 int radius = Integer.parseInt(zone[1]);
                                 System.out.println(waypoint + ", " + radius);
 
-                                controlZones.add(new LOTRControlZone(waypoint, radius));
+                                zones.add(new LOTRControlZone(waypoint, radius));
                             }
                             break;
 
@@ -156,7 +156,7 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                                 boolean makeChatTitle = Boolean.parseBoolean(rank[3]);
                                 boolean makeAchievement = Boolean.parseBoolean(rank[4]);
 
-                                ranks.add(new CustomFactionRank(title, alignment, needsPledge, makeChatTitle, makeAchievement));
+                                data.add(new LOTRFactionRankData(title, alignment, needsPledge, makeChatTitle, makeAchievement));
                             }
                             break;
 
@@ -194,42 +194,20 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                         }
                     }
 
-                    relations.forEach((relation, factions) -> factions.forEach(fac -> LOTRFactionRelations.setDefaultRelations(faction, fac, relation)));
-
-                    Field controlZoneList = LOTRFaction.class.getDeclaredField("controlZones");
-                    controlZoneList.setAccessible(true);
-                    List<LOTRControlZone> zones = (List<LOTRControlZone>) controlZoneList.get(faction);
-                    zones.addAll(controlZones);
-
-                    Field ranksPrivate = LOTRFaction.class.getDeclaredField("ranksSortedDescending");
-                    ranksPrivate.setAccessible(true);
-                    List<LOTRFactionRank> rankList = (List<LOTRFactionRank>) ranksPrivate.get(faction);
 
                     boolean setPledgeRank = false;
-
-                    for (CustomFactionRank rank : ranks) {
-                        LOTRFactionRank factionRank = new LOTRFactionRank(faction, rank.alignment, rank.title, false);
-
-                        // TODO fix this
-
-//                        if (rank.makeAchievement) {
-//                            factionRank = factionRank.makeAchievement();
-//                        }
-
-                        if (rank.makeChatTitle) {
-                            factionRank = factionRank.makeTitle();
-                        }
-
-                        rankList.add(factionRank);
-
-                        if (!setPledgeRank && rank.needsPledge) {
-                            faction.setPledgeRank(factionRank);
+                    ((List<LOTRControlZone>) czl.get(faction)).addAll(zones);
+                    for (LOTRFactionRankData details : data) {
+                        LOTRFactionRank rank = createRank(details, faction);
+                        ((List<LOTRFactionRank>) rsd.get(faction)).add(rank);
+                        if (!setPledgeRank && details.pledge()) {
+                            faction.setPledgeRank(rank);
                             setPledgeRank = true;
                         }
                     }
 
-                    Collections.sort(rankList);
-
+                    Collections.sort((List<LOTRFactionRank>) rsd.get(faction));
+                    relations.forEach((relation, factions) -> factions.forEach(target -> LOTRFactionRelations.setDefaultRelations(faction, target, relation)));
                     LilyflowerTweaksModLoader.LOGGER.info("Added faction '{}'", name);
                 }
 
@@ -237,5 +215,24 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                 throw new RuntimeException(exception);
             }
         }
+    }
+
+    private LOTRFactionRank createRank(LOTRFactionRankData data, LOTRFaction faction) {
+        LOTRFactionRank rank = new LOTRFactionRank(faction, data.alignment(), data.name(), false);
+
+        // TODO fix this
+
+        // TODO update from 2025 me: yeah this requires custom achievement category support.
+        // TODO: so uhh. implement that I guess lmao
+
+//                        if (data.achievement()) {
+//                            rank = rank.achievement();
+//                        }
+
+        if (data.title()) {
+            rank = rank.makeTitle();
+        }
+
+        return rank;
     }
 }

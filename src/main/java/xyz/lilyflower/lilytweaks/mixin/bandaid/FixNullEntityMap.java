@@ -14,6 +14,7 @@ public class FixNullEntityMap {
     @Shadow
     private IntHashMap entityIdMap;
 
+    @SuppressWarnings("UnresolvedMixinReference") // IDEA you are drunk.
     @Inject(method = "onEntityAdded", at = @At("HEAD"))
     public void fixNullMap(Entity entity, CallbackInfo ci) {
         if (this.entityIdMap == null) {

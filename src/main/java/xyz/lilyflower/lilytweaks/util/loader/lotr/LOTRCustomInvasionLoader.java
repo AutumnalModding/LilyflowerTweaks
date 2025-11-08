@@ -21,6 +21,7 @@ public class LOTRCustomInvasionLoader implements CustomDataLoader {
     private static final Logger LOGGER = LogManager.getLogger("LOTweakR Invasion Loader");
 
     @Override
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void run() {
         File customInvasionList = new File(System.getProperty("user.dir") + "/config/lilytweaks/lotr/invasions/");
 

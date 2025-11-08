@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.config;
 
+import alfheim.common.core.handler.AlfheimConfigHandler;
 import com.emoniph.witchery.util.IHandleDT;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,10 +36,10 @@ public class LilyflowerTweaksConfigSystem {
     public static boolean FIX_RITUAL = true;
     public static boolean DISABLE_SNOW_UPDATES = false;
     public static boolean DISABLE_WORLDGEN_SPAWNING = false;
-    public static int ESM_TELEPORT_DIMENSION = Loader.isModLoaded("alfheim") ? -105 : 0;
+    public static int ESM_TELEPORT_DIMENSION = Loader.isModLoaded("alfheim") ? (AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim() == 0 ? -105 : AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) : 0;
     public static boolean DISABLE_TPDIM = false;
-    public static boolean DISABLE_ESM_RACES = false;
-    public static boolean DISABLE_ESM_FLIGHT = false;
+    public static boolean ENABLE_ESM_RACES = true;
+    public static boolean ENABLE_ESM_FLIGHT = true;
     public static List<String> DISABLED_WAYPOINTS;
     public static String[] ADDITIONAL_COMBAT_ITEMS;
     public static List<String> SAFE_BIOMES;

@@ -32,15 +32,10 @@ public class LTRDebuggerCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
+        if (sender instanceof EntityPlayer player) {
 
             if (args.length >= 1) {
                 switch (args[0]) {
-                    case "help":
-                    default:
-                        sendCommandHelp(player);
-                        break;
 
                     case "dumpWaypoints":
                         sendWaypointDebugInfo(player);
@@ -51,6 +46,7 @@ public class LTRDebuggerCommand extends CommandBase {
                         break;
 
                     case "dumpInvasions":
+                        sendChatMessage(player, "=== DUMPING VALID INVASION VALUES ===");
                         for (LOTRInvasions invasion : LOTRInvasions.values()) {
                             sendChatMessage(player, "Found invasion '" + invasion.name() + "' - faction " + invasion.invasionFaction + ".");
                         }
@@ -58,13 +54,18 @@ public class LTRDebuggerCommand extends CommandBase {
                         break;
 
                     case "invasionExists":
-                        String invasion = (args[1] == null ? "thisInvasionNameDoesNotAndWillNotEverExistLmao" : args[1]);
+                        String invasion = (args.length == 1 || args[1] == null ? "thisInvasionNameDoesNotAndWillNotEverExistLmao" : args[1]);
                         sendChatMessage(player, Boolean.toString(LOTRInvasions.forName(invasion) != null));
                         break;
 
                     case "lastKnownBiome":
                         LOTRPlayerData data = LOTRLevelData.getData(player);
                         sendChatMessage(player, "Last known LOTR biome: " + data.getLastKnownBiome().getBiomeDisplayName());
+                        break;
+
+                    case "help":
+                    default:
+                        sendCommandHelp(player);
                         break;
                 }
             } else {
@@ -74,10 +75,9 @@ public class LTRDebuggerCommand extends CommandBase {
     }
 
     private void sendNpcClasses(EntityPlayer player) {
+        sendChatMessage(player, "====== DUMPING VALID NPC NAMES ======");
         Set<Class<? extends LOTREntityNPC>> npcs = NPC_SCANNER.getSubTypesOf(LOTREntityNPC.class);
-        npcs.forEach(npc -> {
-            sendChatMessage(player, "Found NPC class: " + npc.getCanonicalName().replace("lotr.common.entity.npc.", ""));
-        });
+        npcs.forEach(npc -> sendChatMessage(player, "Found NPC class: " + npc.getCanonicalName().replace("lotr.common.entity.npc.", "")));
         sendChatMessage(player, "===== DUMP FINISHED, CHECK LOGS =====");
     }
 
@@ -91,18 +91,17 @@ public class LTRDebuggerCommand extends CommandBase {
     }
 
     private void sendWaypointDebugInfo(EntityPlayer player) {
+        sendChatMessage(player, "====== DUMPING VALID WAYPOINTS ======");
         for (LOTRWaypoint.Region region : LOTRWaypoint.Region.values()) {
             sendChatMessage(player, "Listing region '" + region.name() + "' waypoint coordinates:");
 
-            region.waypoints.forEach(waypoint -> {
-                sendChatMessage(player, ("Waypoint '"
-                        + waypoint.name()
-                        + "' coordinates: "
-                        + waypoint.getXCoord()
-                        + " "
-                        + waypoint.getZCoord())
-                );
-            });
+            region.waypoints.forEach(waypoint -> sendChatMessage(player, ("Waypoint '"
+                    + waypoint.name()
+                    + "' coordinates: "
+                    + waypoint.getXCoord()
+                    + " "
+                    + waypoint.getZCoord())
+            ));
         }
 
         sendChatMessage(player, "===== DUMP FINISHED, CHECK LOGS =====");

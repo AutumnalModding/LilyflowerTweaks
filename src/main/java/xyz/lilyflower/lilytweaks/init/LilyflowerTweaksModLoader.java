@@ -21,7 +21,7 @@ import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
 import org.reflections.Reflections;
 import java.util.Set;
 
-@Mod(modid = LilyflowerTweaksModLoader.MODID, version = LilyflowerTweaksModLoader.VERSION, dependencies = "after:lotr;after:Thaumcraft;after:alfheim")
+@Mod(modid = LilyflowerTweaksModLoader.MODID, version = LilyflowerTweaksModLoader.VERSION, dependencies = "before:lotr")
 public class LilyflowerTweaksModLoader {
     private static final Reflections DATA = new Reflections("xyz.lilyflower.lilytweaks.util.loader");
     private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.config.runners");
@@ -46,6 +46,17 @@ public class LilyflowerTweaksModLoader {
                 LOGGER.fatal("Failed to load config class {}! Reason: {}", config.getCanonicalName(), exception.getMessage());
                 throw new RuntimeException(exception);
             }
+        });
+
+        Set<Class<? extends CustomDataLoader>> loaders = DATA.getSubTypesOf(CustomDataLoader.class);
+        loaders.forEach(data -> {
+            try {
+                Constructor<? extends CustomDataLoader> constructor = data.getConstructor();
+                CustomDataLoader loader = constructor.newInstance();
+                loader.run();
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException exception) {
+                LOGGER.error("Failed to run custom data loader {}! Reason: {}", data.getCanonicalName(), exception.getMessage());
+            } catch (NoClassDefFoundError ignored) {}
         });
 
         LilyflowerTweaksConfigSystem.synchronizeConfiguration(event.getSuggestedConfigurationFile());
@@ -73,17 +84,6 @@ public class LilyflowerTweaksModLoader {
             LilyflowerTweaksConfigSystem.registerModdedWeapons();
             LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksConfigSystem.TIME_BASE * LilyflowerTweaksConfigSystem.TIME_MULTIPLIER);
         }
-
-        Set<Class<? extends CustomDataLoader>> configs = DATA.getSubTypesOf(CustomDataLoader.class);
-        configs.forEach(data -> {
-            try {
-                Constructor<? extends CustomDataLoader> constructor = data.getConstructor();
-                CustomDataLoader loader = constructor.newInstance();
-                loader.run();
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException exception) {
-                LOGGER.error("Failed to run custom data loader {}! Reason: {}", data.getCanonicalName(), exception.getMessage());
-            } catch (NoClassDefFoundError ignored) {}
-        });
     }
 
     @EventHandler

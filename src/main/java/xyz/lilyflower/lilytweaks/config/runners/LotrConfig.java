@@ -7,6 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.config.ConfigRunner;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 
+@SuppressWarnings("unused")
 public class LotrConfig implements ConfigRunner {
     public static final Consumer<Configuration> COMBAT_TWEAKS = configuration -> {
         LilyflowerTweaksConfigSystem.DISABLE_ATTACK_TIMINGS = configuration.getBoolean("removeNewCombat", "lotr.combat", true, "Removes the 1.9-style combat changes.");
