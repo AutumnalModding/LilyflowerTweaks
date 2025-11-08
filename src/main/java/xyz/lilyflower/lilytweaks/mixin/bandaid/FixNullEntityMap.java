@@ -5,11 +5,9 @@ import net.minecraft.util.IntHashMap;
 import net.minecraft.world.WorldServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.core.LTInit;
 
 @Mixin(WorldServer.class)
 public class FixNullEntityMap {

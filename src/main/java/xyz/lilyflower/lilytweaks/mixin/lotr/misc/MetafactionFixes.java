@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.util.lotr.loader.LOTRCustomFactionLoader;
+import xyz.lilyflower.lilytweaks.util.loader.lotr.LOTRCustomFactionLoader;
 
 @Mixin(value = LOTRPlayerData.class, remap = false)
 public class MetafactionFixes {
