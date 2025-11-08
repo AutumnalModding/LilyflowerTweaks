@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
 on: [push, pull_request]
 jobs:
@@ -18,11 +15,11 @@ jobs:
         architecture: x64
 
     - name: Debug Java setup
-    run: |
-      echo "JAVA_HOME: $JAVA_HOME"
-      ls -la /usr/lib/jvm/ || echo "Directory doesn't exist"
-      which java
-      java -version
+      run: |
+        echo "JAVA_HOME: $JAVA_HOME"
+        ls -la /usr/lib/jvm/ || echo "Directory doesn't exist"
+        which java
+        java -version
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
