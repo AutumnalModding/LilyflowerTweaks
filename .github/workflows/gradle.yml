@@ -17,6 +17,13 @@ jobs:
         distribution: 'temurin'
         architecture: x64
 
+    - name: Debug Java setup
+    run: |
+      echo "JAVA_HOME: $JAVA_HOME"
+      ls -la /usr/lib/jvm/ || echo "Directory doesn't exist"
+      which java
+      java -version
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
