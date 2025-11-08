@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 import lotr.common.item.LOTRWeaponStats;
@@ -40,6 +41,7 @@ public class LTConfig {
     static List<String> DISABLED_WAYPOINTS;
     public static String[] ADDITIONAL_COMBAT_ITEMS;
     public static List<String> SAFE_BIOMES;
+    public static HashSet<Integer> MILLENAIRE_ALLOWED_DIMENSIONS = new HashSet<>();
 
     public static void add(String mod, Consumer<Configuration> runner) {
         ArrayList<Consumer<Configuration>> runners = CONFIG_RUNNERS.getOrDefault(mod, new ArrayList<>());

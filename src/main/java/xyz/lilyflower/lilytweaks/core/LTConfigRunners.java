@@ -119,4 +119,21 @@ public class LTConfigRunners {
             LTConfig.add("alfheim", GENERIC_TWEAKS);
         }
     }
+
+    public static final class Millenaire {
+        public static final Consumer<Configuration> MISC = configuration -> {
+            for (String dim : configuration.getStringList("allowedDimensions", "misc", new String[]{"0"}, "Dimensions in which Millenaire will function")) {
+                try {
+                    int parsed = Integer.parseInt(dim);
+                    LTConfig.MILLENAIRE_ALLOWED_DIMENSIONS.add(parsed);
+                } catch (NumberFormatException exception) {
+                    LTInit.LOGGER.warn("Failed to parse dimension ID '" + dim + "'!");
+                }
+            }
+        };
+
+        public static void init() {
+            LTConfig.add("millenaire", MISC);
+        }
+    }
 }

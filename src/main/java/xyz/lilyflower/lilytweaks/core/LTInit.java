@@ -31,6 +31,8 @@ public class LTInit {
         LTConfigRunners.LOTR.init();
         LTConfigRunners.Witchery.init();
         LTConfigRunners.Alfheim.init();
+        LTConfigRunners.Millenaire.init();
+
         LTConfig.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
         IntegrationLoader.runAllPre();

@@ -29,15 +29,15 @@ public enum Mixin {
 
     // Interop
     //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", TargetedMod.LOTR, TargetedMod.WITCHERY),
-    SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", TargetedMod.LOTR, TargetedMod.WITCHERY),
+    //SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", TargetedMod.LOTR, TargetedMod.WITCHERY),
     ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", TargetedMod.LOTR, TargetedMod.WITCHERY),
 
     // RPLE mixins - usually these get merged to upstream quickly
     RPLE_OPENLIGHT("rple.RPLEOpenLight", TargetedMod.RPLE, TargetedMod.OPENLIGHTS),
 
     // Witchery
-    DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
-    CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", TargetedMod.WITCHERY),
+//    DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", TargetedMod.WITCHERY),
+//    CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", TargetedMod.WITCHERY),
 
     // Backhand
     FAKE_PLAYER_COMPAT("backhand.FakePlayerCompat", TargetedMod.BACKHAND),
@@ -56,7 +56,11 @@ public enum Mixin {
     DISABLE_DIMTP("alfheim.DisableTPDIM"),
     DISABLE_FLIGHT("alfheim.ESMFlightDisabler"),
 
-    // EndlessIDs fixes
+    // Millenaire
+    ALLOW_NON_OVERWORLD_DIMENSIONS_PT1("millenaire.AllowedDimensionsMixin$Keybinds"),
+    ALLOW_NON_OVERWORLD_DIMENSIONS_PT2("millenaire.AllowedDimensionsMixin$Generation"),
+    ALLOW_NON_OVERWORLD_DIMENSIONS_PT3("millenaire.AllowedDimensionsMixin$Ticker"),
+    ALLOW_NON_OVERWORLD_DIMENSIONS_PT4("millenaire.AllowedDimensionsMixin$Profile"),
 
     ;
 

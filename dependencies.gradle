@@ -18,6 +18,7 @@ dependencies {
     implementation deobfCurse("opencomputers-223008:5274233")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
     implementation deobfCurse("hbms-nuclear-tech-mod-235439:5534354")
+    implementation deobfCurse("millenaire-270871:2583202")
 
     shadowImplementation 'org.reflections:reflections:0.10.2'
 }
