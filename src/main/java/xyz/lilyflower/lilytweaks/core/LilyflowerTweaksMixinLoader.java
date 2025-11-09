@@ -126,7 +126,7 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),
         FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
         RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", MixinTarget.LOTR),
-        METAFACTION_FIXES("lotr.misc.MetafactionFixes"),
+        METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
 
         // Interop
         //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.LOTR, MixinTarget.WITCHERY),
@@ -159,7 +159,8 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         DISABLE_FLIGHT("alfheim.ESMFlightDisabler", MixinTarget.ALFHEIM),
 
         // Advanced Rocketry
-        RESPECT_AVG_TEMP("advrocketry.ActuallyRespectAverageTemperature", MixinTarget.ADVANCED_ROCKETRY)
+        LOADER_ENHANCEMENTS("advrocketry.ARPlanetLoaderEnhancements", MixinTarget.ADVANCED_ROCKETRY),
+        PROPERTY_ENHANCEMENTS("advrocketry.ARPlanetDataHelper", MixinTarget.ADVANCED_ROCKETRY),
         ;
 
         public final String mixinClass;
