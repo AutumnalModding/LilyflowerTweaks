@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
-import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksModLoader;
+import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 
 @Mixin(SpawnerAnimals.class)
 public class DisableWorldgenSpawning {
@@ -17,7 +17,7 @@ public class DisableWorldgenSpawning {
     @Inject(method = "performWorldGenSpawning", at = @At("HEAD"), cancellable = true)
     private static void disableSpawning(World world, BiomeGenBase biome, int what, int even, int are, int these, Random random, CallbackInfo info) {
         if (LilyflowerTweaksConfigSystem.DISABLE_WORLDGEN_SPAWNING) {
-            LilyflowerTweaksModLoader.LOGGER.debug("Stopping chunkgen-time animal spawn");
+            LilyflowerTweaksInitializationSystem.LOGGER.debug("Stopping chunkgen-time animal spawn");
             info.cancel();
         }
     }

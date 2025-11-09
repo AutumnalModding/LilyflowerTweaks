@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ServerSideAttackTimingsRemoval {
     @Inject(method = "getAttackTimePlayer", at = @At("HEAD"), cancellable = true, remap = false)
     private static void fixCombatPlayer(ItemStack itemstack, CallbackInfoReturnable<Integer> cir) {
-        if (LilyflowerTweaksConfigSystem.DISABLE_ATTACK_TIMINGS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
             cir.setReturnValue(0);
         }
     }
 
     @Inject(method = "getAttackTimeMob", at = @At("HEAD"), cancellable = true, remap = false)
     private static void fixCombatMobs(ItemStack itemstack, CallbackInfoReturnable<Integer> cir) {
-        if (LilyflowerTweaksConfigSystem.DISABLE_ATTACK_TIMINGS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
             cir.setReturnValue(0);
         }
     }

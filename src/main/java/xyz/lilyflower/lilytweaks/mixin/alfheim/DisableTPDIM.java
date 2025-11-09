@@ -12,6 +12,6 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public class DisableTPDIM {
     @Inject(method = "canCommandSenderUseCommand", at = @At("HEAD"), cancellable = true)
     public void disable(ICommandSender sender, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(!LilyflowerTweaksConfigSystem.DISABLE_TPDIM);
+        cir.setReturnValue(!LilyflowerTweaksConfigSystem.Alfheim.DISABLE_TPDIM);
     }
 }

@@ -28,7 +28,7 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public class ESMTeleportRewire {
     @Inject(method = "teleport", at = @At("HEAD"), cancellable = true)
     public void teleport(EntityPlayer player, CallbackInfo ci) {
-        if (!LilyflowerTweaksConfigSystem.ENABLE_ESM_RACES && player instanceof EntityPlayer) {
+        if (!LilyflowerTweaksConfigSystem.Alfheim.ENABLE_ESM_RACES && player instanceof EntityPlayer) {
             ((TileRaceSelector) (Object) this).selectRace(player, EnumRace.HUMAN);
         }
 

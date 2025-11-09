@@ -12,21 +12,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CosmeticUnlocker {
     @Inject(method = "hasExclusiveGroup", at = @At("HEAD"), cancellable = true, remap = false)
     public void unlock(ExclusiveGroup group, CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.UNLOCK_COSMETICS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.UNLOCK_COSMETICS) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "hasAnyExclusiveGroup", at = @At("HEAD"), cancellable = true, remap = false)
     public void unlock(ExclusiveGroup[] groups, CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.UNLOCK_COSMETICS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.UNLOCK_COSMETICS) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "isReceivedFromApi", at = @At("HEAD"), cancellable = true, remap = false)
     public void noRefetch(CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.UNLOCK_COSMETICS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.UNLOCK_COSMETICS) {
             cir.setReturnValue(true);
         }
     }

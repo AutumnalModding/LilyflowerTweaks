@@ -1,0 +1,44 @@
+package xyz.lilyflower.lilytweaks.content;
+
+import cpw.mods.fml.common.event.FMLStateEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.reflections.Reflections;
+import xyz.lilyflower.lilytweaks.util.Pair;
+
+public class LilyflowerTweaksContentSystem {
+    public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Content Loader");
+    private static final Reflections CONTENT_SCANNER = new Reflections("xyz.lilyflower.lilytweaks.content.registry");
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static void initialize(FMLStateEvent phase) {
+        Set<Class<? extends ContentRegistry>> REGISTRIES = CONTENT_SCANNER.getSubTypesOf(ContentRegistry.class);
+        for (Class<? extends ContentRegistry> clazz : REGISTRIES) {
+            try {
+                Constructor<? extends ContentRegistry> constructor = clazz.getConstructor();
+                ContentRegistry registry = constructor.newInstance();
+                if (registry.shouldRun(phase)) {
+                    registry.contents().forEach(pair -> {
+                        Pair<?, String> content = (Pair<?, String>) pair;
+                        if (registry.shouldRegister(content.right())) {
+                            registry.register(content);
+                            LOGGER.debug("Registering key {} on {}", content.right(), clazz.getCanonicalName());
+                        }
+                    });
+                }
+            } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
+                LOGGER.fatal("!!! WARNING WARNING WARNING !!!");
+                LOGGER.fatal("FAILED TO LOAD REGISTRY {}!", clazz.getCanonicalName());
+                LOGGER.fatal("LOADING MAY BE UNSTABLE, PROCEED AT YOUR OWN RISK");
+                LOGGER.fatal("DUMPING STACKTRACE TO LOGS:");
+                for (StackTraceElement element : exception.getStackTrace()) {
+                    LOGGER.fatal(element.toString());
+                }
+                LOGGER.fatal("!!! WARNING WARNING WARNING !!!");
+            }
+        }
+    }
+}

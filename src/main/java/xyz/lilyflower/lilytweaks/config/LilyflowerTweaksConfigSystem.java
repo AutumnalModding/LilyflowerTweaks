@@ -13,35 +13,45 @@ import lotr.common.item.LOTRWeaponStats;
 import lotr.common.world.map.LOTRWaypoint;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
-import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksModLoader;
+import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 
 public class LilyflowerTweaksConfigSystem {
-    private static final HashMap<String, ArrayList<Consumer<Configuration>>> CONFIG_RUNNERS = new HashMap<>();
+    public static class LOTR {
+        public static boolean UNLOCK_WAYPOINTS = false;
+        public static boolean NO_WAYPOINT_LOCKING = false;
+        public static boolean ENABLE_WANDERER_DEATH = false;
+        public static boolean DISABLE_ATTACK_TIMINGS = false;
+        public static boolean SHORTCIRCUIT_WAR_CRIMES = false;
+        public static boolean SHORTCIRCUIT_TARGET_SELECTOR = false;
+        public static boolean UNLOCK_COSMETICS = false;
+        public static boolean FIX_ORE_DICTIONARY = Loader.isModLoaded("lotr");
+        public static float TIME_MULTIPLIER = 1;
+        public static boolean ALLOW_SCRAP_TRADER_SCREENSHOTS = false;
+        public static int TIME_BASE = 48000;
+        public static List<String> DISABLED_WAYPOINTS;
+        public static String[] ADDITIONAL_COMBAT_ITEMS;
+    }
 
-    public static boolean UNLOCK_WAYPOINTS = false;
-    public static boolean NO_WAYPOINT_LOCKING = false;
+    public static class Alfheim {
+        public static int ESM_TELEPORT_DIMENSION = Loader.isModLoaded("alfheim") ? (AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim() == 0 ? -105 : AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) : 0;
+        public static boolean DISABLE_TPDIM = false;
+        public static boolean ENABLE_ESM_RACES = true;
+        public static boolean ENABLE_ESM_FLIGHT = true;
+    }
+
+    public static class Content {
+        public static boolean ENABLE_CONTENT = false;
+        public static boolean ENABLE_SUBSTITUTIONS_ITEM = false;
+        public static boolean ENABLE_SUBSTITUTIONS_BLOCK = false;
+    }
+
+    private static final HashMap<String, ArrayList<Consumer<Configuration>>> CONFIG_RUNNERS = new HashMap<>();
     public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
     public static ArrayList<String> NO_IFRAME_DAMAGETYPES;
     public static boolean NO_IFRAME_PROJECTILES = false;
-    public static boolean DISABLE_ATTACK_TIMINGS = false;
-    public static boolean ENABLE_WANDERER_DEATH = false;
-    public static boolean SHORTCIRCUIT_WAR_CRIMES = false;
-    public static boolean SHORTCIRCUIT_TARGET_SELECTOR = false;
-    public static boolean UNLOCK_COSMETICS = false;
-    public static boolean FIX_ORE_DICTIONARY = Loader.isModLoaded("lotr");
-    public static float TIME_MULTIPLIER = 1;
-    public static boolean ALLOW_SCRAP_TRADER_SCREENSHOTS = false;
-    public static int TIME_BASE = 48000;
-    public static boolean THAUMCRAFT_ENABLED = false;
     public static boolean FIX_RITUAL = true;
     public static boolean DISABLE_SNOW_UPDATES = false;
     public static boolean DISABLE_WORLDGEN_SPAWNING = false;
-    public static int ESM_TELEPORT_DIMENSION = Loader.isModLoaded("alfheim") ? (AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim() == 0 ? -105 : AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) : 0;
-    public static boolean DISABLE_TPDIM = false;
-    public static boolean ENABLE_ESM_RACES = true;
-    public static boolean ENABLE_ESM_FLIGHT = true;
-    public static List<String> DISABLED_WAYPOINTS;
-    public static String[] ADDITIONAL_COMBAT_ITEMS;
     public static List<String> SAFE_BIOMES;
 
     public static void add(String mod, Consumer<Configuration> runner) {
@@ -67,11 +77,11 @@ public class LilyflowerTweaksConfigSystem {
     }
 
     public static boolean isWaypointDisabled(LOTRWaypoint waypoint) {
-        return DISABLED_WAYPOINTS.contains(waypoint.name());
+        return LOTR.DISABLED_WAYPOINTS.contains(waypoint.name());
     }
 
     public static void registerModdedWeapons() {
-        for (String entry : ADDITIONAL_COMBAT_ITEMS) {
+        for (String entry : LOTR.ADDITIONAL_COMBAT_ITEMS) {
             float speed = Float.parseFloat(entry.replaceAll(".*@", "").replaceAll("_.*", ""));
             float reach = Float.parseFloat(entry.replaceAll(".*_", ""));
 
@@ -81,7 +91,7 @@ public class LilyflowerTweaksConfigSystem {
             Item item = GameRegistry.findItem(modID, itemID);
 
             if (item != null) {
-                LilyflowerTweaksModLoader.LOGGER.debug("Registering item '{}:{}' to the LOTR combat system (speed {}x, reach {}x)...", modID, itemID, speed, reach);
+                LilyflowerTweaksInitializationSystem.LOGGER.debug("Registering item '{}:{}' to the LOTR combat system (speed {}x, reach {}x)...", modID, itemID, speed, reach);
 
                 LOTRWeaponStats.registerMeleeSpeed(item, speed);
                 LOTRWeaponStats.registerMeleeReach(item, reach);
@@ -94,6 +104,6 @@ public class LilyflowerTweaksConfigSystem {
     }
 
     public static int getETD() {
-        return ESM_TELEPORT_DIMENSION;
+        return Alfheim.ESM_TELEPORT_DIMENSION;
     }
 }

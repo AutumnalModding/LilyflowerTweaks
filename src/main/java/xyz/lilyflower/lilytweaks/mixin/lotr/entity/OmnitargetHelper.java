@@ -12,7 +12,7 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public class OmnitargetHelper {
     @Inject(method = "isEntityApplicable", at = @At("HEAD"), remap = false, cancellable = true)
     public void enableBloodbathMode(Entity target, CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.SHORTCIRCUIT_TARGET_SELECTOR) {
+        if (LilyflowerTweaksConfigSystem.LOTR.SHORTCIRCUIT_TARGET_SELECTOR) {
             cir.setReturnValue(true);
         }
     }

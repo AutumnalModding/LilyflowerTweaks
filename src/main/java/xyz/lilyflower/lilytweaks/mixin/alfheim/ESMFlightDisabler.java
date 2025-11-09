@@ -12,6 +12,6 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public class ESMFlightDisabler {
     @Inject(method = "isAbilityDisabled", at = @At("HEAD"), cancellable = true)
     public void disable(EntityPlayer player, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(!LilyflowerTweaksConfigSystem.ENABLE_ESM_FLIGHT);
+        cir.setReturnValue(!LilyflowerTweaksConfigSystem.Alfheim.ENABLE_ESM_FLIGHT);
     }
 }

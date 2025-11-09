@@ -9,11 +9,11 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksTransformerLoader;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksASMSystem;
 
 @SuppressWarnings("unused")
-public class InterfaceInjectorTransformer implements LilyflowerTweaksTransformerLoader.LilyflowerTweaksClassTransformer {
-    void patch_transform(LilyflowerTweaksTransformerLoader.ClassTransformerData data) {
+public class InterfaceInjectorTransformer implements LilyflowerTweaksASMSystem.LilyflowerTweaksClassTransformer {
+    void patch_transform(Data data) {
         InsnList insns = new InsnList();
 
         LabelNode jump = new LabelNode(new Label());

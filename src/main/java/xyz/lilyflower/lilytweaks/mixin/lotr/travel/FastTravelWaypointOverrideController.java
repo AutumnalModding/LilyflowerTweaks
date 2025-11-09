@@ -12,7 +12,7 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public class FastTravelWaypointOverrideController {
     @Inject(method = "hasPlayerUnlocked", at = @At("HEAD"), cancellable = true, remap = false)
     public void modifyUnlockStatus(EntityPlayer entityplayer, CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.UNLOCK_WAYPOINTS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.UNLOCK_WAYPOINTS) {
             cir.setReturnValue(true);
         }
 
@@ -23,7 +23,7 @@ public class FastTravelWaypointOverrideController {
 
     @Inject(method = "isCompatibleAlignment", at = @At("HEAD"), cancellable = true, remap = false)
     public void noLocking(EntityPlayer entityplayer, CallbackInfoReturnable<Boolean> cir) {
-        if (LilyflowerTweaksConfigSystem.NO_WAYPOINT_LOCKING) {
+        if (LilyflowerTweaksConfigSystem.LOTR.NO_WAYPOINT_LOCKING) {
             cir.setReturnValue(true);
         }
     }

@@ -20,7 +20,7 @@ import lotr.common.fac.LOTRFactionRelations;
 import lotr.common.fac.LOTRMapRegion;
 import lotr.common.world.map.LOTRWaypoint;
 import net.minecraftforge.common.util.EnumHelper;
-import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksModLoader;
+import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 import xyz.lilyflower.lilytweaks.util.data.LOTRFactionRankData;
 import xyz.lilyflower.lilytweaks.util.loader.EnumHelperMappings;
 import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
@@ -208,7 +208,7 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
 
                     Collections.sort((List<LOTRFactionRank>) rsd.get(faction));
                     relations.forEach((relation, factions) -> factions.forEach(target -> LOTRFactionRelations.setDefaultRelations(faction, target, relation)));
-                    LilyflowerTweaksModLoader.LOGGER.info("Added faction '{}'", name);
+                    LilyflowerTweaksInitializationSystem.LOGGER.info("Added faction '{}'", name);
                 }
 
             } catch (IOException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException exception) {

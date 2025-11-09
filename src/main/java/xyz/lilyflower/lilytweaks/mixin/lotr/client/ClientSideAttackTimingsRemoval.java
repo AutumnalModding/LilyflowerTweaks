@@ -12,7 +12,7 @@ import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
 public abstract class ClientSideAttackTimingsRemoval {
     @Inject(method = "doAttackTiming", at = @At("HEAD"), cancellable = true, remap = false)
     private static void removeTimingUpdates(CallbackInfo ci) {
-        if (LilyflowerTweaksConfigSystem.DISABLE_ATTACK_TIMINGS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
             LOTRAttackTiming.reset();
             ci.cancel();
         }
@@ -20,7 +20,7 @@ public abstract class ClientSideAttackTimingsRemoval {
 
     @Inject(method = "renderAttackMeter", at = @At("HEAD"), cancellable = true, remap = false)
     private static void ceaseRendering(ScaledResolution resolution, float partialTicks, CallbackInfo ci) {
-        if (LilyflowerTweaksConfigSystem.DISABLE_ATTACK_TIMINGS) {
+        if (LilyflowerTweaksConfigSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
             ci.cancel();
         }
     }

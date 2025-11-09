@@ -16,18 +16,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.config.ConfigRunner;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
+import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
 import xyz.lilyflower.lilytweaks.debug.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
 import org.reflections.Reflections;
 import java.util.Set;
 
-@Mod(modid = LilyflowerTweaksModLoader.MODID, version = LilyflowerTweaksModLoader.VERSION, dependencies = "before:lotr")
-public class LilyflowerTweaksModLoader {
+@Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "before:lotr")
+public class LilyflowerTweaksInitializationSystem {
     private static final Reflections DATA = new Reflections("xyz.lilyflower.lilytweaks.util.loader");
     private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.config.runners");
 
     public static final String MODID = "lilytweaks";
-    public static final String VERSION = "2.1";
+    public static final String VERSION = "3.0";
 
     public static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks");
 
@@ -60,11 +61,12 @@ public class LilyflowerTweaksModLoader {
         });
 
         LilyflowerTweaksConfigSystem.synchronizeConfiguration(event.getSuggestedConfigurationFile());
+        LilyflowerTweaksContentSystem.initialize(event);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        if (LilyflowerTweaksConfigSystem.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
+        if (LilyflowerTweaksConfigSystem.LOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
             OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
             OreDictionary.registerOre("oreMythril", LOTRMod.oreMithril);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
@@ -82,7 +84,7 @@ public class LilyflowerTweaksModLoader {
 
         if (Loader.isModLoaded("lotr")) {
             LilyflowerTweaksConfigSystem.registerModdedWeapons();
-            LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksConfigSystem.TIME_BASE * LilyflowerTweaksConfigSystem.TIME_MULTIPLIER);
+            LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksConfigSystem.LOTR.TIME_BASE * LilyflowerTweaksConfigSystem.LOTR.TIME_MULTIPLIER);
         }
     }
 

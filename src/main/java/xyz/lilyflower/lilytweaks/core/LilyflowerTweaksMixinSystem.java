@@ -23,7 +23,7 @@ import ru.timeconqueror.spongemixins.MinecraftURLClassPath;
 import static java.nio.file.Files.walk;
 
 @SuppressWarnings({"deprecation", "CallToPrintStackTrace"})
-public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
+public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
     private static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Mixin Loader");
     private static final Path MODS_DIRECTORY_PATH = new File(Launch.minecraftHome, "mods/").toPath();
 
@@ -127,6 +127,7 @@ public class LilyflowerTweaksMixinLoader implements IMixinConfigPlugin {
         FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
         RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", MixinTarget.LOTR),
         METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
+//        REGISTRY_NEUTRALIZER("lotr.misc.RegistryNeutralizer", MixinTarget.LOTR),
 
         // Interop
         //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.LOTR, MixinTarget.WITCHERY),

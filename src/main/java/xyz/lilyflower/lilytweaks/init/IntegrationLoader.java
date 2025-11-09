@@ -30,7 +30,7 @@ public interface IntegrationLoader {
             }
             if (shouldLoad && enabled) {
                 String integration = name.substring(0, name.length() - 1);
-                LilyflowerTweaksModLoader.LOGGER.info("Enabling {} integration!", integration);
+                LilyflowerTweaksInitializationSystem.LOGGER.info("Enabling {} integration!", integration);
                 loader.runPre();
             }
         });
