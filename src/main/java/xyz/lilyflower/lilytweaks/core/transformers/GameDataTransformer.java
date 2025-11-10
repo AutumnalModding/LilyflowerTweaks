@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core.transformer;
+package xyz.lilyflower.lilytweaks.core.transformers;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -10,11 +10,11 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksASMSystem;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
-public class GameDataTransformer implements LilyflowerTweaksASMSystem.LilyflowerTweaksClassTransformer {
-    void patch_addPrefix(Data data) {
+public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer {
+    void patch_addPrefix(TargetData data) {
         InsnList insns = new InsnList();
         LabelNode jump = new LabelNode(new Label());
 
@@ -32,11 +32,11 @@ public class GameDataTransformer implements LilyflowerTweaksASMSystem.Lilyflower
         data.method().instructions.insert(insns);
     }
 
-    void patch_getMain(Data data) {
+    void patch_getMain(TargetData data) {
         data.method().access = Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC;
     }
 
-    void patch_registerItem(Data data) {
+    void patch_registerItem(TargetData data) {
         if (data.method().access == Opcodes.ACC_PRIVATE) {
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
@@ -55,7 +55,7 @@ public class GameDataTransformer implements LilyflowerTweaksASMSystem.Lilyflower
         data.method().access = Opcodes.ACC_PUBLIC;
     }
 
-//    void patch_testConsistency(Data data) {
-//        data.method().instructions.insert(new InsnNode(Opcodes.RETURN));
-//    }
+    void patch_testConsistency(TargetData data) {
+        data.method().instructions.insert(new InsnNode(Opcodes.RETURN));
+    }
 }

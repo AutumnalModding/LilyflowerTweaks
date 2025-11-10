@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.content;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLStateEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,7 @@ public class LilyflowerTweaksContentSystem {
         Set<Class<? extends ContentRegistry>> REGISTRIES = CONTENT_SCANNER.getSubTypesOf(ContentRegistry.class);
         for (Class<? extends ContentRegistry> clazz : REGISTRIES) {
             try {
+                LOGGER.info("Found content registry {}, attempting to load it!", clazz.getName());
                 Constructor<? extends ContentRegistry> constructor = clazz.getConstructor();
                 ContentRegistry registry = constructor.newInstance();
                 if (registry.shouldRun(phase)) {
@@ -25,13 +27,13 @@ public class LilyflowerTweaksContentSystem {
                         Pair<?, String> content = (Pair<?, String>) pair;
                         if (registry.shouldRegister(content.right())) {
                             registry.register(content);
-                            LOGGER.debug("Registering key {} on {}", content.right(), clazz.getCanonicalName());
+                            LOGGER.debug("Registering key {} on {}", content.right(), clazz.getName());
                         }
                     });
                 }
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
                 LOGGER.fatal("!!! WARNING WARNING WARNING !!!");
-                LOGGER.fatal("FAILED TO LOAD REGISTRY {}!", clazz.getCanonicalName());
+                LOGGER.fatal("FAILED TO LOAD REGISTRY: {}!", clazz.getName());
                 LOGGER.fatal("LOADING MAY BE UNSTABLE, PROCEED AT YOUR OWN RISK");
                 LOGGER.fatal("DUMPING STACKTRACE TO LOGS:");
                 for (StackTraceElement element : exception.getStackTrace()) {

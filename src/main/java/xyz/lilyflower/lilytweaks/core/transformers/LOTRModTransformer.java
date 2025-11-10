@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core.transformer;
+package xyz.lilyflower.lilytweaks.core.transformers;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -11,17 +11,18 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksASMSystem;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformerTools;
 
 @SuppressWarnings("unused")
-public class LOTRModTransformer implements LilyflowerTweaksASMSystem.LilyflowerTweaksClassTransformer {
-    void patch_registerItem(Data data) {
+public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer {
+    void patch_registerItem(TargetData data) {
         InsnList list = new InsnList();
         LabelNode jump = new LabelNode(new Label());
 
         list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, jump));
-        LilyflowerTweaksASMSystem.ClassTransformerUtils.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
+        LilyflowerTweaksBootstrapTransformerTools.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
         list.add(new InsnNode(Opcodes.SWAP));
         list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cpw/mods/fml/common/registry/GameData", "getItemRegistry", "()Lcpw/mods/fml/common/registry/FMLControlledNamespacedRegistry;", false));
         list.add(new IntInsnNode(Opcodes.SIPUSH, 422));

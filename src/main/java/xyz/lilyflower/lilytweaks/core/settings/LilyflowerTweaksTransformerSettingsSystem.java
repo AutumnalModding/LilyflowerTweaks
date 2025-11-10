@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.settings;
+package xyz.lilyflower.lilytweaks.core.settings;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -19,5 +19,6 @@ public class FakeTransformerExclusions extends HashSet<String> {
     static {
         DISALLOWED_PACKAGES.add("lotr");
         DISALLOWED_PACKAGES.add("Reika");
+        DISALLOWED_PACKAGES.add("alfheim");
     }
 }

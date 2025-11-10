@@ -19,7 +19,7 @@ public abstract class EnableGreyWandererDeath extends EntityLivingBase {
     @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true, remap = false)
     public void allowKillingGandalf(DamageSource damagesource, float f, CallbackInfoReturnable<Boolean> cir) {
         if (LilyflowerTweaksGameConfigurationSystem.LOTR.ENABLE_WANDERER_DEATH) {
-            cir.setReturnValue(super.attackEntityFrom(damagesource, f));
+            cir.setReturnValue(true);
         }
     }
 }

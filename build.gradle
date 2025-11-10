@@ -7,9 +7,7 @@ plugins {
 jar {
     manifest {
         attributes(
-                'TweakClass': 'xyz.lilyflower.lilytweaks.bootstrap.LilyflowerTweaksBootstrapSystem',
-                'FMLCorePluginContainsFMLMod': true,
-                'FMLCorePlugin': 'xyz.lilyflower.lilytweaks.LilyflowerTweaksASMSystem'
+            'TweakClass': 'xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapSystem'
         )
     }
 }

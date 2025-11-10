@@ -1,11 +1,9 @@
-package xyz.lilyflower.lilytweaks.settings.runners;
+package xyz.lilyflower.lilytweaks.core.settings.runners;
 
-import alfheim.common.core.handler.AlfheimConfigHandler;
 import java.util.function.Consumer;
 import net.minecraftforge.common.config.Configuration;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
-import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
-import xyz.lilyflower.lilytweaks.settings.SettingsRunner;
+import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.core.settings.SettingsRunner;
 
 @SuppressWarnings("unused")
 public class AlfheimConfig implements SettingsRunner {

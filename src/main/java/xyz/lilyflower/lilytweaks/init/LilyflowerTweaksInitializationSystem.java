@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.init;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -41,10 +42,10 @@ public class LilyflowerTweaksInitializationSystem {
             try {
                 Constructor<? extends ConfigRunner> constructor = config.getConstructor();
                 ConfigRunner runner = constructor.newInstance();
-                LOGGER.info("Loading config runner {}", runner.getClass().getSimpleName());
+                LOGGER.info("Loading config runner {}", config.getName());
                 runner.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LOGGER.fatal("Failed to load config class {}! Reason: {}", config.getCanonicalName(), exception.getMessage());
+                LOGGER.fatal("Failed to load config class {}! Reason: {}", config.getName(), exception.getMessage());
                 throw new RuntimeException(exception);
             }
         });
@@ -54,9 +55,10 @@ public class LilyflowerTweaksInitializationSystem {
             try {
                 Constructor<? extends CustomDataLoader> constructor = data.getConstructor();
                 CustomDataLoader loader = constructor.newInstance();
+                LOGGER.info("Executing data loader {}", data.getName());
                 loader.run();
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException exception) {
-                LOGGER.error("Failed to run custom data loader {}! Reason: {}", data.getCanonicalName(), exception.getMessage());
+                LOGGER.error("Failed to run custom data loader {}! Reason: {}", data.getName(), exception.getMessage());
             } catch (NoClassDefFoundError ignored) {}
         });
 

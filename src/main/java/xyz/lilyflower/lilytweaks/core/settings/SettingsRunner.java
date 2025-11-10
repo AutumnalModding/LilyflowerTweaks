@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.settings;
+package xyz.lilyflower.lilytweaks.core.settings;
 
 public interface SettingsRunner {
     void init();

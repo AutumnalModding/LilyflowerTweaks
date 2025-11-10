@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core;
+package xyz.lilyflower.lilytweaks.init;
 
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import java.io.File;

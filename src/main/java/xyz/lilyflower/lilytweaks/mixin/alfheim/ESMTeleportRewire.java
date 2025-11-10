@@ -23,14 +23,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
-import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 
 @Mixin(value = TileRaceSelector.class, remap = false)
 public class ESMTeleportRewire {
+    @Unique
+    private boolean lilyflowerTweaks$engagingWarpDrive = false;
+
     @Inject(method = "teleport", at = @At("HEAD"), cancellable = true)
     public void teleport(EntityPlayer player, CallbackInfo ci) {
         if (!LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_RACES && player instanceof EntityPlayer) {
             ((TileRaceSelector) (Object) this).selectRace(player, EnumRace.HUMAN);
+            this.lilyflowerTweaks$engagingWarpDrive = true;
+        }
+
+        if (this.lilyflowerTweaks$engagingWarpDrive) {
+            this.lilyflowerTweaks$engagingWarpDrive = false;
+            ci.cancel();
         }
 
         int dest = LilyflowerTweaksGameConfigurationSystem.getETD();
