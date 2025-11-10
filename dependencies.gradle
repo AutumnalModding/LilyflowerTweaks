@@ -4,7 +4,7 @@
 
 dependencies {
     // Actual dependencies
-    shadowImplementation 'org.reflections:reflections:0.10.2'
+//    shadowImplementation 'org.reflections:reflections:0.10.2'
     implementation "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
 
     // Anything marked compileOnly is broken in dev
@@ -25,4 +25,6 @@ dependencies {
     implementation deobfCurse("opencomputers-223008:5274233")
     implementation deobfCurse("advanced-rocketry-236542:2985057")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
+
+    compileOnly("com.gtnewhorizons.retrofuturabootstrap:RetroFuturaBootstrap:1.0.7")
 }

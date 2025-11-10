@@ -15,7 +15,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.config.ConfigRunner;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
+import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
 import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
 import xyz.lilyflower.lilytweaks.debug.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
@@ -60,13 +60,13 @@ public class LilyflowerTweaksInitializationSystem {
             } catch (NoClassDefFoundError ignored) {}
         });
 
-        LilyflowerTweaksConfigSystem.synchronizeConfiguration(event.getSuggestedConfigurationFile());
+        LilyflowerTweaksGameConfigurationSystem.synchronizeConfiguration(event.getSuggestedConfigurationFile());
         LilyflowerTweaksContentSystem.initialize(event);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        if (LilyflowerTweaksConfigSystem.LOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
+        if (LilyflowerTweaksGameConfigurationSystem.LOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
             OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
             OreDictionary.registerOre("oreMythril", LOTRMod.oreMithril);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
@@ -83,8 +83,8 @@ public class LilyflowerTweaksInitializationSystem {
         IntegrationLoader.runAllPost();
 
         if (Loader.isModLoaded("lotr")) {
-            LilyflowerTweaksConfigSystem.registerModdedWeapons();
-            LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksConfigSystem.LOTR.TIME_BASE * LilyflowerTweaksConfigSystem.LOTR.TIME_MULTIPLIER);
+            LilyflowerTweaksGameConfigurationSystem.registerModdedWeapons();
+            LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksGameConfigurationSystem.LOTR.TIME_BASE * LilyflowerTweaksGameConfigurationSystem.LOTR.TIME_MULTIPLIER);
         }
     }
 

@@ -1,6 +1,5 @@
 package xyz.lilyflower.lilytweaks.config;
 
-import alfheim.common.core.handler.AlfheimConfigHandler;
 import com.emoniph.witchery.util.IHandleDT;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -13,9 +12,10 @@ import lotr.common.item.LOTRWeaponStats;
 import lotr.common.world.map.LOTRWaypoint;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
+import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 
-public class LilyflowerTweaksConfigSystem {
+public class LilyflowerTweaksGameConfigurationSystem {
     public static class LOTR {
         public static boolean UNLOCK_WAYPOINTS = false;
         public static boolean NO_WAYPOINT_LOCKING = false;
@@ -30,13 +30,6 @@ public class LilyflowerTweaksConfigSystem {
         public static int TIME_BASE = 48000;
         public static List<String> DISABLED_WAYPOINTS;
         public static String[] ADDITIONAL_COMBAT_ITEMS;
-    }
-
-    public static class Alfheim {
-        public static int ESM_TELEPORT_DIMENSION = Loader.isModLoaded("alfheim") ? (AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim() == 0 ? -105 : AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) : 0;
-        public static boolean DISABLE_TPDIM = false;
-        public static boolean ENABLE_ESM_RACES = true;
-        public static boolean ENABLE_ESM_FLIGHT = true;
     }
 
     public static class Content {
@@ -104,6 +97,6 @@ public class LilyflowerTweaksConfigSystem {
     }
 
     public static int getETD() {
-        return Alfheim.ESM_TELEPORT_DIMENSION;
+        return LilyflowerTweaksTransformerSettingsSystem.Alfheim.ESM_TELEPORT_DIMENSION;
     }
 }

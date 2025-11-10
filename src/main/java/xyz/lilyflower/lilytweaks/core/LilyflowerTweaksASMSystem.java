@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
@@ -35,14 +35,17 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import org.reflections.Reflections;
+import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.settings.SettingsRunner;
 import xyz.lilyflower.lilytweaks.util.data.FakeTransformerExclusions;
 
-@SuppressWarnings("unchecked")
-@IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.SortingIndex(-1)
+@IFMLLoadingPlugin.SortingIndex(1100)
+@SuppressWarnings({"unchecked", "ResultOfMethodCallIgnored"})
 @IFMLLoadingPlugin.TransformerExclusions({"xyz.lilyflower.lilytweaks", "org.reflections", "org.slf4j", "javassist"})
+@IFMLLoadingPlugin.Name("!_lilytweaks")
 public class LilyflowerTweaksASMSystem implements IFMLLoadingPlugin {
-    public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Class Transformer System");
+    public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks ASM System");
+    private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.settings.runners");
 
     @Override
     public String[] getASMTransformerClass() {
@@ -68,19 +71,37 @@ public class LilyflowerTweaksASMSystem implements IFMLLoadingPlugin {
 
     // CURSED REFLECTION MY BELOVED
     static {
-        ClassLoader cl = LilyflowerTweaksASMSystem.class.getClassLoader();
-        if (cl instanceof LaunchClassLoader loader) {
+        LOGGER.info("Firing all engines!");
+        ClassLoader bootstrap = LilyflowerTweaksASMSystem.class.getClassLoader();
+        if (bootstrap instanceof LaunchClassLoader launch) {
+            launch.registerTransformer(TransformerLoadingSystem.class.getName());
             try {
-                Field field = loader.getClass().getDeclaredField("transformerExceptions");
+                Field field = launch.getClass().getDeclaredField("transformerExceptions");
                 field.setAccessible(true);
-                Object obj = field.get(loader);
+                Object obj = field.get(launch);
 
                 if (obj instanceof Set) {
                     Set<String> set = (Set<String>) obj;
                     FakeTransformerExclusions exclusions = new FakeTransformerExclusions();
                     exclusions.addAll(set);
-                    field.set(loader, exclusions);
+                    field.set(launch, exclusions);
                 }
+
+                Set<Class<? extends SettingsRunner>> runners = CONFIGURATION.getSubTypesOf(SettingsRunner.class);
+                runners.forEach(runner -> {
+                    try {
+                        Constructor<? extends SettingsRunner> constructor = runner.getConstructor();
+                        SettingsRunner instance = constructor.newInstance();
+                        LOGGER.info("Launching settings runner {}", instance.getClass().getSimpleName());
+                        instance.init();
+                    } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
+                        LOGGER.fatal("Failed to load transformer settings class {}! Reason: {}", runner.getCanonicalName(), exception.getMessage());
+                        throw new BootstrapMethodError(exception); // Do not catch this.
+                    }
+                });
+
+                new File("config/").mkdir();
+                LilyflowerTweaksTransformerSettingsSystem.synchronizeConfiguration(new File("config/lilytweaks-early.cfg"));
             } catch (NoSuchFieldException | IllegalAccessException exception) {
                 LOGGER.fatal("// LAUNCH FAILURE //");
                 exception.printStackTrace();

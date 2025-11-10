@@ -6,12 +6,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
+import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
 
 @Mixin(CommandDimTP.class)
 public class DisableTPDIM {
     @Inject(method = "canCommandSenderUseCommand", at = @At("HEAD"), cancellable = true)
     public void disable(ICommandSender sender, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(!LilyflowerTweaksConfigSystem.Alfheim.DISABLE_TPDIM);
+        cir.setReturnValue(!LilyflowerTweaksTransformerSettingsSystem.Alfheim.DISABLE_TPDIM);
     }
 }

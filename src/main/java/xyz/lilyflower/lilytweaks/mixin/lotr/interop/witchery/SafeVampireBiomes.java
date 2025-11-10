@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
+import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
 
 @Mixin(CreatureUtil.class)
 public class SafeVampireBiomes {
@@ -17,7 +17,7 @@ public class SafeVampireBiomes {
     private static void isBiomeSafe(EntityLivingBase entity, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof EntityPlayer && entity.worldObj.provider.dimensionId == 100) {
             LOTRPlayerData data = LOTRLevelData.getData((EntityPlayer) entity);
-            if (LilyflowerTweaksConfigSystem.isBiomeSafe(data.getLastKnownBiome().getBiomeDisplayName())) {
+            if (LilyflowerTweaksGameConfigurationSystem.isBiomeSafe(data.getLastKnownBiome().getBiomeDisplayName())) {
                 cir.setReturnValue(false);
             }
         }

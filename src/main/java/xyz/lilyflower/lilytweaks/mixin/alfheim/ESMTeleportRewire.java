@@ -22,17 +22,18 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem;
+import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.settings.LilyflowerTweaksTransformerSettingsSystem;
 
 @Mixin(value = TileRaceSelector.class, remap = false)
 public class ESMTeleportRewire {
     @Inject(method = "teleport", at = @At("HEAD"), cancellable = true)
     public void teleport(EntityPlayer player, CallbackInfo ci) {
-        if (!LilyflowerTweaksConfigSystem.Alfheim.ENABLE_ESM_RACES && player instanceof EntityPlayer) {
+        if (!LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_RACES && player instanceof EntityPlayer) {
             ((TileRaceSelector) (Object) this).selectRace(player, EnumRace.HUMAN);
         }
 
-        int dest = LilyflowerTweaksConfigSystem.getETD();
+        int dest = LilyflowerTweaksGameConfigurationSystem.getETD();
         if (dest != AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) {
             MinecraftServer server = MinecraftServer.getServer();
             WorldServer target = server.worldServerForDimension(dest);

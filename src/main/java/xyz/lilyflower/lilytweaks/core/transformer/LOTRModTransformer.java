@@ -19,7 +19,7 @@ public class LOTRModTransformer implements LilyflowerTweaksASMSystem.LilyflowerT
         InsnList list = new InsnList();
         LabelNode jump = new LabelNode(new Label());
 
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksConfigSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, jump));
         LilyflowerTweaksASMSystem.ClassTransformerUtils.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
         list.add(new InsnNode(Opcodes.SWAP));

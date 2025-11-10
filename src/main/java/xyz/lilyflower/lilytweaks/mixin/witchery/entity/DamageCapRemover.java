@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static xyz.lilyflower.lilytweaks.config.LilyflowerTweaksConfigSystem.WITCHERY_DAMAGE_CAPS;
+import static xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem.WITCHERY_DAMAGE_CAPS;
 
 public class DamageCapRemover {
     @Mixin({
