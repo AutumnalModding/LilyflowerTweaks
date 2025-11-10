@@ -4,4 +4,14 @@ plugins {
     id 'com.gtnewhorizons.gtnhconvention'
 }
 
+jar {
+    manifest {
+        attributes(
+                'TweakClass': 'xyz.lilyflower.lilytweaks.bootstrap.LilyflowerTweaksBootstrapSystem',
+                'FMLCorePluginContainsFMLMod': true,
+                'FMLCorePlugin': 'xyz.lilyflower.lilytweaks.LilyflowerTweaksASMSystem'
+        )
+    }
+}
+
 java.toolchain.setVendor(null) // avoid multi-JDK redundancy

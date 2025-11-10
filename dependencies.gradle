@@ -3,8 +3,11 @@
 //file:noinspection GroovyAssignabilityCheck
 
 dependencies {
+    shadowImplementation 'net.bytebuddy:byte-buddy:1.14.10'
+    shadowImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
+
     // Actual dependencies
-//    shadowImplementation 'org.reflections:reflections:0.10.2'
+    shadowImplementation 'org.reflections:reflections:0.10.2'
     implementation "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
 
     // Anything marked compileOnly is broken in dev
