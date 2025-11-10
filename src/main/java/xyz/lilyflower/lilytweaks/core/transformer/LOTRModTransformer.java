@@ -13,6 +13,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksASMSystem;
 
+@SuppressWarnings("unused")
 public class LOTRModTransformer implements LilyflowerTweaksASMSystem.LilyflowerTweaksClassTransformer {
     void patch_registerItem(Data data) {
         InsnList list = new InsnList();
