@@ -13,25 +13,28 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformerTools;
+import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 
 @SuppressWarnings("unused")
 public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer {
     void patch_registerItem(TargetData data) {
-        InsnList list = new InsnList();
-        LabelNode jump = new LabelNode(new Label());
+        if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
+            InsnList list = new InsnList();
+            LabelNode jump = new LabelNode(new Label());
 
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
-        list.add(new JumpInsnNode(Opcodes.IFEQ, jump));
-        LilyflowerTweaksBootstrapTransformerTools.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
-        list.add(new InsnNode(Opcodes.SWAP));
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cpw/mods/fml/common/registry/GameData", "getItemRegistry", "()Lcpw/mods/fml/common/registry/FMLControlledNamespacedRegistry;", false));
-        list.add(new IntInsnNode(Opcodes.SIPUSH, 422));
-        list.add(new LdcInsnNode("minecraft:command_block_minecart"));
-        list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/registry/FMLControlledNamespacedRegistry", "addObjectRaw", "(ILjava/lang/String;Ljava/lang/Object;)V", false));
-        list.add(new InsnNode(Opcodes.RETURN));
-        list.add(jump);
+            list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
+            list.add(new JumpInsnNode(Opcodes.IFEQ, jump));
+            LilyflowerTweaksBootstrapTransformerTools.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
+            list.add(new InsnNode(Opcodes.SWAP));
+            list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cpw/mods/fml/common/registry/GameData", "getItemRegistry", "()Lcpw/mods/fml/common/registry/FMLControlledNamespacedRegistry;", false));
+            list.add(new IntInsnNode(Opcodes.SIPUSH, 422));
+            list.add(new LdcInsnNode("minecraft:command_block_minecart"));
+            list.add(new VarInsnNode(Opcodes.ALOAD, 1));
+            list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/registry/FMLControlledNamespacedRegistry", "addObjectRaw", "(ILjava/lang/String;Ljava/lang/Object;)V", false));
+            list.add(new InsnNode(Opcodes.RETURN));
+            list.add(jump);
 
-        data.method().instructions.insert(list);
+            data.method().instructions.insert(list);
+        }
     }
 }

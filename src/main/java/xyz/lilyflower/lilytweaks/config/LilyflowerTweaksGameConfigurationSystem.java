@@ -32,12 +32,6 @@ public class LilyflowerTweaksGameConfigurationSystem {
         public static String[] ADDITIONAL_COMBAT_ITEMS;
     }
 
-    public static class Content {
-        public static boolean ENABLE_CONTENT = false;
-        public static boolean ENABLE_SUBSTITUTIONS_ITEM = false;
-        public static boolean ENABLE_SUBSTITUTIONS_BLOCK = false;
-    }
-
     private static final HashMap<String, ArrayList<Consumer<Configuration>>> CONFIG_RUNNERS = new HashMap<>();
     public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
     public static ArrayList<String> NO_IFRAME_DAMAGETYPES;
@@ -70,7 +64,11 @@ public class LilyflowerTweaksGameConfigurationSystem {
     }
 
     public static boolean isWaypointDisabled(LOTRWaypoint waypoint) {
-        return LOTR.DISABLED_WAYPOINTS.contains(waypoint.name());
+        try {
+            return LOTR.DISABLED_WAYPOINTS.contains(waypoint.name());
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     public static void registerModdedWeapons() {
@@ -98,5 +96,9 @@ public class LilyflowerTweaksGameConfigurationSystem {
 
     public static int getETD() {
         return LilyflowerTweaksTransformerSettingsSystem.Alfheim.ESM_TELEPORT_DIMENSION;
+    }
+
+    public static class Content {
+        public static boolean ENABLE_CONTENT = false;
     }
 }

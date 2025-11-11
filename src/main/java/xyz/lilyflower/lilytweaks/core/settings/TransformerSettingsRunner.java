@@ -1,5 +1,5 @@
 package xyz.lilyflower.lilytweaks.core.settings;
 
-public interface SettingsRunner {
+public interface TransformerSettingsRunner {
     void init();
 }

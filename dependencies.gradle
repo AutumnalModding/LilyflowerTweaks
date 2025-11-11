@@ -27,6 +27,7 @@ dependencies {
     implementation deobfCurse("openlights-225225:2264437")
     implementation deobfCurse("opencomputers-223008:5274233")
     implementation deobfCurse("advanced-rocketry-236542:2985057")
+    implementation deobfCurse("vics-modern-warfare-mod-243788:2819851")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
 
     compileOnly("com.gtnewhorizons.retrofuturabootstrap:RetroFuturaBootstrap:1.0.7")

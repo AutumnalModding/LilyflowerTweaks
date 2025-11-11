@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
-import xyz.lilyflower.lilytweaks.core.settings.SettingsRunner;
+import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsRunner;
 
 // How early can we go?
 @SuppressWarnings("unused")
@@ -71,11 +71,11 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
         LOGGER.info("Process ID: {}", pid);
 
         Reflections reflections = new Reflections("xyz.lilyflower.bootstrap.settings.runners");
-        Set<Class<? extends SettingsRunner>> runners = reflections.getSubTypesOf(SettingsRunner.class);
+        Set<Class<? extends TransformerSettingsRunner>> runners = reflections.getSubTypesOf(TransformerSettingsRunner.class);
         runners.forEach(runner -> {
             try {
-                Constructor<? extends SettingsRunner> constructor = runner.getConstructor();
-                SettingsRunner instance = constructor.newInstance();
+                Constructor<? extends TransformerSettingsRunner> constructor = runner.getConstructor();
+                TransformerSettingsRunner instance = constructor.newInstance();
                 LOGGER.info("Launching settings runner {}", instance.getClass().getSimpleName());
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {

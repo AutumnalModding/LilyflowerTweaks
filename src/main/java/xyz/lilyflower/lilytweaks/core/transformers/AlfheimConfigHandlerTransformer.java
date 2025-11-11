@@ -8,23 +8,19 @@ import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 
 @SuppressWarnings("unused")
 public class AlfheimConfigHandlerTransformer implements LilyflowerTweaksBootstrapTransformer {
     void patch_getEnableElvenStory(TargetData data) {
-        InsnList list = new InsnList();
-        LabelNode jump = new LabelNode(new Label());
+        if (!LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_FLIGHT && !LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_RACES) {
+            InsnList list = new InsnList();
+            LabelNode jump = new LabelNode(new Label());
+            list.add(new InsnNode(Opcodes.ICONST_0));
+            list.add(new InsnNode(Opcodes.IRETURN));
 
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/core/settings/LilyflowerTweaksTransformerSettingsSystem$Alfheim", "ENABLE_ESM_FLIGHT", "Z"));
-        list.add(new JumpInsnNode(Opcodes.IFNE, jump));
-
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/core/settings/LilyflowerTweaksTransformerSettingsSystem$Alfheim", "ENABLE_ESM_RACES", "Z"));
-        list.add(new JumpInsnNode(Opcodes.IFNE, jump));
-
-        list.add(new InsnNode(Opcodes.ICONST_0));
-        list.add(new InsnNode(Opcodes.IRETURN));
-
-        list.add(jump);
-        data.method().instructions.insert(list);
+            list.add(jump);
+            data.method().instructions.insert(list);
+        }
     }
 }

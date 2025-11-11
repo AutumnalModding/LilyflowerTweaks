@@ -31,4 +31,9 @@ public class LilyflowerTweaksTransformerSettingsSystem {
             settings.save();
         }
     }
+
+    public static class Stability {
+        public static boolean STABILITY_OVERRIDES = false;
+        public static boolean GROSS_REGISTRY_HACKS = false;
+    }
 }
