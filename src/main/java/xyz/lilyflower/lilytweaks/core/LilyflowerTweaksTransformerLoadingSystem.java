@@ -22,6 +22,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
     private static final HashMap<String, Class<? extends LilyflowerTweaksBootstrapTransformer>> TRANSFORMERS = new HashMap<>();
 
     @Override
+    @SuppressWarnings("deprecation") // "since java 9" yeah good thing this is java 8 then lmfao
     public byte[] transform(ClassLoader loader, String name, Class<?> clazz, ProtectionDomain domain, byte[] bytes) {
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);

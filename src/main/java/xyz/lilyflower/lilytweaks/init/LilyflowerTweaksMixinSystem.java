@@ -122,12 +122,10 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         OMNITARGET_HELPER("lotr.entity.OmnitargetHelper", MixinTarget.LOTR),
         ATTACK_TIMINGS_CLIENT("lotr.client.ClientSideAttackTimingsRemoval", MixinTarget.LOTR),
         ATTACK_TIMINGS_SERVER("lotr.entity.ServerSideAttackTimingsRemoval", MixinTarget.LOTR),
-        ENABLE_GW_DEATH("lotr.entity.EnableGreyWandererDeath", MixinTarget.LOTR),
         INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),
         FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
         RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", MixinTarget.LOTR),
         METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
-//        REGISTRY_NEUTRALIZER("lotr.misc.RegistryNeutralizer", MixinTarget.LOTR),
 
         // Interop
         //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.LOTR, MixinTarget.WITCHERY),

@@ -1,5 +1,6 @@
 package xyz.lilyflower.lilytweaks.core;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.CoreModManager;
 import java.io.File;
 import java.lang.instrument.Instrumentation;
@@ -35,7 +36,15 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
             String mod = new File(location.toURI()).getName();
             CoreModManager.getReparseableCoremods().add(mod);
         } catch (URISyntaxException exception) {
-            exception.printStackTrace();
+            LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
+            LOGGER.fatal("FAILED TO LOAD REPARSEABLE COREMOD!");
+            LOGGER.fatal("LOADING CANNOT CONTINUE!");
+            LOGGER.fatal("DUMPING STACKTRACE TO LOGS:");
+            for (StackTraceElement element : exception.getStackTrace()) {
+                LOGGER.fatal(element.toString());
+            }
+            LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
+            FMLCommonHandler.instance().exitJava(400, true);
         }
     }
 
@@ -71,12 +80,13 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
                 LOGGER.fatal("Failed to load transformer settings class {}! Reason: {}", runner.getCanonicalName(), exception.getMessage());
-                throw new BootstrapMethodError(exception); // Do not catch this.
+                throw new BootstrapSetupFailedError(exception.getMessage());
             }
         });
 
-        new File("config/").mkdir();
-        LilyflowerTweaksTransformerSettingsSystem.synchronizeConfiguration(new File("config/lilytweaks-early.cfg"));
+        if (new File("config/").mkdir()) {
+            LilyflowerTweaksTransformerSettingsSystem.synchronizeConfiguration(new File("config/lilytweaks-early.cfg"));
+        }
     }
 
 }

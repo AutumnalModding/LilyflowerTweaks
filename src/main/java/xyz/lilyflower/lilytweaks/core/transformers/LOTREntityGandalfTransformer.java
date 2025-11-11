@@ -1,0 +1,31 @@
+package xyz.lilyflower.lilytweaks.core.transformers;
+
+import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+
+@SuppressWarnings("unused")
+public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTransformer {
+    void patch_func_70097_a(TargetData data) {
+        InsnList list = new InsnList();
+
+        LabelNode label = new LabelNode(new Label());
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$LOTR", "ENABLE_WANDERER_DEATH", "Z"));
+        list.add(new JumpInsnNode(Opcodes.IFEQ, label));
+        list.add(new VarInsnNode(Opcodes.ALOAD, 0));
+        list.add(new VarInsnNode(Opcodes.ALOAD, 1));
+        list.add(new VarInsnNode(Opcodes.FLOAD, 2));
+        list.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "lotr/common/entity/npc/LOTREntityNPC", "func_70097_a", "(Lnet/minecraft/util/DamageSource;F)Z", false));
+        list.add(new InsnNode(Opcodes.IRETURN));
+        list.add(label);
+
+        data.method().instructions.insert(list);
+    }
+}
