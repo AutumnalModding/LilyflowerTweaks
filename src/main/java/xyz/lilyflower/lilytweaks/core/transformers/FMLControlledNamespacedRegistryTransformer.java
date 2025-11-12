@@ -7,15 +7,20 @@ import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettin
 
 @SuppressWarnings("unused")
 public class FMLControlledNamespacedRegistryTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_addObjectRaw(TargetData data) {
+    void addObjectRaw(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             data.method().access = Opcodes.ACC_PUBLIC;
         }
     }
 
-    void patch_validateContent(TargetData data) {
+    void validateContent(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.STABILITY_OVERRIDES) {
             data.method().instructions.insert(new InsnNode(Opcodes.RETURN));
         }
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "cpw/mods/fml/common/registry/FMLControlledNamespacedRegistry";
     }
 }

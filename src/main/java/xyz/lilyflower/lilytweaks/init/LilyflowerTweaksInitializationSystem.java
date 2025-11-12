@@ -69,12 +69,10 @@ public class LilyflowerTweaksInitializationSystem {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         if (LilyflowerTweaksGameConfigurationSystem.LOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
-            OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
-            OreDictionary.registerOre("oreMythril", LOTRMod.oreMithril);
+            OreDictionary.registerOre("dustSulfur", LOTRMod.sulfur);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
-            OreDictionary.registerOre("ingotMythril", LOTRMod.mithril);
+            OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
             OreDictionary.registerOre("nuggetMithril", LOTRMod.mithrilNugget);
-            OreDictionary.registerOre("nuggetMythril", LOTRMod.mithrilNugget);
         }
 
         IntegrationLoader.runAll();

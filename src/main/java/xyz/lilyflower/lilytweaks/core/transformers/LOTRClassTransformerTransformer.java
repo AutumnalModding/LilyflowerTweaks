@@ -8,7 +8,7 @@ import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
 public class LOTRClassTransformerTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_patchBlockFire(TargetData data) {
+    void patchBlockFire(TargetData data) {
         InsnList instructions = new InsnList();
 
         instructions.add(new VarInsnNode(Opcodes.ALOAD, 2));
@@ -17,12 +17,17 @@ public class LOTRClassTransformerTransformer implements LilyflowerTweaksBootstra
         data.method().instructions.insert(instructions);
     }
 
-    void patch_patchSpawnerAnimals(TargetData data) {
+    void patchSpawnerAnimals(TargetData data) {
         InsnList instructions = new InsnList();
 
         instructions.add(new VarInsnNode(Opcodes.ALOAD, 2));
         instructions.add(new InsnNode(Opcodes.ARETURN));
 
         data.method().instructions.insert(instructions);
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "lotr/common/coremod/LOTRClassTransformer";
     }
 }

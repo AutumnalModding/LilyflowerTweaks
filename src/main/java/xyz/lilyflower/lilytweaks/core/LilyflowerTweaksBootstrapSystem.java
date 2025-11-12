@@ -26,6 +26,18 @@ import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsRunner;
 public class LilyflowerTweaksBootstrapSystem implements ITweaker {
     public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Bootstrap System");
 
+    public static void ohno(String message, Throwable cause) {
+        LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
+        LOGGER.fatal(message);
+        LOGGER.fatal("CAUSE: {}", cause.getMessage());
+        LOGGER.fatal("EXCEPTION CLASS: {}", cause.getClass().getSimpleName());
+        LOGGER.fatal("DUMPING STACKTRACE...");
+        for (StackTraceElement element : cause.getStackTrace()) {
+            LOGGER.fatal(element.toString());
+        }
+        LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
+    }
+
     @Override
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
         URL location = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -36,20 +48,17 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
             String mod = new File(location.toURI()).getName();
             CoreModManager.getReparseableCoremods().add(mod);
         } catch (URISyntaxException exception) {
-            LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
-            LOGGER.fatal("FAILED TO LOAD REPARSEABLE COREMOD!");
-            LOGGER.fatal("LOADING CANNOT CONTINUE!");
-            LOGGER.fatal("DUMPING STACKTRACE TO LOGS:");
-            for (StackTraceElement element : exception.getStackTrace()) {
-                LOGGER.fatal(element.toString());
-            }
-            LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
+            ohno("FAILED TO LOAD COREMOD", exception);
             FMLCommonHandler.instance().exitJava(400, true);
         }
     }
 
     @Override
-    public void injectIntoClassLoader(LaunchClassLoader launch) {}
+    public void injectIntoClassLoader(LaunchClassLoader launch) {
+        // You either die a FakeTransformerExclusions...
+        // ...or live long enough to see yourself an LCL call.
+        launch.addTransformerExclusion("com.unascribed.ears");
+    }
 
     @Override
     public String getLaunchTarget() {
@@ -70,13 +79,13 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        Reflections reflections = new Reflections("xyz.lilyflower.bootstrap.settings.runners");
+        Reflections reflections = new Reflections("xyz.lilyflower.lilytweaks.core.settings.runners");
         Set<Class<? extends TransformerSettingsRunner>> runners = reflections.getSubTypesOf(TransformerSettingsRunner.class);
         runners.forEach(runner -> {
             try {
                 Constructor<? extends TransformerSettingsRunner> constructor = runner.getConstructor();
                 TransformerSettingsRunner instance = constructor.newInstance();
-                LOGGER.info("Launching settings runner {}", instance.getClass().getSimpleName());
+                LOGGER.info("Registering settings runner {}...", instance.getClass().getSimpleName());
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
                 LOGGER.fatal("Failed to load transformer settings class {}! Reason: {}", runner.getCanonicalName(), exception.getMessage());
@@ -84,8 +93,9 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
             }
         });
 
-        if (new File("config/").mkdir()) {
-            LilyflowerTweaksTransformerSettingsSystem.synchronizeConfiguration(new File("config/lilytweaks-early.cfg"));
+        File dir = new File("config/");
+        if (dir.exists() || dir.mkdir()) {
+            LilyflowerTweaksTransformerSettingsSystem.load(new File("config/lilytweaks-early.cfg"));
         }
     }
 

@@ -13,7 +13,7 @@ import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
 public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_func_70097_a(TargetData data) {
+    void func_70097_a(TargetData data) {
         InsnList list = new InsnList();
 
         LabelNode label = new LabelNode(new Label());
@@ -27,5 +27,10 @@ public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTr
         list.add(label);
 
         data.method().instructions.insert(list);
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "lotr/common/entity/npc/LOTREntityGandalf";
     }
 }

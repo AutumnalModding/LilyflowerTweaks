@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import org.objectweb.asm.ClassReader;
@@ -22,7 +22,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
     private static final HashMap<String, Class<? extends LilyflowerTweaksBootstrapTransformer>> TRANSFORMERS = new HashMap<>();
 
     @Override
-    @SuppressWarnings("deprecation") // "since java 9" yeah good thing this is java 8 then lmfao
+    @SuppressWarnings({"deprecation", "LoggingSimilarMessage"}) // 'since java 9' yeah good thing this is java 8 then
     public byte[] transform(ClassLoader loader, String name, Class<?> clazz, ProtectionDomain domain, byte[] bytes) {
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
@@ -31,37 +31,46 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
 
         String target = name.replaceAll(".*/", "").replaceAll("\\.", "$");
         if (TRANSFORMERS.containsKey(target)) {
-            LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class '{}'...", name);
             try {
+                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Found possible target class '{}'...", name);
                 Class<? extends LilyflowerTweaksBootstrapTransformer> transformer = TRANSFORMERS.get(target);
                 LilyflowerTweaksBootstrapTransformer instance = transformer.newInstance();
 
-                ArrayList<String> methods = new ArrayList<>();
-                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning available patches...");
-                for (Method method : transformer.getDeclaredMethods()) {
-                    if (method.getName().startsWith("patch_")) {
-                        methods.add(method.getName());
-                    }
-                }
+                Method anticlobber = transformer.getDeclaredMethod("lilyflower$anticlobber");
+                anticlobber.setAccessible(true);
 
-                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
-                for (MethodNode method : node.methods) {
-                    LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
-                    if (methods.contains("patch_" + method.name)) {
-                        LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method '{}'...", method.name);
-                        Method patcher = transformer.getDeclaredMethod("patch_" + method.name, LilyflowerTweaksBootstrapTransformer.TargetData.class);
+                String result = (String) anticlobber.invoke(instance);
+                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Checking anticlobber for {} against {}!", name, result);
+                if (result.equals(name)) {
+                    ArrayList<String> methods = new ArrayList<>();
+                    LilyflowerTweaksBootstrapSystem.LOGGER.debug("Anticlobber match success for {}. Hit it!", name);
+                    LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning available patches...");
+                    Arrays.stream(transformer.getDeclaredMethods()).iterator().forEachRemaining(method -> methods.add(method.getName()));
+
+                    LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
+                    for (MethodNode method : node.methods) {
+                        LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
+                        if (methods.contains(method.name)) {
+                            LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method {}...", method.name);
+                            Method patcher = transformer.getDeclaredMethod(method.name, LilyflowerTweaksBootstrapTransformer.TargetData.class);
+                            patcher.setAccessible(true);
+                            patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(node, method));
+                        }
+                    }
+
+                    if (methods.contains("metadata")) {
+                        LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class metadata...");
+                        Method patcher = transformer.getDeclaredMethod("metadata", LilyflowerTweaksBootstrapTransformer.TargetData.class);
                         patcher.setAccessible(true);
-                        patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(node, method));
+                        patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(node, null));
                     }
-                }
 
-                node.accept(writer);
-                bytes = writer.toByteArray();
-            } catch (NoSuchMethodException | NullPointerException | IllegalAccessException | InvocationTargetException | InstantiationException exception) {
-                LilyflowerTweaksBootstrapSystem.LOGGER.fatal("/// FAILED TRANSFORMING CLASS: '{}' ///", name);
-                for (StackTraceElement element : exception.getStackTrace()) {
-                    LilyflowerTweaksBootstrapSystem.LOGGER.fatal(element.toString());
+                    node.accept(writer);
+                    bytes = writer.toByteArray();
+                    LilyflowerTweaksBootstrapSystem.LOGGER.debug("Finished targeting class {}!", name);
                 }
+            } catch (Throwable exception) { // this is bad practice but fuck it, do it anyway
+                LilyflowerTweaksBootstrapSystem.ohno("FAILED TO TRANSFORM CLASS: " + name, exception);
             }
         }
 
@@ -70,10 +79,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
             try (FileOutputStream output = new FileOutputStream(dump)) {
                 output.write(bytes);
             } catch (IOException exception) {
-                LilyflowerTweaksBootstrapSystem.LOGGER.fatal("/// FAILED DUMPING CLASS: '{}' ///", name);
-                for (StackTraceElement element : exception.getStackTrace()) {
-                    LilyflowerTweaksBootstrapSystem.LOGGER.fatal(element.toString());
-                }
+                LilyflowerTweaksBootstrapSystem.ohno("FAILED TO DUMP CLASS: " + name, exception);
             }
         }
 

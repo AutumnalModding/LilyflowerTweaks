@@ -13,7 +13,7 @@ import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
 public class InterfaceInjectorTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_transform(TargetData data) {
+    void transform(TargetData data) {
         InsnList insns = new InsnList();
 
         LabelNode jump = new LabelNode(new Label());
@@ -26,5 +26,10 @@ public class InterfaceInjectorTransformer implements LilyflowerTweaksBootstrapTr
         insns.add(jump);
 
         data.method().instructions.insert(insns);
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "Reika/DragonAPI/ASM/InterfaceInjector";
     }
 }

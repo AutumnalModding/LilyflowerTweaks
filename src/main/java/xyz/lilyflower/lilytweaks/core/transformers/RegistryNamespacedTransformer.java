@@ -7,11 +7,16 @@ import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettin
 
 @SuppressWarnings("unused")
 public class RegistryNamespacedTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_addObject(TargetData data) {
+    void addObject(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             InsnList list = new InsnList();
             LilyflowerTweaksBootstrapTransformerTools.CancelRegistrationForID(list, 422);
             data.method().instructions.insert(list);
         }
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "net/minecraft/util/RegistryNamespaced";
     }
 }

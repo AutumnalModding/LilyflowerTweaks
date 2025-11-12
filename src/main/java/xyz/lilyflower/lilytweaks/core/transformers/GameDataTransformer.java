@@ -15,7 +15,7 @@ import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettin
 
 @SuppressWarnings("unused")
 public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_addPrefix(TargetData data) {
+    void addPrefix(TargetData data) {
         if (data.method().access == Opcodes.ACC_PRIVATE && LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             InsnList insns = new InsnList();
             LabelNode jump = new LabelNode(new Label());
@@ -35,13 +35,13 @@ public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer
         }
     }
 
-    void patch_getMain(TargetData data) {
+    void getMain(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             data.method().access = Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC;
         }
     }
 
-    void patch_registerItem(TargetData data) {
+    void registerItem(TargetData data) {
         if (data.method().access == Opcodes.ACC_PRIVATE && LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
@@ -60,9 +60,14 @@ public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer
         data.method().access = Opcodes.ACC_PUBLIC;
     }
 
-    void patch_testConsistency(TargetData data) {
+    void testConsistency(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.STABILITY_OVERRIDES) {
             data.method().instructions.insert(new InsnNode(Opcodes.RETURN));
         }
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "cpw/mods/fml/common/registry/GameData";
     }
 }

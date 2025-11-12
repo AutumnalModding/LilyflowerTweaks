@@ -6,6 +6,7 @@ import org.objectweb.asm.tree.MethodNode;
 
 public interface LilyflowerTweaksBootstrapTransformer {
     @Desugar
-    record TargetData(ClassNode node, MethodNode method) {
-    }
+    record TargetData(ClassNode node, MethodNode method) {}
+
+    String lilyflower$anticlobber();
 }

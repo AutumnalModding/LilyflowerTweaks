@@ -12,7 +12,7 @@ import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettin
 
 @SuppressWarnings("unused")
 public class AlfheimConfigHandlerTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_getEnableElvenStory(TargetData data) {
+    void getEnableElvenStory(TargetData data) {
         if (!LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_FLIGHT && !LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_RACES) {
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
@@ -22,5 +22,10 @@ public class AlfheimConfigHandlerTransformer implements LilyflowerTweaksBootstra
             list.add(jump);
             data.method().instructions.insert(list);
         }
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "alfheim/common/core/handler/AlfheimConfigHandler";
     }
 }

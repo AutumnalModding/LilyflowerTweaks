@@ -12,7 +12,7 @@ import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
 public class ItemDataTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_createItemStack(TargetData data) {
+    void createItemStack(TargetData data) {
         InsnList list = new InsnList();
 
         LabelNode label = new LabelNode(new Label());
@@ -24,5 +24,10 @@ public class ItemDataTransformer implements LilyflowerTweaksBootstrapTransformer
         list.add(label);
 
         data.method().instructions.insert(list);
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "li/cil/oc/common/item/data/RobotData";
     }
 }

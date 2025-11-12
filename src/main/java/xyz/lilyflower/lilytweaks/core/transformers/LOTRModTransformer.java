@@ -17,7 +17,7 @@ import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettin
 
 @SuppressWarnings("unused")
 public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer {
-    void patch_registerItem(TargetData data) {
+    void registerItem(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
@@ -36,5 +36,10 @@ public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer 
 
             data.method().instructions.insert(list);
         }
+    }
+
+    @Override
+    public String lilyflower$anticlobber() {
+        return "lotr/common/LOTRMod";
     }
 }
