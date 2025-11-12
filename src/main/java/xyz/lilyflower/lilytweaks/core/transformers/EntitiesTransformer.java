@@ -4,6 +4,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.InsnNode;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 
+@SuppressWarnings("unused")
 public class EntitiesTransformer implements LilyflowerTweaksBootstrapTransformer {
     void init(TargetData data) {
         data.method().instructions.insert(new InsnNode(Opcodes.RETURN));

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
@@ -22,7 +24,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
     private static final HashMap<String, Class<? extends LilyflowerTweaksBootstrapTransformer>> TRANSFORMERS = new HashMap<>();
 
     @Override
-    @SuppressWarnings({"deprecation", "LoggingSimilarMessage"}) // 'since java 9' yeah good thing this is java 8 then
+    @SuppressWarnings("deprecation") // 'since java 9' yeah good thing this is java 8 then
     public byte[] transform(ClassLoader loader, String name, Class<?> clazz, ProtectionDomain domain, byte[] bytes) {
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
@@ -50,19 +52,14 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
                     LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
                     for (MethodNode method : node.methods) {
                         LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
-                        if (methods.contains(method.name)) {
+                        if (methods.contains(method.name.replaceAll("<", "$").replaceAll(">", "$"))) {
                             LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method {}...", method.name);
-                            Method patcher = transformer.getDeclaredMethod(method.name, LilyflowerTweaksBootstrapTransformer.TargetData.class);
-                            patcher.setAccessible(true);
-                            patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(node, method));
+                            invoke(transformer, instance, node, method);
                         }
                     }
 
                     if (methods.contains("metadata")) {
-                        LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class metadata...");
-                        Method patcher = transformer.getDeclaredMethod("metadata", LilyflowerTweaksBootstrapTransformer.TargetData.class);
-                        patcher.setAccessible(true);
-                        patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(node, null));
+                        invoke(transformer, instance, node, null);
                     }
 
                     node.accept(writer);
@@ -98,5 +95,15 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
         }
 
         TRANSFORMERS.forEach((transformer, clazz) -> LilyflowerTweaksBootstrapSystem.LOGGER.debug("Added class transformer for {}", transformer));
+    }
+
+    private static void invoke(Class<? extends LilyflowerTweaksBootstrapTransformer> transformer, LilyflowerTweaksBootstrapTransformer instance, ClassNode clazz, @Nullable MethodNode method) {
+        try {
+            Method patcher = transformer.getDeclaredMethod(method == null ? "metadata" : method.name, LilyflowerTweaksBootstrapTransformer.TargetData.class);
+            patcher.setAccessible(true);
+            patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(clazz, method));
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException exception) {
+            LilyflowerTweaksBootstrapSystem.ohno("FAILED TO TRANSFORM CLASS" + (method == null ? " METADATA" : ":" + method.name), exception);
+        }
     }
 }
