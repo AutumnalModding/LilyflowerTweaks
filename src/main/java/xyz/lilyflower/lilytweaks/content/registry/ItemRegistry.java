@@ -5,7 +5,7 @@ import cpw.mods.fml.common.event.FMLStateEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import net.minecraft.item.Item;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.ContentConfiguration;
 import xyz.lilyflower.lilytweaks.content.ContentRegistry;
 import xyz.lilyflower.lilytweaks.util.CollectionUtils;
 import xyz.lilyflower.lilytweaks.util.Pair;
@@ -34,7 +34,7 @@ public class ItemRegistry implements ContentRegistry<Item> {
 
     @Override
     public boolean shouldRegister(String key) {
-        return LilyflowerTweaksGameConfigurationSystem.Content.ENABLE_CONTENT;
+        return ContentConfiguration.ENABLE_CONTENT;
     }
 
     @Override

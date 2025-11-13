@@ -27,7 +27,7 @@ public class LOTRClassTransformerTransformer implements LilyflowerTweaksBootstra
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "lotr/common/coremod/LOTRClassTransformer";
     }
 }

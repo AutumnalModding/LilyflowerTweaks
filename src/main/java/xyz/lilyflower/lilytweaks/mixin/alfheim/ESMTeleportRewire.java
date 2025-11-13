@@ -22,8 +22,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.core.settings.modules.AlfheimTransformerSettings;
 
 @Mixin(value = TileRaceSelector.class, remap = false)
 public class ESMTeleportRewire {
@@ -42,7 +42,7 @@ public class ESMTeleportRewire {
             ci.cancel();
         }
 
-        int dest = LilyflowerTweaksGameConfigurationSystem.getETD();
+        int dest = AlfheimTransformerSettings.getETD();
         if (dest != AlfheimConfigHandler.INSTANCE.getDimensionIDAlfheim()) {
             MinecraftServer server = MinecraftServer.getServer();
             WorldServer target = server.worldServerForDimension(dest);

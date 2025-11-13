@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.VanillaIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 
 @Mixin(SpawnerAnimals.class)
@@ -16,7 +16,7 @@ public class DisableWorldgenSpawning {
     @SuppressWarnings("UnresolvedMixinReference") // it is literally right there
     @Inject(method = "performWorldGenSpawning", at = @At("HEAD"), cancellable = true)
     private static void disableSpawning(World world, BiomeGenBase biome, int what, int even, int are, int these, Random random, CallbackInfo info) {
-        if (LilyflowerTweaksGameConfigurationSystem.DISABLE_WORLDGEN_SPAWNING) {
+        if (VanillaIntegrationConfiguration.DISABLE_WORLDGEN_SPAWNING) {
             LilyflowerTweaksInitializationSystem.LOGGER.debug("Stopping chunkgen-time animal spawn");
             info.cancel();
         }

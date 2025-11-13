@@ -16,7 +16,7 @@ public class RegistryNamespacedTransformer implements LilyflowerTweaksBootstrapT
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "net/minecraft/util/RegistryNamespaced";
     }
 }

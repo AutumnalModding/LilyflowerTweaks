@@ -6,13 +6,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.LOTRModIntegrationConfiguration;
 
 @Mixin(LOTRAttackTiming.class)
 public abstract class ClientSideAttackTimingsRemoval {
     @Inject(method = "doAttackTiming", at = @At("HEAD"), cancellable = true, remap = false)
     private static void removeTimingUpdates(CallbackInfo ci) {
-        if (LilyflowerTweaksGameConfigurationSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
+        if (LOTRModIntegrationConfiguration.DISABLE_ATTACK_TIMINGS) {
             LOTRAttackTiming.reset();
             ci.cancel();
         }
@@ -20,7 +20,7 @@ public abstract class ClientSideAttackTimingsRemoval {
 
     @Inject(method = "renderAttackMeter", at = @At("HEAD"), cancellable = true, remap = false)
     private static void ceaseRendering(ScaledResolution resolution, float partialTicks, CallbackInfo ci) {
-        if (LilyflowerTweaksGameConfigurationSystem.LOTR.DISABLE_ATTACK_TIMINGS) {
+        if (LOTRModIntegrationConfiguration.DISABLE_ATTACK_TIMINGS) {
             ci.cancel();
         }
     }

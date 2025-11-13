@@ -24,7 +24,7 @@ import static java.nio.file.Files.walk;
 
 @SuppressWarnings({"deprecation", "CallToPrintStackTrace"})
 public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
-    private static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Mixin Loader");
+    public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Mixin System");
     private static final Path MODS_DIRECTORY_PATH = new File(Launch.minecraftHome, "mods/").toPath();
 
     @Override
@@ -117,15 +117,15 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
     public enum MixinRegistry {
         // LOTR
 
+        METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
         COSMETIC_UNLOCKER("lotr.misc.CosmeticUnlocker", MixinTarget.LOTR),
-        WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", MixinTarget.LOTR),
         OMNITARGET_HELPER("lotr.entity.OmnitargetHelper", MixinTarget.LOTR),
+        INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),
         ATTACK_TIMINGS_CLIENT("lotr.client.ClientSideAttackTimingsRemoval", MixinTarget.LOTR),
         ATTACK_TIMINGS_SERVER("lotr.entity.ServerSideAttackTimingsRemoval", MixinTarget.LOTR),
-        INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),
-        FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
         RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", MixinTarget.LOTR),
-        METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
+        FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
+        WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", MixinTarget.LOTR),
 
         // Interop
         //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.LOTR, MixinTarget.WITCHERY),
@@ -136,9 +136,9 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         RPLE_OPENLIGHT("rple.RPLEOpenLight", MixinTarget.RPLE, MixinTarget.OPENLIGHTS),
 
         // Witchery
+        CAP_VAMPIRE("witchery.entity.DamageCapRemover$VampireDTCapRemover", MixinTarget.WITCHERY),
         DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", MixinTarget.WITCHERY),
         CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", MixinTarget.WITCHERY),
-        CAP_VAMPIRE("witchery.entity.DamageCapRemover$VampireDTCapRemover", MixinTarget.WITCHERY),
 
         // Backhand
         FAKE_PLAYER_COMPAT("backhand.FakePlayerCompat", MixinTarget.BACKHAND),
@@ -147,19 +147,27 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         REMOVE_IFRAMES("vanilla.RemoveImmunityFrames", MixinTarget.VANILLA),
 
         // Bandaids
-        DISABLE_SNOW_UPDATES("bandaid.DisableSnowUpdates", MixinTarget.VANILLA),
         FIX_NULL_ENTITY_MAP("bandaid.FixNullEntityMap", MixinTarget.VANILLA),
+        DISABLE_SNOW_UPDATES("bandaid.DisableSnowUpdates", MixinTarget.VANILLA),
         DISABLE_WORLDGEN_SPAWNING("bandaid.DisableWorldgenSpawning", MixinTarget.VANILLA),
 
         // Alfheim
-        ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", MixinTarget.ALFHEIM),
-        ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", MixinTarget.ALFHEIM),
         DISABLE_DIMTP("alfheim.DisableTPDIM", MixinTarget.ALFHEIM),
         DISABLE_FLIGHT("alfheim.ESMFlightDisabler", MixinTarget.ALFHEIM),
+        ESM_TELEPORT_REWIRE("alfheim.ESMTeleportRewire", MixinTarget.ALFHEIM),
+        ENABLE_BOSS_TIMESTOP("alfheim.EnableBossTimestop", MixinTarget.ALFHEIM),
 
         // Advanced Rocketry
-        LOADER_ENHANCEMENTS("advrocketry.ARPlanetLoaderEnhancements", MixinTarget.ADVANCED_ROCKETRY),
         PROPERTY_ENHANCEMENTS("advrocketry.ARPlanetDataHelper", MixinTarget.ADVANCED_ROCKETRY),
+        LOADER_ENHANCEMENTS("advrocketry.ARPlanetLoaderEnhancements", MixinTarget.ADVANCED_ROCKETRY),
+
+        // Vic's Modern Warfare
+        DISABLE_ZOMBIES("vics.DisableVicsMobs", MixinTarget.VICS_MW),
+        FIX_TEXTURE_NAMES("vics.FixBadTextureNames", MixinTarget.VICS_MW),
+
+        // Galacticraft
+        DISABLE_BODIES("galacticraft.CelestialBodyDisabler", MixinTarget.GALACTICRAFT),
+        DISABLE_UNREACHABLE_PLANETS("galacticraft.DisableUnreachablePlanets", MixinTarget.GALACTICRAFT),
         ;
 
         public final String mixinClass;
@@ -203,6 +211,8 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         OPENLIGHTS("openlights", "OpenLights", true),
         ENDLESSIDS("endlessids", "endlessids", false),
         ADVANCED_ROCKETRY("advancedRocketry", "AdvancedRocketry", true),
+        VICS_MW("mw", "mw_", true),
+        GALACTICRAFT("GalacticraftCore", "Galacticraft", true),
         ;
 
         public final String modName;

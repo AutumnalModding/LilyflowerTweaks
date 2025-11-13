@@ -1,6 +1,5 @@
 package xyz.lilyflower.lilytweaks.init;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -15,18 +14,21 @@ import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.config.ConfigRunner;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.GalacticraftConfiguration;
+import xyz.lilyflower.lilytweaks.configuration.modules.LOTRModIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
 import xyz.lilyflower.lilytweaks.debug.LTRDebuggerCommand;
+import xyz.lilyflower.lilytweaks.integration.GalacticraftIntegration;
 import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
 import org.reflections.Reflections;
 import java.util.Set;
 
-@Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "before:lotr")
+@Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "after:GalacticraftCore;before:lotr")
 public class LilyflowerTweaksInitializationSystem {
     private static final Reflections DATA = new Reflections("xyz.lilyflower.lilytweaks.util.loader");
-    private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.config.runners");
+    private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.configuration.modules");
 
     public static final String MODID = "lilytweaks";
     public static final String VERSION = "3.0";
@@ -35,17 +37,17 @@ public class LilyflowerTweaksInitializationSystem {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        IntegrationLoader.runAllPre();
+        LilyflowerTweaksIntegrationModule.add(new GalacticraftIntegration(), !GalacticraftConfiguration.MODDED_PLANET_INTEGRATION.isEmpty());
 
-        Set<Class<? extends ConfigRunner>> configs = CONFIGURATION.getSubTypesOf(ConfigRunner.class);
+        Set<Class<? extends ConfigurationModule>> configs = CONFIGURATION.getSubTypesOf(ConfigurationModule.class);
         configs.forEach(config -> {
             try {
-                Constructor<? extends ConfigRunner> constructor = config.getConstructor();
-                ConfigRunner runner = constructor.newInstance();
-                LOGGER.info("Loading config runner {}", config.getName());
-                runner.init();
+                Constructor<? extends ConfigurationModule> constructor = config.getConstructor();
+                ConfigurationModule module = constructor.newInstance();
+                LOGGER.info("Loading configuration module {}", config.getName());
+                module.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LOGGER.fatal("Failed to load config class {}! Reason: {}", config.getName(), exception.getMessage());
+                LOGGER.fatal("Failed to load configuration module {}! Reason: {}", config.getName(), exception.getMessage());
                 throw new RuntimeException(exception);
             }
         });
@@ -62,30 +64,31 @@ public class LilyflowerTweaksInitializationSystem {
             } catch (NoClassDefFoundError ignored) {}
         });
 
-        LilyflowerTweaksGameConfigurationSystem.synchronizeConfiguration(event.getSuggestedConfigurationFile());
+        LilyflowerTweaksGameConfigurationSystem.load(event.getSuggestedConfigurationFile());
         LilyflowerTweaksContentSystem.initialize(event);
+        LilyflowerTweaksIntegrationModule.init(event);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        if (LilyflowerTweaksGameConfigurationSystem.LOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
+        if (LOTRModIntegrationConfiguration.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
             OreDictionary.registerOre("dustSulfur", LOTRMod.sulfur);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
             OreDictionary.registerOre("oreMithril", LOTRMod.oreMithril);
             OreDictionary.registerOre("nuggetMithril", LOTRMod.mithrilNugget);
         }
 
-        IntegrationLoader.runAll();
+        LilyflowerTweaksIntegrationModule.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        IntegrationLoader.runAllPost();
-
         if (Loader.isModLoaded("lotr")) {
-            LilyflowerTweaksGameConfigurationSystem.registerModdedWeapons();
-            LOTRTime.DAY_LENGTH = (int) (LilyflowerTweaksGameConfigurationSystem.LOTR.TIME_BASE * LilyflowerTweaksGameConfigurationSystem.LOTR.TIME_MULTIPLIER);
+            LOTRModIntegrationConfiguration.registerModdedWeapons();
+            LOTRTime.DAY_LENGTH = (int) (LOTRModIntegrationConfiguration.TIME_BASE * LOTRModIntegrationConfiguration.TIME_MULTIPLIER);
         }
+
+        LilyflowerTweaksIntegrationModule.init(event);
     }
 
     @EventHandler
@@ -93,5 +96,7 @@ public class LilyflowerTweaksInitializationSystem {
         if (Loader.isModLoaded("lotr")) {
             event.registerServerCommand(new LTRDebuggerCommand());
         }
+
+        LilyflowerTweaksIntegrationModule.init(event);
     }
 }

@@ -25,7 +25,7 @@ public class AlfheimConfigHandlerTransformer implements LilyflowerTweaksBootstra
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "alfheim/common/core/handler/AlfheimConfigHandler";
     }
 }

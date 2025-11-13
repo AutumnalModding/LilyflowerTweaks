@@ -38,10 +38,9 @@ public class LilyflowerTweaksBootstrapTransformerTools {
         list.add(new FieldInsnNode(Opcodes.GETSTATIC, owner, original, "Lnet/minecraft/item/Item;"));
         list.add(new JumpInsnNode(Opcodes.IF_ACMPNE, exit));
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-        list.add(new LdcInsnNode((raw ? "" : "$APPLYPREFIX$") + target)); // An injection into GameData#addPrefix is used to make this work.
+        list.add(new LdcInsnNode((raw ? "" : "$APPLYPREFIX$") + target)); // see GameDataTransformer
     }
 
-    public static void CancelRegistrationForID(InsnList list, int index) {
-
-    }
+    // TODO: actually implement this
+    public static void CancelRegistrationForID(InsnList list, int index) {}
 }

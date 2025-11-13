@@ -39,5 +39,6 @@ public class LilyflowerTweaksTransformerSettingsSystem {
     public static class Stability {
         public static boolean STABILITY_OVERRIDES = false;
         public static boolean GROSS_REGISTRY_HACKS = false;
+        public static boolean DISABLE_OPENCOMPUTERS_ROBOTS = false;
     }
 }

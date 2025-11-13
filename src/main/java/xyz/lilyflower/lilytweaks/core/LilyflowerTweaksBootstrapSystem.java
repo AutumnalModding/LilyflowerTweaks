@@ -1,31 +1,32 @@
 package xyz.lilyflower.lilytweaks.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.CoreModManager;
-import java.io.File;
-import java.lang.instrument.Instrumentation;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
+import java.io.File;
 import java.util.Set;
-import net.bytebuddy.agent.ByteBuddyAgent;
-import net.minecraft.launchwrapper.ITweaker;
-import net.minecraft.launchwrapper.LaunchClassLoader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.List;
 import org.reflections.Reflections;
+import java.net.URISyntaxException;
+import java.lang.reflect.Constructor;
+import org.apache.logging.log4j.Logger;
+import net.bytebuddy.agent.ByteBuddyAgent;
+import org.apache.logging.log4j.LogManager;
+import java.lang.instrument.Instrumentation;
+import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.launchwrapper.ITweaker;
+import cpw.mods.fml.relauncher.CoreModManager;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import net.minecraft.launchwrapper.LaunchClassLoader;
+import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsModule;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
-import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsRunner;
 
-// How early can we go?
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") // How early can we go?
 public class LilyflowerTweaksBootstrapSystem implements ITweaker {
     public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Bootstrap System");
 
+    // The text engine calls this `whoSetUsUpTheBomb`.
+    // Speaking of, that reminds me. TODO: Port text engine.
     public static void ohno(String message, Throwable cause) {
         LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
         LOGGER.fatal(message);
@@ -79,12 +80,12 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        Reflections reflections = new Reflections("xyz.lilyflower.lilytweaks.core.settings.runners");
-        Set<Class<? extends TransformerSettingsRunner>> runners = reflections.getSubTypesOf(TransformerSettingsRunner.class);
+        Reflections reflections = new Reflections("xyz.lilyflower.lilytweaks.core.settings.modules");
+        Set<Class<? extends TransformerSettingsModule>> runners = reflections.getSubTypesOf(TransformerSettingsModule.class);
         runners.forEach(runner -> {
             try {
-                Constructor<? extends TransformerSettingsRunner> constructor = runner.getConstructor();
-                TransformerSettingsRunner instance = constructor.newInstance();
+                Constructor<? extends TransformerSettingsModule> constructor = runner.getConstructor();
+                TransformerSettingsModule instance = constructor.newInstance();
                 LOGGER.info("Registering settings runner {}...", instance.getClass().getSimpleName());
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {

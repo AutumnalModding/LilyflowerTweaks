@@ -20,7 +20,7 @@ public class FMLControlledNamespacedRegistryTransformer implements LilyflowerTwe
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "cpw/mods/fml/common/registry/FMLControlledNamespacedRegistry";
     }
 }

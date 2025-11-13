@@ -1,12 +1,13 @@
-package xyz.lilyflower.lilytweaks.core.settings.runners;
+package xyz.lilyflower.lilytweaks.core.settings.modules;
 
-import java.util.function.Consumer;
-import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
-import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsRunner;
+import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsModule;
 
 @SuppressWarnings("unused")
-public class AlfheimTransformerSettings implements TransformerSettingsRunner {
+public class AlfheimTransformerSettings implements TransformerSettingsModule {
+    public static int getETD() {
+        return LilyflowerTweaksTransformerSettingsSystem.Alfheim.ESM_TELEPORT_DIMENSION;
+    }
 
     public void init() {
         LilyflowerTweaksTransformerSettingsSystem.add("alfheim", configuration -> {

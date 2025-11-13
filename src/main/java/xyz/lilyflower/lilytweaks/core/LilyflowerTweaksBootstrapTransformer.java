@@ -8,5 +8,5 @@ public interface LilyflowerTweaksBootstrapTransformer {
     @Desugar
     record TargetData(ClassNode node, MethodNode method) {}
 
-    String lilyflower$anticlobber();
+    String internal$transformerTarget();
 }

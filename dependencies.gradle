@@ -27,6 +27,7 @@ dependencies {
     implementation deobfCurse("openlights-225225:2264437")
     implementation deobfCurse("opencomputers-223008:5274233")
     implementation deobfCurse("advanced-rocketry-236542:2985057")
+    implementation deobfCurse("galacticraft-legacy-564236:4501439")
     implementation deobfCurse("vics-modern-warfare-mod-243788:2819851")
     implementation deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
 

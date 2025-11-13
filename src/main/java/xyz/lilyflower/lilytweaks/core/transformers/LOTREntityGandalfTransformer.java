@@ -17,7 +17,7 @@ public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTr
         InsnList list = new InsnList();
 
         LabelNode label = new LabelNode(new Label());
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$LOTR", "ENABLE_WANDERER_DEATH", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/configuration/modules/LOTRModIntegrationConfiguration", "ENABLE_WANDERER_DEATH", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));
@@ -30,7 +30,7 @@ public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTr
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "lotr/common/entity/npc/LOTREntityGandalf";
     }
 }

@@ -10,7 +10,7 @@ public class ModelTransBoxTransformer implements LilyflowerTweaksBootstrapTransf
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "com/unascribed/ears/ModelTransBox";
     }
 }

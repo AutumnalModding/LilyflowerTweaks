@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import xyz.lilyflower.lilytweaks.config.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.WitcheryIntegrationConfiguration;
 
 @Mixin(value = ItemGlassGoblet.class)
 public abstract class FixVampireRitual {
@@ -43,7 +43,7 @@ public abstract class FixVampireRitual {
         if (mop != null && mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && world.getBlock(mop.blockX, mop.blockY, mop.blockZ) == Blocks.skull) {
             TileEntitySkull skull = BlockUtil.getTileEntity(world, mop.blockX, mop.blockY, mop.blockZ, TileEntitySkull.class);
             if (!world.isRemote && skull != null && skull.func_145904_a() == 0) {
-                if (this.hasBloodType(stack, ItemGlassGoblet.BloodSource.CHICKEN) && (world.provider.dimensionId == 0 || LilyflowerTweaksGameConfigurationSystem.FIX_RITUAL && world.provider.dimensionId == 100) && this.isRitual(world, mop.blockX, mop.blockY, mop.blockZ) && world.canBlockSeeTheSky(mop.blockX, mop.blockY, mop.blockZ) && !world.isDaytime() && Config.instance().allowVampireRitual && !this.isElleNear(world, mop.blockX, mop.blockY - 1, mop.blockZ, 32.0)) {
+                if (this.hasBloodType(stack, ItemGlassGoblet.BloodSource.CHICKEN) && (world.provider.dimensionId == 0 || WitcheryIntegrationConfiguration.FIX_RITUAL && world.provider.dimensionId == 100) && this.isRitual(world, mop.blockX, mop.blockY, mop.blockZ) && world.canBlockSeeTheSky(mop.blockX, mop.blockY, mop.blockZ) && !world.isDaytime() && Config.instance().allowVampireRitual && !this.isElleNear(world, mop.blockX, mop.blockY - 1, mop.blockZ, 32.0)) {
                     this.setBloodOwner(stack, ItemGlassGoblet.BloodSource.EMPTY);
                     EntityLightningBolt bolt = new EntityLightningBolt(world, 0.5 + (double)mop.blockX, (double)mop.blockY + 0.05, 0.5 + (double)mop.blockZ);
                     world.setBlockToAir(mop.blockX, mop.blockY, mop.blockZ);

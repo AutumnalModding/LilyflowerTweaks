@@ -22,7 +22,7 @@ public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer 
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
 
-            list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/config/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
+            list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/lilytweaks/configuration/LilyflowerTweaksGameConfigurationSystem$Content", "ENABLE_SUBSTITUTIONS_ITEM", "Z"));
             list.add(new JumpInsnNode(Opcodes.IFEQ, jump));
             LilyflowerTweaksBootstrapTransformerTools.PrepareItemForRegister(list, jump, "minecraft:command_block_minecart", "diamond", "lotr/common/LOTRMod", true);
             list.add(new InsnNode(Opcodes.SWAP));
@@ -39,7 +39,7 @@ public class LOTRModTransformer implements LilyflowerTweaksBootstrapTransformer 
     }
 
     @Override
-    public String lilyflower$anticlobber() {
+    public String internal$transformerTarget() {
         return "lotr/common/LOTRMod";
     }
 }
