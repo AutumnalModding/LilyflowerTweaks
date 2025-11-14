@@ -2,11 +2,8 @@ package xyz.lilyflower.lilytweaks.configuration.modules;
 
 import com.emoniph.witchery.util.IHandleDT;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
-import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
@@ -14,11 +11,11 @@ import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 @SuppressWarnings({"unchecked", "unused"})
 public class WitcheryIntegrationConfiguration implements ConfigurationModule {
     public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
-    public static List<String> SAFE_BIOMES;
+    public static List<String> SAFE_LOTR_BIOMES;
     public static List<Integer> ALLOWED_RITUAL_DIMENSIONS = new ArrayList<>();
 
     public static boolean isBiomeSafe(String biome) {
-        return SAFE_BIOMES.contains(biome);
+        return SAFE_LOTR_BIOMES.contains(biome);
     }
 
     public void init() {

@@ -117,7 +117,6 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
     public enum MixinRegistry {
         // LOTR
 
-        METAFACTION_FIXES("lotr.misc.MetafactionFixes", MixinTarget.LOTR),
         COSMETIC_UNLOCKER("lotr.misc.CosmeticUnlocker", MixinTarget.LOTR),
         OMNITARGET_HELPER("lotr.entity.OmnitargetHelper", MixinTarget.LOTR),
         INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),

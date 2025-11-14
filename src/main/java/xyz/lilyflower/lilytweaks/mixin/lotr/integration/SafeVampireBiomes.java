@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.mixin.lotr.interop.witchery;
+package xyz.lilyflower.lilytweaks.mixin.lotr.integration;
 
 import com.emoniph.witchery.util.CreatureUtil;
 import lotr.common.LOTRDimension;

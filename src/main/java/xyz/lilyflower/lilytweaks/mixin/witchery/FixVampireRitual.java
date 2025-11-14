@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.mixin.lotr.interop.witchery;
+package xyz.lilyflower.lilytweaks.mixin.witchery;
 
 import com.emoniph.witchery.item.ItemGlassGoblet;
 import net.minecraft.world.WorldProvider;

@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.mixin.lotr.interop.witchery;
+package xyz.lilyflower.lilytweaks.mixin.lotr.bug;
 
 import com.emoniph.witchery.common.ExtendedPlayer;
 import com.emoniph.witchery.util.TransformCreature;

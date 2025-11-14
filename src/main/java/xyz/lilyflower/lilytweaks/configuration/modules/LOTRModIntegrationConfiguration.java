@@ -1,6 +1,5 @@
 package xyz.lilyflower.lilytweaks.configuration.modules;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.Arrays;
 import java.util.List;
@@ -60,8 +59,7 @@ public class LOTRModIntegrationConfiguration implements ConfigurationModule {
     };
 
     public static final Consumer<Configuration> CROSS_MOD_INTEGRATION = configuration -> {
-        WitcheryIntegrationConfiguration.FIX_RITUAL = configuration.getBoolean("fixVampireRitual", "lotr.integration", true, "Allow Witchery's vampire ritual in the LOTR dimension.");
-        WitcheryIntegrationConfiguration.SAFE_BIOMES = Arrays.asList(configuration.getStringList("safeBiomes", "lotr.integration", new String[]{}, "Safe LOTR biomes for vampires. Use display names, like 'Mordor' or 'Gorgoroth'."));
+        WitcheryIntegrationConfiguration.SAFE_LOTR_BIOMES = Arrays.asList(configuration.getStringList("safeBiomes", "lotr.integration", new String[]{}, "Safe LOTR biomes for vampires. Use display names, like 'Mordor' or 'Gorgoroth'."));
     };
 
     public static final Consumer<Configuration> FAST_TRAVEL_TWEAKS = configuration -> {
