@@ -3,7 +3,7 @@ package xyz.lilyflower.lilytweaks.configuration.modules;
 import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 
-public class ContentConfiguration implements ConfigurationModule {
+public class CustomContentAdditionsConfiguration implements ConfigurationModule {
     public static boolean ENABLE_CONTENT = false;
 
     @Override

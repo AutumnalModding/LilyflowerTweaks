@@ -11,7 +11,6 @@ import pcl.openlights.tileentity.OpenLightTE;
 import static com.falsepattern.rple.api.common.color.LightValueColor.LIGHT_VALUE_0;
 
 @Mixin(value = OpenLightTE.class, remap = false)
-@SuppressWarnings("unused") // it's literally in the registry but ok
 public abstract class RPLEOpenLight implements RPLECustomBlockBrightness {
     @Shadow public int color;
     @Shadow public int brightness;

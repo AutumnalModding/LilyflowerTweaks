@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xonin.backhand.api.core.BackhandUtils;
 
-@Mixin(value = BackhandUtils.class, remap = false)
+@Mixin(BackhandUtils.class)
 public class FakePlayerCompat {
-    @Inject(method = "getOffhandItem", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getOffhandItem", at = @At("HEAD"), cancellable = true, remap = false)
     private static void fakePlayerCompat(EntityPlayer player, CallbackInfoReturnable<ItemStack> cir) {
         if (player instanceof FakePlayer) {
             cir.setReturnValue(new ItemStack(new ItemBlock(Blocks.air)));

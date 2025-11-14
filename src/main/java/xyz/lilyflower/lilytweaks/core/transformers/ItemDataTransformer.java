@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 
-@SuppressWarnings("unused") // THIS [[$4.99 COREMOD]] COULD'VE BEEN A MIXIN    !
+@SuppressWarnings("unused") // THIS [[$4.99 COREMOD]] COULD'VE BEEN A [[MIXIN]]
 public class ItemDataTransformer implements LilyflowerTweaksBootstrapTransformer {
     void createItemStack(TargetData data) {
         if (LilyflowerTweaksTransformerSettingsSystem.Stability.DISABLE_OPENCOMPUTERS_ROBOTS) {

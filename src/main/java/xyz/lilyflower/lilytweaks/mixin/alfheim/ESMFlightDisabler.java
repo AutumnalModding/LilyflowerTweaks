@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 
-@Mixin(value = ESMHandler.class, remap = false)
+@Mixin(ESMHandler.class)
 public class ESMFlightDisabler {
-    @Inject(method = "isAbilityDisabled", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isAbilityDisabled", at = @At("HEAD"), cancellable = true, remap = false)
     public void disable(EntityPlayer player, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(!LilyflowerTweaksTransformerSettingsSystem.Alfheim.ENABLE_ESM_FLIGHT);
     }

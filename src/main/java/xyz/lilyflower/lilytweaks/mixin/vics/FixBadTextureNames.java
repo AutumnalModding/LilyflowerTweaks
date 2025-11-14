@@ -13,6 +13,7 @@ public class FixBadTextureNames {
     @Unique
     private static final HashMap<String, String> lilyflower$VMW_BAD_NAMES = new HashMap<>();
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @ModifyVariable(method = "setTextureName", at = @At("HEAD"), argsOnly = true)
     public String force(String name) {
         LilyflowerTweaksMixinSystem.LOGGER.debug("Fixing Vic's Modern Warfare's broken texture names...");

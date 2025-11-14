@@ -22,6 +22,7 @@ dependencies {
     implementation deobfCurse("witchery-69673:2234410")
     implementation deobfCurse("baubles-227083:2224857")
     implementation deobfCurse("backhand-654404:5475047")
+    implementation deobfCurse("quiverbow-73811:2269859")
     implementation deobfCurse("libvulpes-236541:2812784")
     implementation deobfCurse("thaumcraft-223628:2227552")
     implementation deobfCurse("openlights-225225:2264437")

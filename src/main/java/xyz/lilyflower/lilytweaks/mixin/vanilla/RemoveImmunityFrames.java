@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.lilyflower.lilytweaks.configuration.modules.VanillaIntegrationConfiguration;
 
-@SuppressWarnings("ALL") // TODO: replace with the correct inspections
 @Mixin(EntityLivingBase.class)
 public class RemoveImmunityFrames {
+    @SuppressWarnings("UnresolvedMixinReference")
     @Inject(method = "attackEntityFrom", at = @At("TAIL"))
     public void removeCaps(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         EntityLivingBase living = (EntityLivingBase) (Object) this;

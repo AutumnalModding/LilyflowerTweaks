@@ -128,7 +128,7 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", MixinTarget.LOTR),
 
         // Interop
-        //FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.LOTR, MixinTarget.WITCHERY),
+        FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.WITCHERY),
         //SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", MixinTarget.LOTR, MixinTarget.WITCHERY),
         ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", MixinTarget.LOTR, MixinTarget.WITCHERY),
 
@@ -168,6 +168,9 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         // Galacticraft
         DISABLE_BODIES("galacticraft.CelestialBodyDisabler", MixinTarget.GALACTICRAFT),
         DISABLE_UNREACHABLE_PLANETS("galacticraft.DisableUnreachablePlanets", MixinTarget.GALACTICRAFT),
+
+        // QuiverBow
+        FIX_SOUL_CAIRN_STUPIDITY("quiverbow.SoulCairnDeStupidifier", MixinTarget.QUIVERBOW)
         ;
 
         public final String mixinClass;
@@ -213,7 +216,7 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         ADVANCED_ROCKETRY("advancedRocketry", "AdvancedRocketry", true),
         VICS_MW("mw", "mw_", true),
         GALACTICRAFT("GalacticraftCore", "Galacticraft", true),
-        ;
+        QUIVERBOW("quiverchevsky", "QuiverBow", true);
 
         public final String modName;
         public final String jarNamePrefixLowercase;

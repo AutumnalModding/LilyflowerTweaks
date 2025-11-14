@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
-import xyz.lilyflower.lilytweaks.configuration.modules.GalacticraftConfiguration;
+import xyz.lilyflower.lilytweaks.configuration.modules.GalacticraftIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.configuration.modules.LOTRModIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
 import xyz.lilyflower.lilytweaks.debug.LTRDebuggerCommand;
@@ -37,7 +37,7 @@ public class LilyflowerTweaksInitializationSystem {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        LilyflowerTweaksIntegrationModule.add(new GalacticraftIntegration(), !GalacticraftConfiguration.MODDED_PLANET_INTEGRATION.isEmpty());
+        LilyflowerTweaksIntegrationModule.add(new GalacticraftIntegration(), !GalacticraftIntegrationConfiguration.MODDED_PLANET_INTEGRATION.isEmpty());
 
         Set<Class<? extends ConfigurationModule>> configs = CONFIGURATION.getSubTypesOf(ConfigurationModule.class);
         configs.forEach(config -> {

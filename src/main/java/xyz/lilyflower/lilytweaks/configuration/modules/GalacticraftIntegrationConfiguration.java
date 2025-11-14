@@ -6,7 +6,7 @@ import java.util.List;
 import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 
-public class GalacticraftConfiguration implements ConfigurationModule {
+public class GalacticraftIntegrationConfiguration implements ConfigurationModule {
     public static boolean DISABLE_UNREACHABLE_PLANETS = false;
     public static List<String > DISABLED_CELESTIAL_BODIES = new ArrayList<>();
     public static List<String> MODDED_PLANET_INTEGRATION = new ArrayList<>();

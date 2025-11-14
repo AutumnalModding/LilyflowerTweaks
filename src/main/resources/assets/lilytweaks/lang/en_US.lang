@@ -18,3 +18,8 @@ item.lilytweaks.mithril_robe_legs.name=Mithril-trimmed Thaumaturge's Leggings
 item.lilytweaks.mithril_robe_boots.name=Mithril-trimmed Thaumaturge's Boots
 
 item.lilytweaks.dust_stone.name=Stone Dust
+
+lilytweaks.invalid_spawn_egg.1=Sorry! It seems this mob isn't yet supported by the Soul Cairn.
+lilytweaks.invalid_spawn_egg.2=Here's your diamond back - open an issue on the Github at:
+lilytweaks.invalid_spawn_egg.3=https://github.com/AutumnalModding/LilyflowerTweaks/issues
+lilytweaks.invalid_spawn_egg.4=(Make sure to specify what mod & entity has this issue!)
