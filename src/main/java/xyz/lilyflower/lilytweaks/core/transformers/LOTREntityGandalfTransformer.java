@@ -9,7 +9,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
 public class LOTREntityGandalfTransformer implements LilyflowerTweaksBootstrapTransformer {

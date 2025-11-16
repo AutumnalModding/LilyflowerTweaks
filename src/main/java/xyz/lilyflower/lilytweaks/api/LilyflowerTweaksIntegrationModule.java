@@ -1,15 +1,16 @@
-package xyz.lilyflower.lilytweaks.init;
+package xyz.lilyflower.lilytweaks.api;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLStateEvent;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 
 public interface LilyflowerTweaksIntegrationModule {
     Map<LilyflowerTweaksIntegrationModule, Boolean> LOADERS = new HashMap<>();
 
-    void run();
+    void run(FMLStateEvent stage);
     List<String> requiredMods();
     boolean valid(FMLStateEvent stage);
 
@@ -31,7 +32,7 @@ public interface LilyflowerTweaksIntegrationModule {
             if (shouldLoad && enabled) {
                 String integration = name.substring(0, name.length() - 1);
                 LilyflowerTweaksInitializationSystem.LOGGER.info("Enabling {} integration!", integration);
-                loader.run();
+                loader.run(stage);
             }
         });
     }

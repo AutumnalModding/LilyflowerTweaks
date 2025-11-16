@@ -1,6 +1,6 @@
 package xyz.lilyflower.lilytweaks.core.transformers;
 
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
 
 
 @SuppressWarnings("unused")

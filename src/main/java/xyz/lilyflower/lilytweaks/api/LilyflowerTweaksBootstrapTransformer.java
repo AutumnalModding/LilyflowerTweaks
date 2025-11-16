@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core;
+package xyz.lilyflower.lilytweaks.api;
 
 import com.github.bsideup.jabel.Desugar;
 import org.objectweb.asm.tree.ClassNode;

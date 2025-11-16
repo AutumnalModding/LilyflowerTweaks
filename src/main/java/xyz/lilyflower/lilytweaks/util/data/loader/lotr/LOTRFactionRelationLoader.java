@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.loader.lotr;
+package xyz.lilyflower.lilytweaks.util.data.loader.lotr;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,10 @@ import lotr.common.fac.LOTRFaction;
 import lotr.common.fac.LOTRFactionRelations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
+import xyz.lilyflower.lilytweaks.api.CustomDataLoader;
 
 public class LOTRFactionRelationLoader implements CustomDataLoader {
-    private static final Logger LOGGER = LogManager.getLogger("LOTweakR Faction Relation Loader");
+    private static final Logger LOGGER = LogManager.getLogger("LOTR Faction Relation Loader");
 
     public static final HashMap<LOTRFactionRelations.FactionPair, LOTRFactionRelations.Relation> RELATIONS = new HashMap<>();
 

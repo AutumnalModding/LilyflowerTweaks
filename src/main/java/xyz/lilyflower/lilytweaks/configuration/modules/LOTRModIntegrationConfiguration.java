@@ -9,7 +9,7 @@ import lotr.common.item.LOTRWeaponStats;
 import lotr.common.world.map.LOTRWaypoint;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 

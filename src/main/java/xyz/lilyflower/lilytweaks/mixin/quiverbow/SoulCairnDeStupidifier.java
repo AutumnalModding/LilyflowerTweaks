@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 import xyz.lilyflower.lilytweaks.configuration.modules.QuiverbowIntegrationConfiguration;
-import xyz.lilyflower.lilytweaks.util.mixin.EggLogic;
+import xyz.lilyflower.lilytweaks.api.EggLogic;
 
 @Mixin(SoulShot.class)
 public class SoulCairnDeStupidifier {

@@ -4,7 +4,7 @@ import com.emoniph.witchery.util.IHandleDT;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 

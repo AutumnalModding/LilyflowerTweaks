@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import net.minecraftforge.common.config.Configuration;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 
 @SuppressWarnings("unused")

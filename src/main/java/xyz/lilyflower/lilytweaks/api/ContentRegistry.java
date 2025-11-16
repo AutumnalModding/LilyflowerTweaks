@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.content;
+package xyz.lilyflower.lilytweaks.api;
 
 import cpw.mods.fml.common.event.FMLStateEvent;
 import java.util.ArrayList;

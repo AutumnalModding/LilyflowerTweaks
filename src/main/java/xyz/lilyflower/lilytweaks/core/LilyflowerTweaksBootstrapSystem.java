@@ -18,26 +18,13 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import net.minecraft.launchwrapper.LaunchClassLoader;
-import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsModule;
+import xyz.lilyflower.lilytweaks.api.TransformerSettingsModule;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.debug.LoggingHelper;
 
 @SuppressWarnings("unused") // How early can we go?
 public class LilyflowerTweaksBootstrapSystem implements ITweaker {
     public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Bootstrap System");
-
-    // The text engine calls this `whoSetUsUpTheBomb`.
-    // Speaking of, that reminds me. TODO: Port text engine.
-    public static void ohno(String message, Throwable cause) {
-        LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
-        LOGGER.fatal(message);
-        LOGGER.fatal("CAUSE: {}", cause.getMessage());
-        LOGGER.fatal("EXCEPTION CLASS: {}", cause.getClass().getSimpleName());
-        LOGGER.fatal("DUMPING STACKTRACE...");
-        for (StackTraceElement element : cause.getStackTrace()) {
-            LOGGER.fatal(element.toString());
-        }
-        LOGGER.fatal("/// CRITICAL CRITICAL CRITICAL ///");
-    }
 
     @Override
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
@@ -49,7 +36,7 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
             String mod = new File(location.toURI()).getName();
             CoreModManager.getReparseableCoremods().add(mod);
         } catch (URISyntaxException exception) {
-            ohno("FAILED TO LOAD COREMOD", exception);
+            LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD COREMOD", exception);
             FMLCommonHandler.instance().exitJava(400, true);
         }
     }
@@ -89,8 +76,7 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
                 LOGGER.info("Registering settings runner {}...", instance.getClass().getSimpleName());
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LOGGER.fatal("Failed to load transformer settings class {}! Reason: {}", runner.getCanonicalName(), exception.getMessage());
-                throw new BootstrapSetupFailedError(exception.getMessage());
+                LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD TRANSFORMER SETTINGS: " + runner.getSimpleName(), exception);
             }
         });
 

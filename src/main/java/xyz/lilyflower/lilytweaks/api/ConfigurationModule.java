@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.configuration;
+package xyz.lilyflower.lilytweaks.api;
 
 public interface ConfigurationModule {
     void init();

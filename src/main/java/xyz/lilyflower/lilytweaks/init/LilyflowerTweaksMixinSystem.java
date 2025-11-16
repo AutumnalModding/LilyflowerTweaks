@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,62 +18,61 @@ import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import org.spongepowered.libraries.com.google.common.io.Files;
 import ru.timeconqueror.spongemixins.MinecraftURLClassPath;
+import xyz.lilyflower.lilytweaks.util.FileUtils;
+import xyz.lilyflower.lilytweaks.debug.LoggingHelper;
 
-import static java.nio.file.Files.walk;
-
-@SuppressWarnings({"deprecation", "CallToPrintStackTrace"})
+@SuppressWarnings({"deprecation", ""})
 public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
     public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Mixin System");
     private static final Path MODS_DIRECTORY_PATH = new File(Launch.minecraftHome, "mods/").toPath();
 
     @Override
-    public void onLoad(String mixinPackage) {}
+    public void onLoad(String location) {}
 
     @Override
     public String getRefMapperConfig() { return null; }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) { return true; }
+    public boolean shouldApplyMixin(String target, String mixin) { return true; }
 
     @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
+    public void acceptTargets(Set<String> ours, Set<String> theirs) {}
 
     @Override
     public List<String> getMixins() {
         final boolean isDevelopmentEnvironment = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         List<MixinTarget> loadedMods = Arrays.stream(MixinTarget.values())
-                .filter(mod -> mod == MixinTarget.VANILLA
-                        || (mod.loadInDevelopment && isDevelopmentEnvironment)
-                        || loadJarOf(mod))
+                .filter(target -> target == MixinTarget.VANILLA
+                        || (target.development && isDevelopmentEnvironment)
+                        || load(target))
                 .collect(Collectors.toList());
 
-        for (MixinTarget mod : MixinTarget.values()) {
-            if(loadedMods.contains(mod)) {
-                LOGGER.info("Found {}! Integrating now...", mod.modName);
+        for (MixinTarget target : MixinTarget.values()) {
+            if(loadedMods.contains(target)) {
+                LOGGER.info("Found {}! Integrating now...", target.name);
             }
             else {
-                LOGGER.info("Could not find {}! Skipping integration....", mod.modName);
+                LOGGER.info("Could not find {}! Skipping integration....", target.name);
             }
         }
 
         List<String> mixins = new ArrayList<>();
         for (MixinRegistry mixin : MixinRegistry.values()) {
             if (mixin.shouldLoad(loadedMods)) {
-                mixins.add(mixin.mixinClass);
-                LOGGER.debug("Loading mixin: {}", mixin.mixinClass);
+                mixins.add(mixin.mixin);
+                LOGGER.debug("Loading mixin: {}", mixin.mixin);
             }
         }
         return mixins;
     }
 
-    private boolean loadJarOf(final MixinTarget mod) {
+    private boolean load(final MixinTarget target) {
         try {
-            File jar = findJarOf(mod);
+            File jar = locate(target);
             if(jar == null) {
-                LOGGER.info("Jar not found for {}", mod);
+                LOGGER.info("Jar not found for {}", target);
                 return false;
             }
 
@@ -83,58 +83,59 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
             MinecraftURLClassPath.addJar(jar);
             return true;
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception exception) {
+            LoggingHelper.oopsie(LOGGER, "FAILED LOADING MIXIN TARGET: " + target, exception);
             return false;
         }
     }
 
     @SuppressWarnings("resource")
-    public static File findJarOf(final MixinTarget mod) {
+    public static File locate(final MixinTarget target) {
         try {
-            return walk(MODS_DIRECTORY_PATH)
-                    .filter(mod::isMatchingJar)
+            return Files.walk(MODS_DIRECTORY_PATH)
+                    .filter(target::isMatchingJar)
                     .map(Path::toFile)
                     .findFirst()
                     .orElse(null);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (IOException exception) {
+            LoggingHelper.oopsie(LOGGER, "FAILED LOCATING MIXIN TARGET: " + target, exception);
             return null;
         }
     }
 
     @Override
-    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+    public void preApply(String target, ClassNode clazz, String mixin, IMixinInfo info) {
 
     }
 
     @Override
-    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+    public void postApply(String target, ClassNode clazz, String mixin, IMixinInfo info) {
 
     }
 
     public enum MixinRegistry {
         // LOTR
-
         COSMETIC_UNLOCKER("lotr.misc.CosmeticUnlocker", MixinTarget.LOTR),
         OMNITARGET_HELPER("lotr.entity.OmnitargetHelper", MixinTarget.LOTR),
         INVASION_ENUM_FIXER("lotr.misc.InvasionEnumFixer", MixinTarget.LOTR),
-        ATTACK_TIMINGS_CLIENT("lotr.client.ClientSideAttackTimingsRemoval", MixinTarget.LOTR),
+        SHUT_THE_FUCK_UP("lotr.misc.BiomeVariantShutterUpper", MixinTarget.LOTR),
         ATTACK_TIMINGS_SERVER("lotr.entity.ServerSideAttackTimingsRemoval", MixinTarget.LOTR),
-        RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", MixinTarget.LOTR),
         FACTION_RELATION_OVERRIDES("lotr.entity.RelationOverrideController", MixinTarget.LOTR),
         WAYPOINT_OVERRIDES("lotr.travel.FastTravelWaypointOverrideController", MixinTarget.LOTR),
+        REFLECTION_COMPATIBILITY_PATCHES("lotr.bug.LOTRReflectionCompatibilityPatches", MixinTarget.LOTR),
+        RENDER_SCRAP_TRADERS_PROPERLY("lotr.client.FixScrapTraderRenderer", Side.CLIENT, MixinTarget.LOTR),
+        ATTACK_TIMINGS_CLIENT("lotr.client.ClientSideAttackTimingsRemoval", Side.CLIENT, MixinTarget.LOTR),
+        ENTITY_RENDERER_PATCH("lotr.bug.EntityRendererPatch", Side.CLIENT, MixinTarget.LOTR, MixinTarget.WITCHERY),
 
-        // Interop
-        FIX_VAMPIRE_RITUAL("lotr.interop.witchery.FixVampireRitual", MixinTarget.WITCHERY),
+        // Interop,
         //SAFE_VAMPIRE_BIOMES("lotr.interop.witchery.SafeVampireBiomes", MixinTarget.LOTR, MixinTarget.WITCHERY),
-        ENTITY_RENDERER_PATCH("lotr.interop.witchery.EntityRendererPatch", MixinTarget.LOTR, MixinTarget.WITCHERY),
 
         // RPLE mixins - usually these get merged to upstream quickly
         RPLE_OPENLIGHT("rple.RPLEOpenLight", MixinTarget.RPLE, MixinTarget.OPENLIGHTS),
 
         // Witchery
+        FIX_VAMPIRE_RITUAL("witchery.FixVampireRitual", MixinTarget.WITCHERY),
         CAP_VAMPIRE("witchery.entity.DamageCapRemover$VampireDTCapRemover", MixinTarget.WITCHERY),
         DAMAGE_CAP_REMOVER("witchery.entity.DamageCapRemover$RegularCapRemover", MixinTarget.WITCHERY),
         CAP_MOG_GULG("witchery.entity.DamageCapRemover$WhyAreYouTwoSpecialDamnit", MixinTarget.WITCHERY),
@@ -167,32 +168,33 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
         // Galacticraft
         DISABLE_BODIES("galacticraft.CelestialBodyDisabler", MixinTarget.GALACTICRAFT),
         DISABLE_UNREACHABLE_PLANETS("galacticraft.DisableUnreachablePlanets", MixinTarget.GALACTICRAFT),
+        DISABLE_MAKING_UNREACHABLE_BODIES("galacticraft.DisableUnreachablePlanets$DisableMakingBodiesUnreachable", MixinTarget.GALACTICRAFT),
 
         // QuiverBow
         FIX_SOUL_CAIRN_STUPIDITY("quiverbow.SoulCairnDeStupidifier", MixinTarget.QUIVERBOW)
         ;
 
-        public final String mixinClass;
+        public final String mixin;
         public final List<MixinTarget> targets;
         private final Side side;
 
-        MixinRegistry(String mixinClass, Side side, MixinTarget... targets) {
-            this.mixinClass = mixinClass;
+        MixinRegistry(String mixin, Side side, MixinTarget... targets) {
+            this.mixin = mixin;
             this.targets = Arrays.asList(targets);
             this.side = side;
         }
 
-        MixinRegistry(String mixinClass, MixinTarget... targets) {
-            this.mixinClass = mixinClass;
+        MixinRegistry(String mixin, MixinTarget... targets) {
+            this.mixin = mixin;
             this.targets = Arrays.asList(targets);
             this.side = Side.BOTH;
         }
 
-        public boolean shouldLoad(List<MixinTarget> loadedMods) {
+        public boolean shouldLoad(List<MixinTarget> loaded) {
             return (side == Side.BOTH
                     || side == Side.SERVER && FMLLaunchHandler.side().isServer()
                     || side == Side.CLIENT && FMLLaunchHandler.side().isClient())
-                    && new HashSet<>(loadedMods).containsAll(targets);
+                    && new HashSet<>(loaded).containsAll(targets);
         }
 
         enum Side {
@@ -203,43 +205,43 @@ public class LilyflowerTweaksMixinSystem implements IMixinConfigPlugin {
     }
 
     public enum MixinTarget {
-        RPLE("rple", "rple", false),
-        LOTR("The Lord of the Rings Mod", "LOTRMod", true),
-        ALFHEIM("alfheim", "Alfheim", false),
-        VANILLA("Minecraft", "unused", true),
+        ALFHEIM("Alfheim", "Alfheim", false),
         WITCHERY("Witchery", "Witchery", true),
-        BACKHAND("backhand", "backhand", true),
-        OPENCOMPUTERS("OpenComputers", "OpenComputers", true),
-        OPENLIGHTS("openlights", "OpenLights", true),
-        ENDLESSIDS("endlessids", "endlessids", false),
-        ADVANCED_ROCKETRY("advancedRocketry", "AdvancedRocketry", true),
-        VICS_MW("mw", "mw_", true),
-        GALACTICRAFT("GalacticraftCore", "Galacticraft", true),
-        QUIVERBOW("quiverchevsky", "QuiverBow", true);
+        BACKHAND("Backhand", "backhand", true),
+        QUIVERBOW("Quiverbow", "QuiverBow", true),
+        VICS_MW("Vic's Modern Warfare", "mw_", true),
+        VANILLA("Vanilla Minecraft", "unused", true),
+        OPENLIGHTS("Openlights", "OpenLights", false),
+        ENDLESSIDS("EndlessIDs", "endlessids", false),
+        GALACTICRAFT("Galacticraft", "Galacticraft", true),
+        LOTR("The Lord of the Rings Mod", "LOTRMod", true),
+        RPLE("Right Proper Lighting Engine", "rple", false),
+        OPENCOMPUTERS("OpenComputers", "OpenComputers", false),
+        ADVANCED_ROCKETRY("Advanced Rocketry", "AdvancedRocketry", true);
 
-        public final String modName;
-        public final String jarNamePrefixLowercase;
-        public final boolean loadInDevelopment;
+        public final String name;
+        public final String prefix;
+        public final boolean development;
 
-        MixinTarget(String modName, String jarNamePrefix, boolean loadInDevelopment) {
-            this.modName = modName;
-            this.jarNamePrefixLowercase = jarNamePrefix.toLowerCase();
-            this.loadInDevelopment = loadInDevelopment;
+        MixinTarget(String name, String prefix, boolean development) {
+            this.name = name;
+            this.prefix = prefix.toLowerCase();
+            this.development = development;
         }
 
         public boolean isMatchingJar(Path path) {
-            final String pathString = path.toString();
-            final String nameLowerCase = Files.getNameWithoutExtension(pathString).toLowerCase();
-            final String fileExtension = Files.getFileExtension(pathString);
+            final String location = path.toString();
+            final String basename = FileUtils.basename(location).toLowerCase();
+            final String extension = FileUtils.extension(location);
 
-            return nameLowerCase.startsWith(jarNamePrefixLowercase) && "jar".equals(fileExtension);
+            return basename.startsWith(prefix) && "jar".equals(extension);
         }
 
         @Override
         public String toString() {
             return "MixinTarget{" +
-                    "modName='" + modName + '\'' +
-                    ", jarNamePrefixLowercase='" + jarNamePrefixLowercase + '\'' +
+                    "modName='" + name + '\'' +
+                    ", jarNamePrefixLowercase='" + prefix + '\'' +
                     '}';
         }
     }

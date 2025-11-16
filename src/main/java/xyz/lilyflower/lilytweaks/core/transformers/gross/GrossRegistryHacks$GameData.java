@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core.transformers;
+package xyz.lilyflower.lilytweaks.core.transformers.gross;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -10,13 +10,13 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
-import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.core.settings.modules.StabilityTransformerSettings;
 
 @SuppressWarnings("unused")
-public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer {
+public class GrossRegistryHacks$GameData implements LilyflowerTweaksBootstrapTransformer {
     void addPrefix(TargetData data) {
-        if (data.method().access == Opcodes.ACC_PRIVATE && LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
+        if (data.method().access == Opcodes.ACC_PRIVATE && StabilityTransformerSettings.GROSS_REGISTRY_HACKS) {
             InsnList insns = new InsnList();
             LabelNode jump = new LabelNode(new Label());
 
@@ -36,13 +36,13 @@ public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer
     }
 
     void getMain(TargetData data) {
-        if (LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
+        if (StabilityTransformerSettings.GROSS_REGISTRY_HACKS) {
             data.method().access = Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC;
         }
     }
 
     void registerItem(TargetData data) {
-        if (data.method().access == Opcodes.ACC_PRIVATE && LilyflowerTweaksTransformerSettingsSystem.Stability.GROSS_REGISTRY_HACKS) {
+        if (data.method().access == Opcodes.ACC_PRIVATE && StabilityTransformerSettings.GROSS_REGISTRY_HACKS) {
             InsnList list = new InsnList();
             LabelNode jump = new LabelNode(new Label());
 
@@ -61,7 +61,7 @@ public class GameDataTransformer implements LilyflowerTweaksBootstrapTransformer
     }
 
     void testConsistency(TargetData data) {
-        if (LilyflowerTweaksTransformerSettingsSystem.Stability.STABILITY_OVERRIDES) {
+        if (StabilityTransformerSettings.STABILITY_OVERRIDES) {
             data.method().instructions.insert(new InsnNode(Opcodes.RETURN));
         }
     }

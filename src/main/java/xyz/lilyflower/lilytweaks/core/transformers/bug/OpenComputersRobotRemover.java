@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core.transformers;
+package xyz.lilyflower.lilytweaks.core.transformers.bug;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -8,13 +8,13 @@ import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
-import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.core.settings.modules.StabilityTransformerSettings;
 
 @SuppressWarnings("unused") // THIS [[$4.99 COREMOD]] COULD'VE BEEN A [[MIXIN]]
-public class ItemDataTransformer implements LilyflowerTweaksBootstrapTransformer {
+public class OpenComputersRobotRemover implements LilyflowerTweaksBootstrapTransformer {
     void createItemStack(TargetData data) {
-        if (LilyflowerTweaksTransformerSettingsSystem.Stability.DISABLE_OPENCOMPUTERS_ROBOTS) {
+        if (StabilityTransformerSettings.DISABLE_OPENCOMPUTERS_ROBOTS) {
             InsnList list = new InsnList();
 
             LabelNode label = new LabelNode(new Label());

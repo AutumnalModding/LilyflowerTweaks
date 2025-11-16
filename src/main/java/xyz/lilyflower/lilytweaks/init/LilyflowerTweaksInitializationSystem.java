@@ -14,18 +14,23 @@ import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksIntegrationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
+import xyz.lilyflower.lilytweaks.configuration.modules.CustomContentAdditionsConfiguration;
 import xyz.lilyflower.lilytweaks.configuration.modules.GalacticraftIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.configuration.modules.LOTRModIntegrationConfiguration;
 import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
-import xyz.lilyflower.lilytweaks.debug.LTRDebuggerCommand;
+import xyz.lilyflower.lilytweaks.command.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.integration.GalacticraftIntegration;
-import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
+import xyz.lilyflower.lilytweaks.api.CustomDataLoader;
 import org.reflections.Reflections;
 import java.util.Set;
+import xyz.lilyflower.lilytweaks.internal.bwiama.PlanetSetup;
+import xyz.lilyflower.lilytweaks.internal.bwiama.ServerInitializationHooks;
+import xyz.lilyflower.lilytweaks.internal.bwiama.GCWorldProviderRegistrationHook;
 
-@Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "after:GalacticraftCore;before:lotr")
+@Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "after:GalacticraftCore;after:lotr")
 public class LilyflowerTweaksInitializationSystem {
     private static final Reflections DATA = new Reflections("xyz.lilyflower.lilytweaks.util.loader");
     private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.configuration.modules");
@@ -33,12 +38,10 @@ public class LilyflowerTweaksInitializationSystem {
     public static final String MODID = "lilytweaks";
     public static final String VERSION = "3.0";
 
-    public static final Logger LOGGER = LogManager.getLogger("LilyflowerTweaks");
+    public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks");
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        LilyflowerTweaksIntegrationModule.add(new GalacticraftIntegration(), !GalacticraftIntegrationConfiguration.MODDED_PLANET_INTEGRATION.isEmpty());
-
         Set<Class<? extends ConfigurationModule>> configs = CONFIGURATION.getSubTypesOf(ConfigurationModule.class);
         configs.forEach(config -> {
             try {
@@ -78,6 +81,8 @@ public class LilyflowerTweaksInitializationSystem {
             OreDictionary.registerOre("nuggetMithril", LOTRMod.mithrilNugget);
         }
 
+        LilyflowerTweaksIntegrationModule.add(new PlanetSetup(), CustomContentAdditionsConfiguration.MODPACK_IDENTIFIER.equals("bwiama"));
+        LilyflowerTweaksIntegrationModule.add(new GalacticraftIntegration(), !GalacticraftIntegrationConfiguration.MODDED_PLANET_INTEGRATION.isEmpty());
         LilyflowerTweaksIntegrationModule.init(event);
     }
 
@@ -88,6 +93,7 @@ public class LilyflowerTweaksInitializationSystem {
             LOTRTime.DAY_LENGTH = (int) (LOTRModIntegrationConfiguration.TIME_BASE * LOTRModIntegrationConfiguration.TIME_MULTIPLIER);
         }
 
+        LilyflowerTweaksIntegrationModule.add(new GCWorldProviderRegistrationHook(), CustomContentAdditionsConfiguration.MODPACK_IDENTIFIER.equals("bwiama"));
         LilyflowerTweaksIntegrationModule.init(event);
     }
 
@@ -97,6 +103,7 @@ public class LilyflowerTweaksInitializationSystem {
             event.registerServerCommand(new LTRDebuggerCommand());
         }
 
+        LilyflowerTweaksIntegrationModule.add(new ServerInitializationHooks(), CustomContentAdditionsConfiguration.MODPACK_IDENTIFIER.equals("bwiama"));
         LilyflowerTweaksIntegrationModule.init(event);
     }
 }

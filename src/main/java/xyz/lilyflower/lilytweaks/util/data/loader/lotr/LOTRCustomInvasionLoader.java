@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.loader.lotr;
+package xyz.lilyflower.lilytweaks.util.data.loader.lotr;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,12 +13,12 @@ import lotr.common.world.spawning.LOTRInvasions;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import xyz.lilyflower.lilytweaks.util.loader.EnumHelperMappings;
-import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
+import xyz.lilyflower.lilytweaks.util.data.loader.EnumHelperMappings;
+import xyz.lilyflower.lilytweaks.api.CustomDataLoader;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "unused"})
 public class LOTRCustomInvasionLoader implements CustomDataLoader {
-    private static final Logger LOGGER = LogManager.getLogger("LOTweakR Invasion Loader");
+    private static final Logger LOGGER = LogManager.getLogger("LOTR Invasion Loader");
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -1,13 +1,13 @@
-package xyz.lilyflower.lilytweaks.core.transformers;
+package xyz.lilyflower.lilytweaks.core.transformers.bug;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
 
 @SuppressWarnings("unused")
-public class LOTRClassTransformerTransformer implements LilyflowerTweaksBootstrapTransformer {
+public class LOTRTransformerCompatibilityPatches implements LilyflowerTweaksBootstrapTransformer {
     void patchBlockFire(TargetData data) {
         InsnList instructions = new InsnList();
 

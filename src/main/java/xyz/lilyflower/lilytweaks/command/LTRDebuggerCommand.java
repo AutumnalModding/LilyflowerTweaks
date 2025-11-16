@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.debug;
+package xyz.lilyflower.lilytweaks.command;
 
 import java.util.Set;
 import lotr.common.LOTRLevelData;

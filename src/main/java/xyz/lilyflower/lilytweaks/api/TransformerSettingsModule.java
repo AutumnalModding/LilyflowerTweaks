@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.core.settings;
+package xyz.lilyflower.lilytweaks.api;
 
 public interface TransformerSettingsModule {
     void init();

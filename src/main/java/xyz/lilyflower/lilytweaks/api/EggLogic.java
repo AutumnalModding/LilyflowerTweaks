@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.mixin;
+package xyz.lilyflower.lilytweaks.api;
 
 import alfheim.common.item.AlfheimItems;
 import alfheim.common.item.ItemSpawnEgg;

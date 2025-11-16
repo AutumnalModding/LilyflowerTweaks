@@ -1,8 +1,10 @@
 package xyz.lilyflower.lilytweaks.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.reflections.Reflections;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -23,8 +28,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.reflect.InvocationTargetException;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.debug.LoggingHelper;
 
 public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransformer {
+    public static boolean DEBUG_ENABLED = Files.exists(Paths.get(".classes/"));
     private static final HashMap<String, Class<? extends LilyflowerTweaksBootstrapTransformer>> TRANSFORMERS = new HashMap<>();
 
     @Override
@@ -32,12 +40,11 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
     public byte[] transform(ClassLoader loader, String name, Class<?> clazz, ProtectionDomain domain, byte[] bytes) {
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
-        ClassWriter writer = new ClassWriter(3);
+        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         reader.accept(node, 0);
 
         name = reader.getClassName();
-        boolean debug = Files.exists(Paths.get(".classes/"));
-        if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Detected classload for {}", name);
+        if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Detected classload for {}", name);
         if (TRANSFORMERS.containsKey(name)) {
             try {
                 boolean modified = false;
@@ -45,41 +52,41 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
                 LilyflowerTweaksBootstrapSystem.LOGGER.debug("Found class transformer {} - running it!!", transformer.getSimpleName());
                 LilyflowerTweaksBootstrapTransformer instance = transformer.newInstance();
                 ArrayList<String> methods = new ArrayList<>();
-                if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning available patches...");
+                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning available patches...");
                 Arrays.stream(transformer.getDeclaredMethods()).iterator().forEachRemaining(method -> methods.add(method.getName()));
 
-                if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
+                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
                 for (MethodNode method : node.methods) {
-                    if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
+                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
                     if (methods.contains(method.name.replaceAll("<", "\\$").replaceAll(">", "\\$"))) {
-                        if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method {}...", method.name);
+                        if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method {}...", method.name);
                         modified |= invoke(transformer, instance, node, method);
                     }
                 }
 
                 if (methods.contains("metadata")) {
-                    if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class metadata...");
+                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class metadata...");
                     modified |= invoke(transformer, instance, node, null);
                 }
 
                 if (modified) {
                     node.accept(writer);
                     bytes = writer.toByteArray();
-                    if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Finished targeting class {}!", name);
+                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Finished targeting class {}!", name);
                 } else {
-                    if (debug) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Did not modify class.");
+                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Did not modify class.");
                 }
             } catch (Throwable exception) { // this is bad practice but fuck it, do it anyway
-                LilyflowerTweaksBootstrapSystem.ohno("FAILED TRANSFORMING CLASS: " + name, exception);
+                LoggingHelper.oopsie(LilyflowerTweaksBootstrapSystem.LOGGER, "FAILED TRANSFORMING CLASS: " + name, exception);
             }
         }
 
-        if (debug) {
+        if (DEBUG_ENABLED) {
             File dump = new File(".classes/" + name.replaceAll("/", "∕") + ".class");
             try (FileOutputStream output = new FileOutputStream(dump)) {
                 output.write(bytes);
             } catch (IOException exception) {
-                LilyflowerTweaksBootstrapSystem.ohno("FAILED DUMPING CLASS: " + name, exception);
+                LoggingHelper.oopsie(LilyflowerTweaksBootstrapSystem.LOGGER, "FAILED DUMPING CLASS: " + name, exception);
             }
         }
 
@@ -98,7 +105,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
                 String target = transformer.internal$transformerTarget();
                 TRANSFORMERS.put(target, clazz);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException exception) {
-                LilyflowerTweaksBootstrapSystem.ohno("FAILED LOADING CLASS TRANSFORMER: " + clazz.getSimpleName(), exception);
+                LoggingHelper.oopsie(LilyflowerTweaksBootstrapSystem.LOGGER, "FAILED LOADING CLASS TRANSFORMER: " + clazz.getSimpleName(), exception);
             }
         }
 
@@ -128,7 +135,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
                 return node != compute(clazz);
             }
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException exception) {
-            LilyflowerTweaksBootstrapSystem.ohno("FAILED TRANSFORMING CLASS" + (method == null ? " METADATA" : ":" + method.name), exception);
+            LoggingHelper.oopsie(LilyflowerTweaksBootstrapSystem.LOGGER, "FAILED TRANSFORMING CLASS" + (method == null ? " METADATA" : ":" + method.name), exception);
         }
 
         return false;
@@ -136,7 +143,27 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
 
     private static int compute(InsnList list) {
         AtomicInteger hash = new AtomicInteger(list.size());
-        list.iterator().forEachRemaining(node -> hash.set((31 * hash.get()) + node.getOpcode()));
+        list.iterator().forEachRemaining(node -> {
+            int computed = 31 * hash.get() + node.getOpcode();
+            switch (node.getType()) {
+                case AbstractInsnNode.METHOD_INSN -> {
+                    MethodInsnNode method = (MethodInsnNode) node;
+                    try {
+                        MessageDigest digest = MessageDigest.getInstance("MD5");
+                        digest.update(method.name.getBytes());
+                        digest.update(method.desc.getBytes());
+                        digest.update(method.owner.getBytes());
+                        computed += Arrays.hashCode(digest.digest());
+                    } catch (NoSuchAlgorithmException ignored) {}
+                }
+
+                case AbstractInsnNode.JUMP_INSN -> {
+                    JumpInsnNode jump = (JumpInsnNode) node;
+                    computed += jump.label.hashCode();
+                }
+            }
+            hash.set(computed);
+        });
         return hash.get();
     }
 

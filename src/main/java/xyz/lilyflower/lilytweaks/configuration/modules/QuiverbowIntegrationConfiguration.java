@@ -2,7 +2,7 @@ package xyz.lilyflower.lilytweaks.configuration.modules;
 
 import java.util.List;
 import java.util.Arrays;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 
 public class QuiverbowIntegrationConfiguration implements ConfigurationModule {

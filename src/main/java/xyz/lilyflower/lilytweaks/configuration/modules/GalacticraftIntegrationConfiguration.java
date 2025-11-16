@@ -3,7 +3,7 @@ package xyz.lilyflower.lilytweaks.configuration.modules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import xyz.lilyflower.lilytweaks.configuration.ConfigurationModule;
+import xyz.lilyflower.lilytweaks.api.ConfigurationModule;
 import xyz.lilyflower.lilytweaks.configuration.LilyflowerTweaksGameConfigurationSystem;
 
 public class GalacticraftIntegrationConfiguration implements ConfigurationModule {

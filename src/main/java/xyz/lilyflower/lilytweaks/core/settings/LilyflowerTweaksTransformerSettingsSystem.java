@@ -3,6 +3,7 @@ package xyz.lilyflower.lilytweaks.core.settings;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapSystem;
 import xyz.lilyflower.lilytweaks.util.Pair;
@@ -23,6 +24,8 @@ public class LilyflowerTweaksTransformerSettingsSystem {
     }
 
     public static void load(File config) {
+        // Make sure we don't load earlyconfig in a development environment. For some reason.
+        if (System.getProperties().containsKey("net.minecraftforge.gradle.GradleStart.srgDir")) return;
         Configuration settings = new Configuration(config);
         LilyflowerTweaksBootstrapSystem.LOGGER.info("Initializing early-config system...");
 
@@ -34,11 +37,5 @@ public class LilyflowerTweaksTransformerSettingsSystem {
         if (settings.hasChanged()) {
             settings.save();
         }
-    }
-
-    public static class Stability {
-        public static boolean STABILITY_OVERRIDES = false;
-        public static boolean GROSS_REGISTRY_HACKS = false;
-        public static boolean DISABLE_OPENCOMPUTERS_ROBOTS = false;
     }
 }

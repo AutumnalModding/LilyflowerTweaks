@@ -1,4 +1,4 @@
-package xyz.lilyflower.lilytweaks.util.loader.lotr;
+package xyz.lilyflower.lilytweaks.util.data.loader.lotr;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,12 +22,11 @@ import lotr.common.world.map.LOTRWaypoint;
 import net.minecraftforge.common.util.EnumHelper;
 import xyz.lilyflower.lilytweaks.init.LilyflowerTweaksInitializationSystem;
 import xyz.lilyflower.lilytweaks.util.data.LOTRFactionRankData;
-import xyz.lilyflower.lilytweaks.util.loader.EnumHelperMappings;
-import xyz.lilyflower.lilytweaks.util.loader.CustomDataLoader;
+import xyz.lilyflower.lilytweaks.util.data.loader.EnumHelperMappings;
+import xyz.lilyflower.lilytweaks.api.CustomDataLoader;
 
-@SuppressWarnings({"ConstantConditions"})
+@SuppressWarnings({"ConstantConditions", "unused"})
 public class LOTRCustomFactionLoader implements CustomDataLoader {
-    public static final HashMap<LOTRFaction, ArrayList<LOTRFaction>> META_FACTIONS = new HashMap<>();
     public static final HashMap<LOTRFaction, LOTRFaction> MFRL = new HashMap<>();
 
     @Override
@@ -60,9 +59,6 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                 boolean warCrimes = false;
                 boolean isolation = false;
                 boolean canGetRank = true;
-
-                boolean ISMETA = false;
-                ArrayList<LOTRFaction> metamembers = new ArrayList<>();
 
                 ArrayList<LOTRControlZone> zones = new ArrayList<>();
                 ArrayList<LOTRFactionRankData> data = new ArrayList<>();
@@ -171,13 +167,6 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                                 relations.put(relation, factions);
                             }
                             break;
-
-                        case "METAMEMBER":
-                            ISMETA = true;
-                            if (LOTRFaction.forName(value.toUpperCase()) != null) {
-                                metamembers.add(LOTRFaction.forName(value.toUpperCase()));
-                            }
-                            break;
                     }
                 }
 
@@ -186,13 +175,6 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
                     faction.approvesWarCrimes = warCrimes;
                     faction.isolationist = isolation;
                     faction.allowPlayer = canGetRank;
-
-                    if (ISMETA) {
-                        META_FACTIONS.put(faction, metamembers);
-                        for (LOTRFaction member : metamembers) {
-                            MFRL.put(member, faction);
-                        }
-                    }
 
 
                     boolean setPledgeRank = false;

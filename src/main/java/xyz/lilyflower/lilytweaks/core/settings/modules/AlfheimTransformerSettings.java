@@ -1,7 +1,7 @@
 package xyz.lilyflower.lilytweaks.core.settings.modules;
 
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
-import xyz.lilyflower.lilytweaks.core.settings.TransformerSettingsModule;
+import xyz.lilyflower.lilytweaks.api.TransformerSettingsModule;
 
 @SuppressWarnings("unused")
 public class AlfheimTransformerSettings implements TransformerSettingsModule {

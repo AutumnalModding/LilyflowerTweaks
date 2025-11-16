@@ -23,3 +23,6 @@ lilytweaks.invalid_spawn_egg.1=Sorry! It seems this mob isn't yet supported by t
 lilytweaks.invalid_spawn_egg.2=Here's your diamond back - open an issue on the Github at:
 lilytweaks.invalid_spawn_egg.3=https://github.com/AutumnalModding/LilyflowerTweaks/issues
 lilytweaks.invalid_spawn_egg.4=(Make sure to specify what mod & entity has this issue!)
+
+planet.arda=Arda
+planet.eris=Eris
