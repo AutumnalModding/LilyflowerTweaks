@@ -5,6 +5,7 @@
 dependencies {
     shadowImplementation 'net.bytebuddy:byte-buddy:1.14.10'
     shadowImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
+    shadowImplementation 'io.github.classgraph:classgraph:4.8.177'
 
     // Actual dependencies
     shadowImplementation 'org.reflections:reflections:0.10.2'

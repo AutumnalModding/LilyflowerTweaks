@@ -3,20 +3,21 @@ package xyz.lilyflower.lilytweaks.content;
 import cpw.mods.fml.common.event.FMLStateEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import xyz.lilyflower.lilytweaks.api.ContentRegistry;
+import xyz.lilyflower.lilytweaks.util.ClasspathScanning;
 import xyz.lilyflower.lilytweaks.util.Pair;
 
 public class LilyflowerTweaksContentSystem {
     public static final Logger LOGGER = LogManager.getLogger("Lilyflower Tweaks Content Loader");
-    private static final Reflections CONTENT_SCANNER = new Reflections("xyz.lilyflower.lilytweaks.content.registry");
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void initialize(FMLStateEvent phase) {
-        Set<Class<? extends ContentRegistry>> REGISTRIES = CONTENT_SCANNER.getSubTypesOf(ContentRegistry.class);
+        List<Class<ContentRegistry>> REGISTRIES = ClasspathScanning.GetAllImplementations(ContentRegistry.class);
         for (Class<? extends ContentRegistry> clazz : REGISTRIES) {
             try {
                 LOGGER.info("Found content registry {}, attempting to load it!", clazz.getName());

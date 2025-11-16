@@ -1,10 +1,7 @@
 package xyz.lilyflower.lilytweaks.core;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,10 +11,9 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.MethodInsnNode;
+import java.security.MessageDigest;
 import org.reflections.Reflections;
+import java.lang.reflect.Constructor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import java.security.ProtectionDomain;
@@ -25,11 +21,17 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import java.security.NoSuchAlgorithmException;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.reflect.InvocationTargetException;
-import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
+import org.reflections.util.ConfigurationBuilder;
 import xyz.lilyflower.lilytweaks.debug.LoggingHelper;
+import xyz.lilyflower.lilytweaks.api.LilyflowerTweaksBootstrapTransformer;
+import xyz.lilyflower.lilytweaks.util.ClasspathScanning;
 
 public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransformer {
     public static boolean DEBUG_ENABLED = Files.exists(Paths.get(".classes/"));
@@ -44,38 +46,38 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
         reader.accept(node, 0);
 
         name = reader.getClassName();
-        if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Detected classload for {}", name);
+        if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Class: {}", name);
         if (TRANSFORMERS.containsKey(name)) {
             try {
                 boolean modified = false;
                 Class<? extends LilyflowerTweaksBootstrapTransformer> transformer = TRANSFORMERS.get(name);
-                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Found class transformer {} - running it!!", transformer.getSimpleName());
+                LilyflowerTweaksBootstrapSystem.LOGGER.debug("  Transformer: {}", transformer.getSimpleName());
                 LilyflowerTweaksBootstrapTransformer instance = transformer.newInstance();
                 ArrayList<String> methods = new ArrayList<>();
-                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning available patches...");
                 Arrays.stream(transformer.getDeclaredMethods()).iterator().forEachRemaining(method -> methods.add(method.getName()));
 
-                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class methods...");
-                for (MethodNode method : node.methods) {
-                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Trying method {}...", method.name);
-                    if (methods.contains(method.name.replaceAll("<", "\\$").replaceAll(">", "\\$"))) {
-                        if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming method {}...", method.name);
-                        modified |= invoke(transformer, instance, node, method);
-                    }
-                }
-
+                boolean metadata = false;
                 if (methods.contains("metadata")) {
-                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Transforming class metadata...");
-                    modified |= invoke(transformer, instance, node, null);
+                    metadata = invoke(transformer, instance, node, null);
+                    modified |= metadata;
+                }
+                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("  [{}] Metadata", (metadata ? "X" : " "));
+
+                for (MethodNode method : node.methods) {
+                    boolean transformed = false;
+                    if (methods.contains(method.name.replaceAll("<", "\\$").replaceAll(">", "\\$"))) {
+                        transformed = invoke(transformer, instance, node, method);
+                        modified |= transformed;
+                    }
+                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("  [{}] {}", (transformed ? "X" : " "), method.name);
                 }
 
                 if (modified) {
                     node.accept(writer);
                     bytes = writer.toByteArray();
-                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Finished targeting class {}!", name);
-                } else {
-                    if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("Did not modify class.");
                 }
+
+                if (DEBUG_ENABLED) LilyflowerTweaksBootstrapSystem.LOGGER.debug("  [{}] Modified", (modified ? "X" : " "));
             } catch (Throwable exception) { // this is bad practice but fuck it, do it anyway
                 LoggingHelper.oopsie(LilyflowerTweaksBootstrapSystem.LOGGER, "FAILED TRANSFORMING CLASS: " + name, exception);
             }
@@ -95,10 +97,9 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
 
     static {
         LilyflowerTweaksBootstrapSystem.LOGGER.debug("Scanning class transformers...");
-        Reflections reflections = new Reflections("xyz.lilyflower.lilytweaks.core.transformers");
-        Set<Class<? extends LilyflowerTweaksBootstrapTransformer>> classes = reflections.getSubTypesOf(LilyflowerTweaksBootstrapTransformer.class);
+        List<Class<LilyflowerTweaksBootstrapTransformer>> classes = ClasspathScanning.GetAllImplementations(LilyflowerTweaksBootstrapTransformer.class);
 
-        for (Class<? extends LilyflowerTweaksBootstrapTransformer> clazz : classes) {
+        for (Class<LilyflowerTweaksBootstrapTransformer> clazz : classes) {
             try {
                 Constructor<? extends LilyflowerTweaksBootstrapTransformer> constructor = clazz.getConstructor();
                 LilyflowerTweaksBootstrapTransformer transformer = constructor.newInstance();
@@ -127,10 +128,7 @@ public class LilyflowerTweaksTransformerLoadingSystem implements ClassFileTransf
 
             patcher.invoke(instance, new LilyflowerTweaksBootstrapTransformer.TargetData(clazz, method));
             if (hash != null) {
-                int computed = compute(method.instructions);
-                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Hash, original: {}", hash);
-                LilyflowerTweaksBootstrapSystem.LOGGER.debug("Hash, computed: {}", computed);
-                return computed != hash;
+                return hash != compute(method.instructions);
             } else {
                 return node != compute(clazz);
             }

@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import lotr.common.LOTRMod;
 import lotr.common.LOTRTime;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,16 +25,13 @@ import xyz.lilyflower.lilytweaks.content.LilyflowerTweaksContentSystem;
 import xyz.lilyflower.lilytweaks.command.LTRDebuggerCommand;
 import xyz.lilyflower.lilytweaks.integration.GalacticraftIntegration;
 import xyz.lilyflower.lilytweaks.api.CustomDataLoader;
-import org.reflections.Reflections;
-import java.util.Set;
 import xyz.lilyflower.lilytweaks.internal.bwiama.PlanetSetup;
 import xyz.lilyflower.lilytweaks.internal.bwiama.ServerInitializationHooks;
 import xyz.lilyflower.lilytweaks.internal.bwiama.GCWorldProviderRegistrationHook;
+import xyz.lilyflower.lilytweaks.util.ClasspathScanning;
 
 @Mod(modid = LilyflowerTweaksInitializationSystem.MODID, version = LilyflowerTweaksInitializationSystem.VERSION, dependencies = "after:GalacticraftCore;after:lotr")
 public class LilyflowerTweaksInitializationSystem {
-    private static final Reflections DATA = new Reflections("xyz.lilyflower.lilytweaks.util.loader");
-    private static final Reflections CONFIGURATION = new Reflections("xyz.lilyflower.lilytweaks.configuration.modules");
 
     public static final String MODID = "lilytweaks";
     public static final String VERSION = "3.0";
@@ -42,28 +40,28 @@ public class LilyflowerTweaksInitializationSystem {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Set<Class<? extends ConfigurationModule>> configs = CONFIGURATION.getSubTypesOf(ConfigurationModule.class);
-        configs.forEach(config -> {
+        List<Class<ConfigurationModule>> modules = ClasspathScanning.GetAllImplementations(ConfigurationModule.class);
+        modules.forEach(module -> {
             try {
-                Constructor<? extends ConfigurationModule> constructor = config.getConstructor();
-                ConfigurationModule module = constructor.newInstance();
-                LOGGER.info("Loading configuration module {}", config.getName());
-                module.init();
+                Constructor<? extends ConfigurationModule> constructor = module.getConstructor();
+                ConfigurationModule instance = constructor.newInstance();
+                LOGGER.info("Loading configuration module {}", module.getName());
+                instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LOGGER.fatal("Failed to load configuration module {}! Reason: {}", config.getName(), exception.getMessage());
+                LOGGER.fatal("Failed to load configuration module {}! Reason: {}", module.getName(), exception.getMessage());
                 throw new RuntimeException(exception);
             }
         });
 
-        Set<Class<? extends CustomDataLoader>> loaders = DATA.getSubTypesOf(CustomDataLoader.class);
-        loaders.forEach(data -> {
+        List<Class<CustomDataLoader>> loaders = ClasspathScanning.GetAllImplementations(CustomDataLoader.class);
+        loaders.forEach(loader -> {
             try {
-                Constructor<? extends CustomDataLoader> constructor = data.getConstructor();
-                CustomDataLoader loader = constructor.newInstance();
-                LOGGER.info("Executing data loader {}", data.getName());
-                loader.run();
+                Constructor<? extends CustomDataLoader> constructor = loader.getConstructor();
+                CustomDataLoader instance = constructor.newInstance();
+                LOGGER.info("Executing data loader {}", loader.getName());
+                instance.run();
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException exception) {
-                LOGGER.error("Failed to run custom data loader {}! Reason: {}", data.getName(), exception.getMessage());
+                LOGGER.error("Failed to run custom data loader {}! Reason: {}", loader.getName(), exception.getMessage());
             } catch (NoClassDefFoundError ignored) {}
         });
 

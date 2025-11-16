@@ -21,6 +21,7 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 import xyz.lilyflower.lilytweaks.api.TransformerSettingsModule;
 import xyz.lilyflower.lilytweaks.core.settings.LilyflowerTweaksTransformerSettingsSystem;
 import xyz.lilyflower.lilytweaks.debug.LoggingHelper;
+import xyz.lilyflower.lilytweaks.util.ClasspathScanning;
 
 @SuppressWarnings("unused") // How early can we go?
 public class LilyflowerTweaksBootstrapSystem implements ITweaker {
@@ -67,16 +68,15 @@ public class LilyflowerTweaksBootstrapSystem implements ITweaker {
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        Reflections reflections = new Reflections("xyz.lilyflower.lilytweaks.core.settings.modules");
-        Set<Class<? extends TransformerSettingsModule>> runners = reflections.getSubTypesOf(TransformerSettingsModule.class);
-        runners.forEach(runner -> {
+        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.GetAllImplementations(TransformerSettingsModule.class);
+        modules.forEach(module -> {
             try {
-                Constructor<? extends TransformerSettingsModule> constructor = runner.getConstructor();
+                Constructor<? extends TransformerSettingsModule> constructor = module.getConstructor();
                 TransformerSettingsModule instance = constructor.newInstance();
-                LOGGER.info("Registering settings runner {}...", instance.getClass().getSimpleName());
+                LOGGER.info("Registering transformer settings module {}...", instance.getClass().getSimpleName());
                 instance.init();
             } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD TRANSFORMER SETTINGS: " + runner.getSimpleName(), exception);
+                LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD TRANSFORMER SETTINGS: " + module.getSimpleName(), exception);
             }
         });
 
