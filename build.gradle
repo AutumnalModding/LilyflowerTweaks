@@ -7,7 +7,7 @@ plugins {
 jar {
     manifest {
         attributes(
-            'TweakClass': 'xyz.lilyflower.lilytweaks.core.LilyflowerTweaksBootstrapSystem'
+            'TweakClass': 'xyz.lilyflower.solaris.core.SolarisBootstrap'
         )
     }
 }

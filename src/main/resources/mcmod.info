@@ -1,7 +1,7 @@
 [
 {
-  "modid": "lilytweaks",
-  "name": "Lilyflower Tweaks",
+  "modid": "solaris",
+  "name": "Solaris",
   "description": "Opinionated tweaks and some bugfixes for various mods.",
   "version": "3.0",
   "mcversion": "1.7.10",
