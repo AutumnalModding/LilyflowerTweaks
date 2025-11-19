@@ -38,7 +38,7 @@ public class Solaris {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        List<Class<ConfigurationModule>> modules = ClasspathScanning.GetAllImplementations(ConfigurationModule.class);
+        List<Class<ConfigurationModule>> modules = ClasspathScanning.interfaces(ConfigurationModule.class);
         modules.forEach(module -> {
             try {
                 Constructor<? extends ConfigurationModule> constructor = module.getConstructor();
@@ -51,7 +51,7 @@ public class Solaris {
             }
         });
 
-        List<Class<CustomDataLoader>> loaders = ClasspathScanning.GetAllImplementations(CustomDataLoader.class);
+        List<Class<CustomDataLoader>> loaders = ClasspathScanning.interfaces(CustomDataLoader.class);
         loaders.forEach(loader -> {
             try {
                 Constructor<? extends CustomDataLoader> constructor = loader.getConstructor();

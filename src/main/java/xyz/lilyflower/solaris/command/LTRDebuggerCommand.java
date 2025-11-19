@@ -1,6 +1,6 @@
 package xyz.lilyflower.solaris.command;
 
-import java.util.Set;
+import java.util.List;
 import lotr.common.LOTRLevelData;
 import lotr.common.LOTRPlayerData;
 import lotr.common.entity.npc.LOTREntityNPC;
@@ -10,11 +10,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-import org.reflections.Reflections;
+import xyz.lilyflower.solaris.util.ClasspathScanning;
 
 public class LTRDebuggerCommand extends CommandBase {
-    private static final Reflections NPC_SCANNER = new Reflections("lotr.common.entity.npc");
-
     @Override
     public String getCommandName() {
         return "ltdebug";
@@ -76,7 +74,7 @@ public class LTRDebuggerCommand extends CommandBase {
 
     private void sendNpcClasses(EntityPlayer player) {
         sendChatMessage(player, "====== DUMPING VALID NPC NAMES ======");
-        Set<Class<? extends LOTREntityNPC>> npcs = NPC_SCANNER.getSubTypesOf(LOTREntityNPC.class);
+        List<Class<LOTREntityNPC>> npcs = ClasspathScanning.subclasses(LOTREntityNPC.class);
         npcs.forEach(npc -> sendChatMessage(player, "Found NPC class: " + npc.getCanonicalName().replace("lotr.common.entity.npc.", "")));
         sendChatMessage(player, "===== DUMP FINISHED, CHECK LOGS =====");
     }

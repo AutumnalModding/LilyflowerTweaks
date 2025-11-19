@@ -3,12 +3,8 @@
 //file:noinspection GroovyAssignabilityCheck
 
 dependencies {
-    shadowImplementation 'net.bytebuddy:byte-buddy:1.14.10'
     shadowImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
     shadowImplementation 'io.github.classgraph:classgraph:4.8.177'
-
-    // Actual dependencies
-    shadowImplementation 'org.reflections:reflections:0.10.2'
     compileOnly "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
 
     compileOnly deobfCurse("atum-59621:2256356")
@@ -32,7 +28,5 @@ dependencies {
     compileOnly deobfCurse("hbms-nuclear-tech-mod-235439:5534354")
     compileOnly deobfCurse("vics-modern-warfare-mod-243788:2819851")
     compileOnly deobfCurse("the-lord-of-the-rings-mod-legacy-423748:4091561")
-
-
     compileOnly "com.gtnewhorizons.retrofuturabootstrap:RetroFuturaBootstrap:1.0.7"
 }

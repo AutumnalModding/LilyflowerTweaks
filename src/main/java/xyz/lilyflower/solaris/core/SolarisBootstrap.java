@@ -66,7 +66,7 @@ public class SolarisBootstrap implements ITweaker {
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.GetAllImplementations(TransformerSettingsModule.class);
+        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.interfaces(TransformerSettingsModule.class);
         modules.forEach(module -> {
             try {
                 Constructor<? extends TransformerSettingsModule> constructor = module.getConstructor();

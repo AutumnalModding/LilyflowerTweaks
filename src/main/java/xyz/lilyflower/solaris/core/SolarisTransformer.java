@@ -25,12 +25,13 @@ import java.security.NoSuchAlgorithmException;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.reflect.InvocationTargetException;
 import xyz.lilyflower.solaris.debug.LoggingHelper;
-import xyz.lilyflower.solaris.api.SolarisClassTransformer;
+import java.lang.reflect.InvocationTargetException;
 import xyz.lilyflower.solaris.util.ClasspathScanning;
+import xyz.lilyflower.solaris.api.SolarisClassTransformer;
 
 public class SolarisTransformer implements ClassFileTransformer {
+    private static boolean CASCADING = false;
     public static boolean DEBUG_ENABLED = Files.exists(Paths.get(".classes/"));
     private static final HashMap<String, Class<? extends SolarisClassTransformer>> TRANSFORMERS = new HashMap<>();
 
@@ -76,6 +77,17 @@ public class SolarisTransformer implements ClassFileTransformer {
 
                 SolarisBootstrap.LOGGER.debug("  [{}] Modified", (modified ? "X" : " "));
             } catch (Throwable exception) { // this is bad practice but fuck it, do it anyway
+                if (exception instanceof NoClassDefFoundError error && !CASCADING) {
+                    CASCADING = true;
+                    String target = error.getMessage().replaceAll("/", ".");
+                    try {
+                        SolarisBootstrap.LOGGER.warn("Warning: Attempting to cascade class: {}", target);
+                        Class.forName(target);
+                        CASCADING = false;
+                        SolarisBootstrap.LOGGER.warn("WARNING: RETRANSFORMING CLASS {}!", name);
+                        bytes = transform(loader, name, clazz, domain, bytes);
+                    } catch (ClassNotFoundException ignored) {}
+                }
                 LoggingHelper.oopsie(SolarisBootstrap.LOGGER, "FAILED TRANSFORMING CLASS: " + name, exception);
             }
         }
@@ -94,7 +106,7 @@ public class SolarisTransformer implements ClassFileTransformer {
 
     static {
         SolarisBootstrap.LOGGER.debug("Scanning class transformers...");
-        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.GetAllImplementations(SolarisClassTransformer.class);
+        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.interfaces(SolarisClassTransformer.class);
 
         for (Class<SolarisClassTransformer> clazz : classes) {
             try {

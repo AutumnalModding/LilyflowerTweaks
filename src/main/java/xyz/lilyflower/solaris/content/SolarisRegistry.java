@@ -15,7 +15,7 @@ public class SolarisRegistry {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void initialize(FMLStateEvent phase) {
-        List<Class<ContentRegistry>> REGISTRIES = ClasspathScanning.GetAllImplementations(ContentRegistry.class);
+        List<Class<ContentRegistry>> REGISTRIES = ClasspathScanning.interfaces(ContentRegistry.class);
         for (Class<? extends ContentRegistry> clazz : REGISTRIES) {
             try {
                 LOGGER.info("Found content registry {}, attempting to load it!", clazz.getName());
