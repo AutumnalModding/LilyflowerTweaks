@@ -1,5 +1,6 @@
 package xyz.lilyflower.solaris.core;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.io.File;
 import java.util.List;
@@ -45,6 +46,7 @@ public class SolarisBootstrap implements ITweaker {
         // You either die a FakeTransformerExclusions...
         // ...or live long enough to see yourself an LCL call.
         launch.addTransformerExclusion("com.unascribed.ears");
+        SolarisTransformer.LOADER = launch;
     }
 
     @Override
@@ -59,14 +61,27 @@ public class SolarisBootstrap implements ITweaker {
 
     static {
         LOGGER.info("Spinning up...");
-        Instrumentation agent = ByteBuddyAgent.install();
-        agent.addTransformer(new SolarisTransformer(), true);
+        try {
+            Instrumentation agent = ByteBuddyAgent.install();
+            agent.addTransformer(new SolarisTransformer(), true);
+            throw new ExceptionInInitializerError();
+        } catch (ExceptionInInitializerError error) { // JNA /should/ work but it might not? unsure.
+            LoggingHelper.oopsie(LOGGER, "FAILED TO INITIALIZE AGENT -- CRASHING! (Try running with a JDK!)", error);
+            try { // we have to call directly because of FML shenanigans
+                Class<?> internal = Class.forName("java.lang.Shutdown");
+                Method halt = internal.getDeclaredMethod("halt0", int.class);
+                halt.setAccessible(true);
+                halt.invoke(null, 1); // <- maybe we change the exit code?
+            } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException exception) {
+                LOGGER.fatal("Failed to kill the JVM - you're on your own!");
+            }
+        }
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.interfaces(TransformerSettingsModule.class);
+        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.implementations(TransformerSettingsModule.class, false);
         modules.forEach(module -> {
             try {
                 Constructor<? extends TransformerSettingsModule> constructor = module.getConstructor();

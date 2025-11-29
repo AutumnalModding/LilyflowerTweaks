@@ -3,9 +3,11 @@
 //file:noinspection GroovyAssignabilityCheck
 
 dependencies {
+    compileOnly "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
     shadowImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
     shadowImplementation 'io.github.classgraph:classgraph:4.8.177'
-    compileOnly "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
+    shadowImplementation 'net.java.dev.jna:jna:5.14.0'
+    shadowImplementation 'net.java.dev.jna:jna-platform:5.14.0'
 
     compileOnly deobfCurse("atum-59621:2256356")
     compileOnly deobfCurse("rple-1050511:5494077")

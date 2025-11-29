@@ -44,7 +44,7 @@ public class LTRDebuggerCommand extends CommandBase {
                         break;
 
                     case "dumpInvasions":
-                        sendChatMessage(player, "=== DUMPING VALID INVASION VALUES ===");
+                        sendChatMessage(player, "==== DUMPING ALL  INVASION NAMES ====");
                         for (LOTRInvasions invasion : LOTRInvasions.values()) {
                             sendChatMessage(player, "Found invasion '" + invasion.name() + "' - faction " + invasion.invasionFaction + ".");
                         }
@@ -74,7 +74,7 @@ public class LTRDebuggerCommand extends CommandBase {
 
     private void sendNpcClasses(EntityPlayer player) {
         sendChatMessage(player, "====== DUMPING VALID NPC NAMES ======");
-        List<Class<LOTREntityNPC>> npcs = ClasspathScanning.subclasses(LOTREntityNPC.class);
+        List<Class<LOTREntityNPC>> npcs = ClasspathScanning.implementations(LOTREntityNPC.class, true);
         npcs.forEach(npc -> sendChatMessage(player, "Found NPC class: " + npc.getCanonicalName().replace("lotr.common.entity.npc.", "")));
         sendChatMessage(player, "===== DUMP FINISHED, CHECK LOGS =====");
     }

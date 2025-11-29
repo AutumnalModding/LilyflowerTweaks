@@ -31,7 +31,7 @@ public class LOTRCustomFactionLoader implements CustomDataLoader {
 
     @Override
     @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
-    public void run() {
+    public void init() {
         File customFactionList = new File(System.getProperty("user.dir") + "/config/solaris/lotr/factions/");
 
         if (!customFactionList.exists()) {

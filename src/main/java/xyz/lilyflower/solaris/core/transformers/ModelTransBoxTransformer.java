@@ -5,7 +5,7 @@ import xyz.lilyflower.solaris.api.SolarisClassTransformer;
 
 @SuppressWarnings("unused")
 public class ModelTransBoxTransformer implements SolarisClassTransformer {
-    void metadata(TargetData data) {
+    void solaris$metadata(TargetData data) {
         data.node().superName = "net/minecraft/client/model/ModelBox";
     }
 

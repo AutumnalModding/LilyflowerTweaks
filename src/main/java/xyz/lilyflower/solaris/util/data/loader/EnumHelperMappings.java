@@ -6,6 +6,7 @@ import lotr.common.fac.LOTRFaction;
 import lotr.common.fac.LOTRMapRegion;
 import lotr.common.world.spawning.LOTRInvasions;
 
+@SuppressWarnings("unused")
 public class EnumHelperMappings {
     public static final Class<?>[][] LOTR_EH_MAPPINGS = {
             {LOTRInvasions.class, LOTRFaction.class},

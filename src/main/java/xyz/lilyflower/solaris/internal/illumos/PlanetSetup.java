@@ -2,8 +2,6 @@ package xyz.lilyflower.solaris.internal.illumos;
 
 import com.gildedgames.the_aether.world.AetherWorldProvider;
 import com.teammetallurgy.atum.world.AtumWorldProvider;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLStateEvent;
 import java.util.Arrays;
 import java.util.List;
 import lotr.common.world.LOTRWorldProviderMiddleEarth;
@@ -22,6 +20,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.util.ResourceLocation;
+import xyz.lilyflower.solaris.api.LoadStage;
 import xyz.lilyflower.solaris.api.SolarisIntegrationModule;
 import xyz.lilyflower.solaris.init.Solaris;
 import xyz.lilyflower.solaris.integration.galacticraft.StarRegistry;
@@ -98,7 +97,7 @@ public class PlanetSetup implements SolarisIntegrationModule {
             .setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.75F, 1.75F));
 
     @Override
-    public void run(FMLStateEvent stage) {
+    public void run() {
         Solaris.LOGGER.info("Registering Galacticraft planets...");
         MEDIAKORIA.setMainStar(EYE_OF_VELZIE);
         GalaxyRegistry.registerSolarSystem(MEDIAKORIA);
@@ -130,7 +129,7 @@ public class PlanetSetup implements SolarisIntegrationModule {
     }
 
     @Override
-    public boolean valid(FMLStateEvent stage) {
-        return stage instanceof FMLInitializationEvent;
+    public boolean valid() {
+        return Solaris.STATE == LoadStage.RUNNING;
     }
 }

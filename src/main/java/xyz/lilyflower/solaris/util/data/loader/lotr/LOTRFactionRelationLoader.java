@@ -18,7 +18,7 @@ public class LOTRFactionRelationLoader implements CustomDataLoader {
     public static final HashMap<LOTRFactionRelations.FactionPair, LOTRFactionRelations.Relation> RELATIONS = new HashMap<>();
 
     @Override
-    public void run() {
+    public void init() {
         File relations = new File(System.getProperty("user.dir") + "/config/solaris/lotr/relations.txt");
 
         if (relations.exists()) {

@@ -7,10 +7,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import net.minecraft.item.Item;
+import xyz.lilyflower.solaris.api.LoadStage;
 import xyz.lilyflower.solaris.configuration.modules.SolarisContent;
 import xyz.lilyflower.solaris.api.ContentRegistry;
 import xyz.lilyflower.solaris.content.SolarisRegistry;
 import xyz.lilyflower.solaris.debug.LoggingHelper;
+import xyz.lilyflower.solaris.init.Solaris;
 import xyz.lilyflower.solaris.util.FifteenthCompetingStandard;
 
 public class ItemRegistry implements ContentRegistry<Item> {
@@ -23,6 +25,7 @@ public class ItemRegistry implements ContentRegistry<Item> {
 
     public static final Item STONE_DUST = create("dust_stone", Item.class, new Class<?>[]{});
 
+    @SuppressWarnings("SameParameterValue")
     private static Item create(String name, Class<? extends Item> clazz, Class<?>[] types, Object... arguments) {
         try {
             Constructor<? extends Item> constructor = clazz.getConstructor(types);
@@ -45,12 +48,12 @@ public class ItemRegistry implements ContentRegistry<Item> {
     }
 
     @Override
-    public boolean shouldRegister(String key) {
+    public boolean valid(String key) {
         return SolarisContent.ENABLE_CONTENT;
     }
 
     @Override
-    public boolean shouldRun(FMLStateEvent phase) {
-        return phase instanceof FMLPreInitializationEvent;
+    public boolean runnable() {
+        return Solaris.STATE == LoadStage.PRELOADER;
     }
 }

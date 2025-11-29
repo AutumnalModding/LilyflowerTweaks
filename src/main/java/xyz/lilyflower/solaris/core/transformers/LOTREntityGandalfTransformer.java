@@ -17,7 +17,7 @@ public class LOTREntityGandalfTransformer implements SolarisClassTransformer {
         InsnList list = new InsnList();
 
         LabelNode label = new LabelNode(new Label());
-        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/solaris/configuration/modules/LOTRModIntegrationConfiguration", "ENABLE_WANDERER_DEATH", "Z"));
+        list.add(new FieldInsnNode(Opcodes.GETSTATIC, "xyz/lilyflower/solaris/configuration/modules/SolarisLOTR", "ENABLE_WANDERER_DEATH", "Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));

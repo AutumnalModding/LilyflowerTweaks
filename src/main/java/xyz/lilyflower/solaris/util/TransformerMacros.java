@@ -91,8 +91,10 @@ public class TransformerMacros {
         return new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformerMacros.class), "__INTERNAL_NOOP", "()V", false);
     }
 
+    @SuppressWarnings("EmptyMethod")
     public static void __INTERNAL_NOOP() {}
 
     // TODO: actually implement this
+    @SuppressWarnings("EmptyMethod")
     public static void CancelRegistrationForID(InsnList list, int index) {}
 }

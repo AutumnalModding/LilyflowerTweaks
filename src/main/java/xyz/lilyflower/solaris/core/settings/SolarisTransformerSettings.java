@@ -7,6 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 import xyz.lilyflower.solaris.core.SolarisBootstrap;
 import xyz.lilyflower.solaris.util.FifteenthCompetingStandard;
 
+@SuppressWarnings("unused")
 public class SolarisTransformerSettings {
     private static final ArrayList<FifteenthCompetingStandard.Pair<String, Consumer<Configuration>>> CONFIG_RUNNERS = new ArrayList<>();
 

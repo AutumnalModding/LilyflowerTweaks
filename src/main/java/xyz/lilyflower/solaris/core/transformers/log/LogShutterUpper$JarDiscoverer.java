@@ -12,7 +12,7 @@ public class LogShutterUpper$JarDiscoverer implements SolarisClassTransformer {
         return "cpw/mods/fml/common/discovery/JarDiscoverer";
     }
 
-    void discover(TargetData data) {
+    void discover(TargetData data) { // Oh my God shut the Fuck Up
         TransformerMacros.KillMethodCall(FMLLog.class, "log", new Class<?>[]{Level.class, Throwable.class, String.class, Object[].class}, data.method().instructions);
     }
 }

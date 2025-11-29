@@ -22,7 +22,7 @@ public class LOTRCustomInvasionLoader implements CustomDataLoader {
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void run() {
+    public void init() {
         File customInvasionList = new File(System.getProperty("user.dir") + "/config/solaris/lotr/invasions/");
 
         if (!customInvasionList.exists()) {

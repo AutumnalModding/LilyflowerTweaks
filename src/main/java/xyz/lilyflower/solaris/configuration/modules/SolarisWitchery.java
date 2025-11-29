@@ -10,9 +10,9 @@ import xyz.lilyflower.solaris.init.Solaris;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class SolarisWitchery implements ConfigurationModule {
-    public static HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
+    public static final HashMap<Class<? extends IHandleDT>, Float> WITCHERY_DAMAGE_CAPS = new HashMap<>();
     public static List<String> SAFE_LOTR_BIOMES;
-    public static List<Integer> ALLOWED_RITUAL_DIMENSIONS = new ArrayList<>();
+    public static final List<Integer> ALLOWED_RITUAL_DIMENSIONS = new ArrayList<>();
 
     public static boolean isBiomeSafe(String biome) {
         return SAFE_LOTR_BIOMES.contains(biome);

@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.lang.reflect.Constructor;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import java.security.ProtectionDomain;
@@ -32,7 +33,8 @@ import xyz.lilyflower.solaris.api.SolarisClassTransformer;
 
 public class SolarisTransformer implements ClassFileTransformer {
     private static boolean CASCADING = false;
-    public static boolean DEBUG_ENABLED = Files.exists(Paths.get(".classes/"));
+    static LaunchClassLoader LOADER = null;
+    public static final boolean DEBUG_ENABLED = Files.exists(Paths.get(".classes/"));
     private static final HashMap<String, Class<? extends SolarisClassTransformer>> TRANSFORMERS = new HashMap<>();
 
     @Override
@@ -55,15 +57,15 @@ public class SolarisTransformer implements ClassFileTransformer {
                 Arrays.stream(transformer.getDeclaredMethods()).iterator().forEachRemaining(method -> methods.add(method.getName()));
 
                 boolean metadata = false;
-                if (methods.contains("metadata")) {
+                if (methods.contains("solaris$metadata")) {
                     metadata = invoke(transformer, instance, node, null);
                     modified |= metadata;
                 }
                 SolarisBootstrap.LOGGER.debug("  [{}] Metadata", (metadata ? "X" : " "));
 
                 for (MethodNode method : node.methods) {
-                    boolean transformed = false;
-                    if (methods.contains(method.name.replaceAll("<", "\\$").replaceAll(">", "\\$"))) {
+                    boolean transformed = false; // i.e. solaris$init or solaris$clinit
+                    if (methods.contains(method.name.replaceAll("<", "solaris$").replaceAll(">", ""))) {
                         transformed = invoke(transformer, instance, node, method);
                         modified |= transformed;
                     }
@@ -82,7 +84,7 @@ public class SolarisTransformer implements ClassFileTransformer {
                     String target = error.getMessage().replaceAll("/", ".");
                     try {
                         SolarisBootstrap.LOGGER.warn("Warning: Attempting to cascade class: {}", target);
-                        Class.forName(target);
+                        LOADER.loadClass(target);
                         CASCADING = false;
                         SolarisBootstrap.LOGGER.warn("WARNING: RETRANSFORMING CLASS {}!", name);
                         bytes = transform(loader, name, clazz, domain, bytes);
@@ -106,7 +108,7 @@ public class SolarisTransformer implements ClassFileTransformer {
 
     static {
         SolarisBootstrap.LOGGER.debug("Scanning class transformers...");
-        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.interfaces(SolarisClassTransformer.class);
+        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.implementations(SolarisClassTransformer.class, false);
 
         for (Class<SolarisClassTransformer> clazz : classes) {
             try {
