@@ -1,33 +1,44 @@
 package xyz.lilyflower.solaris.util;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ClasspathScanning {
     private static final HashMap<Class<?>, List<Class<?>>> CACHE = new HashMap<>();
+    public static final Logger LOGGER = LogManager.getLogger("Solaris Classpath Scanner");
 
-    public static <T> List<Class<T>> implementations(Class<T> clazz, boolean concrete) {
+    public static <T> List<Class<T>> implementations(Class<T> clazz, boolean concrete, boolean verbose) {
+        LOGGER.info("Scanning classpath for {}implementations of {}...", (concrete ? "concrete " : ""), clazz.getCanonicalName());
         if (!CACHE.containsKey(clazz)) {
-            try (ScanResult result = new ClassGraph()
-                    .enableClassInfo()
-                    .rejectPackages(
-                            "java.*",
-                            "javax.*",
-                            "sun.*",
-                            "com.sun.*",
-                            "com.azul.*",
-                            "jdk.*",
-                            "org.spongepowered.*",
-                            "org.objectweb.*"
-                    )
-                    .scan()) {
-                ClassInfoList classes = concrete ? result.getSubclasses(clazz) : result.getClassesImplementing(clazz);
-                __STORE(clazz, classes.loadClasses(clazz));
+            ScanResult result = new ClassGraph()
+                .enableClassInfo()
+                .rejectPackages("java.*")
+                .rejectPackages("javax.*")
+                .rejectPackages("sun.*")
+                .rejectPackages("com.sun.*")
+                .rejectPackages("com.azul.*")
+                .rejectPackages("jdk.*")
+                .rejectPackages("org.spongepowered.*")
+                .rejectPackages("org.objectweb.*")
+                .verbose(verbose)
+                .scan();
+
+            ClassInfoList classes = concrete ? result.getSubclasses(clazz) : result.getClassesImplementing(clazz);
+            List<Class<T>> loaded = new ArrayList<>();
+            for (ClassInfo target : classes) {
+                LOGGER.info("Found class {}. Loading it.", target.getName());
+                loaded.add(target.loadClass(clazz));
             }
+            LOGGER.info("Found {} total {}implementations.", classes.size(), (concrete ? "concrete " : ""));
+            __STORE(clazz, loaded);
+            result.close();
         }
 
         return __LOAD(clazz);

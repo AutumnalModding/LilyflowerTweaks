@@ -4,6 +4,7 @@
 
 dependencies {
     compileOnly "com.github.GTNewHorizons:Forgelin:2.0.3-GTNH"
+    shadowImplementation 'net.bytebuddy:byte-buddy:1.14.10'
     shadowImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
     shadowImplementation 'io.github.classgraph:classgraph:4.8.177'
     shadowImplementation 'net.java.dev.jna:jna:5.14.0'

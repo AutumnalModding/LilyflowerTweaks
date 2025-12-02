@@ -14,13 +14,13 @@ public class SolarisRegistry {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void initialize() {
-        List<Class<ContentRegistry>> REGISTRIES = ClasspathScanning.implementations(ContentRegistry.class, false);
+        List<Class<ContentRegistry>> REGISTRIES = ClasspathScanning.implementations(ContentRegistry.class, false, false);
         for (Class<? extends ContentRegistry> clazz : REGISTRIES) {
             try {
-                LOGGER.info("Found content registry {}, attempting to load it!", clazz.getName());
                 Constructor<? extends ContentRegistry> constructor = clazz.getConstructor();
                 ContentRegistry registry = constructor.newInstance();
                 if (registry.runnable()) {
+                    LOGGER.info("Executing content registry {}!", clazz.getName());
                     registry.contents().forEach(pair -> {
                         FifteenthCompetingStandard.Pair<?, String> content = (FifteenthCompetingStandard.Pair<?, String>) pair;
                         if (registry.valid(content.right())) {

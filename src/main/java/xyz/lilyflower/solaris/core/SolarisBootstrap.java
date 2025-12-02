@@ -64,7 +64,6 @@ public class SolarisBootstrap implements ITweaker {
         try {
             Instrumentation agent = ByteBuddyAgent.install();
             agent.addTransformer(new SolarisTransformer(), true);
-            throw new ExceptionInInitializerError();
         } catch (ExceptionInInitializerError error) { // JNA /should/ work but it might not? unsure.
             LoggingHelper.oopsie(LOGGER, "FAILED TO INITIALIZE AGENT -- CRASHING! (Try running with a JDK!)", error);
             try { // we have to call directly because of FML shenanigans
@@ -81,22 +80,32 @@ public class SolarisBootstrap implements ITweaker {
         long pid = Long.parseLong(name.split("@")[0]);
         LOGGER.info("Process ID: {}", pid);
 
-        List<Class<TransformerSettingsModule>> modules = ClasspathScanning.implementations(TransformerSettingsModule.class, false);
-        modules.forEach(module -> {
-            try {
-                Constructor<? extends TransformerSettingsModule> constructor = module.getConstructor();
-                TransformerSettingsModule instance = constructor.newInstance();
-                LOGGER.info("Registering transformer settings module {}...", instance.getClass().getSimpleName());
-                instance.init();
-            } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException exception) {
-                LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD TRANSFORMER SETTINGS: " + module.getSimpleName(), exception);
+        String enabled = System.getProperty("solaris.earlyconfig");
+        LOGGER.info("If it freezes here, try restarting with -Dsolaris.earlyconfig=false as a JVM argument!");
+        if (enabled != null && !enabled.equals("false")) {
+            LOGGER.info("Scanning transformer settings modules..."); int count = 0; // love that you can just Do This for compacting lines.
+            List<Class<TransformerSettingsModule>> modules = ClasspathScanning.implementations(TransformerSettingsModule.class, false, false);
+            for (Class<TransformerSettingsModule> module : modules) {
+                try {
+                    LOGGER.info("Attempting to register module {}...", module.getSimpleName());
+                    ++count;
+                    Constructor<? extends TransformerSettingsModule> constructor = module.getConstructor();
+                    TransformerSettingsModule instance = constructor.newInstance();
+                    instance.init();
+                } catch (NoSuchMethodException | InstantiationException | InvocationTargetException |
+                         IllegalAccessException exception) {
+                    LoggingHelper.oopsie(LOGGER, "FAILED TO LOAD TRANSFORMER SETTINGS: " + module.getSimpleName(), exception);
+                }
             }
-        });
+            LOGGER.info("Scan complete. Loaded {} modules.", count);
 
-        File dir = new File("config/");
-        if (dir.exists() || dir.mkdir()) {
-            SolarisTransformerSettings.load(new File("config/solaris-early.cfg"));
+            File dir = new File("config/");
+            if (dir.exists() || dir.mkdir()) {
+                SolarisTransformerSettings.load(new File("config/solaris-early.cfg"));
+            }
         }
+
+        LOGGER.info("Attach completed. Handing over control...");
     }
 
 }

@@ -108,7 +108,7 @@ public class SolarisTransformer implements ClassFileTransformer {
 
     static {
         SolarisBootstrap.LOGGER.debug("Scanning class transformers...");
-        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.implementations(SolarisClassTransformer.class, false);
+        List<Class<SolarisClassTransformer>> classes = ClasspathScanning.implementations(SolarisClassTransformer.class, false, false);
 
         for (Class<SolarisClassTransformer> clazz : classes) {
             try {

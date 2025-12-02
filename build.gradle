@@ -12,4 +12,10 @@ jar {
     }
 }
 
+shadowJar {
+    relocate 'io.github.classgraph', 'xyz.lilyflower.solaris.libs.classgraph'
+    relocate 'nonapi.io.github.classgraph', 'xyz.lilyflower.solaris.libs.classgraph.nonapi'
+    relocate 'net.bytebuddy', 'xyz.lilyflower.solaris.libs.bytebuddy'
+}
+
 java.toolchain.setVendor(null) // avoid multi-JDK redundancy

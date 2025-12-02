@@ -37,12 +37,12 @@ import xyz.lilyflower.solaris.util.ClasspathScanning;
 public class Solaris {
     public static final String VERSION = "3.0";
     public static final String MODID = "solaris";
-    public static final LoadStage STATE = LoadStage.BOOTSTRAP;
+    public static LoadStage STATE = LoadStage.BOOTSTRAP;
 
     public static final Logger LOGGER = LogManager.getLogger("Solaris");
 
     private static <T> void __INIT_MODULE(Class<T> target) {
-        List<Class<T>> modules = ClasspathScanning.implementations(target, false);
+        List<Class<T>> modules = ClasspathScanning.implementations(target, false, false);
         modules.forEach(module -> {
             try {
                 Constructor<?> constructor = module.getConstructor();
@@ -59,6 +59,7 @@ public class Solaris {
 
     @EventHandler
     public void construction(FMLConstructionEvent event) {
+        STATE = LoadStage.BOOTSTRAP;
         __INIT_MODULE(CustomDataLoader.class);
         SolarisRegistry.initialize();
         SolarisIntegrationModule.execute();
@@ -66,6 +67,7 @@ public class Solaris {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        STATE = LoadStage.PRELOADER;
         __INIT_MODULE(ConfigurationModule.class);
         SolarisConfigurationLoader.load(new File("config/solaris.cfg"));
         SolarisRegistry.initialize();
@@ -74,6 +76,7 @@ public class Solaris {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        STATE = LoadStage.RUNNING;
         if (SolarisLOTR.FIX_ORE_DICTIONARY && Loader.isModLoaded("lotr")) {
             OreDictionary.registerOre("dustSulfur", LOTRMod.sulfur);
             OreDictionary.registerOre("ingotMithril", LOTRMod.mithril);
@@ -89,6 +92,7 @@ public class Solaris {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        STATE = LoadStage.FINALIZE;
         if (Loader.isModLoaded("lotr")) {
             SolarisLOTR.registerModdedWeapons();
             LOTRTime.DAY_LENGTH = (int) (SolarisLOTR.TIME_BASE * SolarisLOTR.TIME_MULTIPLIER);
@@ -100,6 +104,7 @@ public class Solaris {
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        STATE = LoadStage.SPINUP;
         if (Loader.isModLoaded("lotr")) event.registerServerCommand(new LTRDebuggerCommand());
         SolarisRegistry.initialize();
         SolarisIntegrationModule.execute();

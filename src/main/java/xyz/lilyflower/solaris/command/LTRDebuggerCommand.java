@@ -74,7 +74,7 @@ public class LTRDebuggerCommand extends CommandBase {
 
     private void sendNpcClasses(EntityPlayer player) {
         sendChatMessage(player, "====== DUMPING VALID NPC NAMES ======");
-        List<Class<LOTREntityNPC>> npcs = ClasspathScanning.implementations(LOTREntityNPC.class, true);
+        List<Class<LOTREntityNPC>> npcs = ClasspathScanning.implementations(LOTREntityNPC.class, true, false);
         npcs.forEach(npc -> sendChatMessage(player, "Found NPC class: " + npc.getCanonicalName().replace("lotr.common.entity.npc.", "")));
         sendChatMessage(player, "===== DUMP FINISHED, CHECK LOGS =====");
     }
