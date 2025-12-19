@@ -12,8 +12,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +19,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 import xyz.lilyflower.solaris.configuration.modules.SolarisQuiverbow;
 import xyz.lilyflower.solaris.api.EggLogic;
+import xyz.lilyflower.solaris.util.SolarisMessageHelper;
 
 @Mixin(SoulShot.class)
 @SuppressWarnings("UnusedMixin")
@@ -63,10 +62,10 @@ public class SoulShotMixin {
                 stack = new ItemStack(Items.diamond);
                 stack.setStackDisplayName("Invalid Spawn Egg Diamond Refund - Sorry! :(");
                 if (shot.shootingEntity instanceof EntityPlayerMP player) {
-                    player.addChatMessage(new ChatComponentTranslation("solaris.invalid_spawn_egg.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-                    player.addChatMessage(new ChatComponentTranslation("solaris.invalid_spawn_egg.2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-                    player.addChatMessage(new ChatComponentTranslation("solaris.invalid_spawn_egg.3").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-                    player.addChatMessage(new ChatComponentTranslation("solaris.invalid_spawn_egg.4").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+                    SolarisMessageHelper.messageBoldColoured(player, "solaris.invalid_spawn_egg.1", EnumChatFormatting.RED);
+                    SolarisMessageHelper.messageBoldColoured(player, "solaris.invalid_spawn_egg.2", EnumChatFormatting.RED);
+                    SolarisMessageHelper.messageBoldColoured(player, "solaris.invalid_spawn_egg.3", EnumChatFormatting.RED);
+                    SolarisMessageHelper.messageBoldColoured(player, "solaris.invalid_spawn_egg.4", EnumChatFormatting.RED);
                 }
             } else {
                 entity.setDead();

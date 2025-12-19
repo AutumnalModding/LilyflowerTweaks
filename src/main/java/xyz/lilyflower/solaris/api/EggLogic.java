@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+// glooby!
 public interface EggLogic {
     ItemStack egg(Class<? extends EntityLivingBase> clazz);
 

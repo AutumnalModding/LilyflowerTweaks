@@ -1,6 +1,8 @@
 package xyz.lilyflower.solaris.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -28,13 +30,12 @@ public class TransformerMacros {
         list.add(instructions);
     }
 
-    public static void KillJVM(InsnList list, int code) {
+    public static void KillJVM(InsnList list, int code, boolean hard) {
         InsnList instructions = new InsnList();
 
-        instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cpw/mods/fml/common/FMLCommonHandler", "instance", "()Lcpw/mods/fml/common/FMLCommonHandler;", false));
         instructions.add(new IntInsnNode(Opcodes.SIPUSH, code));
-        instructions.add(new InsnNode(Opcodes.ICONST_1));
-        instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/FMLCommonHandler", "exitJava", "(IZ)V", false));
+        instructions.add(new LdcInsnNode(hard));
+        instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "xyz/lilyflower/solaris/util/TransformerMacros", "__INTERNAL_KILL", "(IZ)V", false));
 
         list.add(instructions);
     }
@@ -78,8 +79,8 @@ public class TransformerMacros {
             if (!(node instanceof MethodInsnNode method)) return;
             if (!CheckMethodCall(clazz, name, arguments, method)) return;
             Type descriptor = Type.getMethodType(method.desc);
-            for (Type argument : descriptor.getArgumentTypes()) {
-                list.insertBefore(method, new InsnNode(argument.getSize() == 2 ? Opcodes.POP2 : Opcodes.POP));
+            for (Type argument : descriptor.getArgumentTypes()) { // no voidtype on the stack!
+                list.insertBefore(method, new InsnNode(Opcodes.SASTORE + argument.getSize()));
             }
             if (method.getOpcode() != Opcodes.INVOKESTATIC) list.insertBefore(method, new InsnNode(Opcodes.POP));
             if (SolarisTransformer.DEBUG_ENABLED) SolarisBootstrap.LOGGER.debug("Killing call to {}#{}{}", method.owner, method.name, method.desc);
@@ -91,10 +92,26 @@ public class TransformerMacros {
         return new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformerMacros.class), "__INTERNAL_NOOP", "()V", false);
     }
 
-    @SuppressWarnings("EmptyMethod")
-    public static void __INTERNAL_NOOP() {}
-
     // TODO: actually implement this
     @SuppressWarnings("EmptyMethod")
     public static void CancelRegistrationForID(InsnList list, int index) {}
+
+    @SuppressWarnings("EmptyMethod")
+    public static void __INTERNAL_NOOP() {}
+
+    public static void __INTERNAL_KILL(int code, boolean hard) {
+        if (!hard) {
+            FMLCommonHandler.instance().exitJava(code, false);
+            return;
+        }
+
+        try { // we have to call directly because of FML shenanigans
+            Class<?> internal = Class.forName("java.lang.Shutdown");
+            Method halt = internal.getDeclaredMethod("halt0", int.class);
+            halt.setAccessible(true);
+            halt.invoke(null, code);
+        } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException exception) {
+            throw new RuntimeException("Failed to kill the JVM - you're on your own!");
+        }
+    }
 }

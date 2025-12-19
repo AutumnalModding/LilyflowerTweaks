@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.lilyflower.solaris.api.ContentRegistry;
 import xyz.lilyflower.solaris.util.ClasspathScanning;
-import xyz.lilyflower.solaris.util.FifteenthCompetingStandard;
+import xyz.lilyflower.solaris.util.SolarisExtensions;
 
 public class SolarisRegistry {
     public static final Logger LOGGER = LogManager.getLogger("Solaris Registry");
@@ -22,7 +22,7 @@ public class SolarisRegistry {
                 if (registry.runnable()) {
                     LOGGER.info("Executing content registry {}!", clazz.getName());
                     registry.contents().forEach(pair -> {
-                        FifteenthCompetingStandard.Pair<?, String> content = (FifteenthCompetingStandard.Pair<?, String>) pair;
+                        SolarisExtensions.Pair<?, String> content = (SolarisExtensions.Pair<?, String>) pair;
                         if (registry.valid(content.right())) {
                             registry.register(content);
                             LOGGER.debug("Registering key {} on {}", content.right(), clazz.getName());

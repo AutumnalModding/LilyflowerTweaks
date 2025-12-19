@@ -1,7 +1,5 @@
 package xyz.lilyflower.solaris.content.registry;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLStateEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,13 +11,13 @@ import xyz.lilyflower.solaris.api.ContentRegistry;
 import xyz.lilyflower.solaris.content.SolarisRegistry;
 import xyz.lilyflower.solaris.debug.LoggingHelper;
 import xyz.lilyflower.solaris.init.Solaris;
-import xyz.lilyflower.solaris.util.FifteenthCompetingStandard;
+import xyz.lilyflower.solaris.util.SolarisExtensions;
 
 public class ItemRegistry implements ContentRegistry<Item> {
-    static final ArrayList<FifteenthCompetingStandard.Pair<Item, String>> ITEMS = new ArrayList<>();
+    static final ArrayList<SolarisExtensions.Pair<Item, String>> ITEMS = new ArrayList<>();
 
     @Override
-    public ArrayList<FifteenthCompetingStandard.Pair<Item, String>> contents() {
+    public ArrayList<SolarisExtensions.Pair<Item, String>> contents() {
         return ITEMS;
     }
 
@@ -30,7 +28,7 @@ public class ItemRegistry implements ContentRegistry<Item> {
         try {
             Constructor<? extends Item> constructor = clazz.getConstructor(types);
             Item instance = constructor.newInstance(arguments);
-            ITEMS.add(new FifteenthCompetingStandard.Pair<>(instance, name));
+            ITEMS.add(new SolarisExtensions.Pair<>(instance, name));
             return instance;
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException exception) {
             LoggingHelper.oopsie(SolarisRegistry.LOGGER, "FAILED INITIALIZING ITEM CLASS: " + clazz.getName(), exception);
@@ -40,7 +38,7 @@ public class ItemRegistry implements ContentRegistry<Item> {
     }
 
     @Override
-    public void register(FifteenthCompetingStandard.Pair<Item, String> pair) {
+    public void register(SolarisExtensions.Pair<Item, String> pair) {
         pair.left().setUnlocalizedName("solaris." + pair.right());
         pair.left().setTextureName("solaris:" + pair.right());
 

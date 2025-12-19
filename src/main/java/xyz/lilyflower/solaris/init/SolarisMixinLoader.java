@@ -19,8 +19,8 @@ import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import ru.timeconqueror.spongemixins.MinecraftURLClassPath;
-import xyz.lilyflower.solaris.util.FileUtils;
 import xyz.lilyflower.solaris.debug.LoggingHelper;
+import xyz.lilyflower.solaris.util.SolarisExtensions;
 
 @SuppressWarnings({"deprecation", ""})
 public class SolarisMixinLoader implements IMixinConfigPlugin {
@@ -153,8 +153,8 @@ public class SolarisMixinLoader implements IMixinConfigPlugin {
 
         public boolean isMatchingJar(Path path) {
             final String location = path.toString().replaceAll(".*mods/", "");
-            final String basename = FileUtils.basename(location).toLowerCase();
-            final String extension = FileUtils.extension(location);
+            final String basename = SolarisExtensions.basename(location).toLowerCase();
+            final String extension = SolarisExtensions.extension(location);
 
             return basename.startsWith(prefix) && "jar".equals(extension);
         }

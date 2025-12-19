@@ -26,7 +26,7 @@ import xyz.lilyflower.solaris.init.Solaris;
 import xyz.lilyflower.solaris.integration.galacticraft.StarRegistry;
 import xyz.lilyflower.solaris.integration.galacticraft.TeleportTypeBalloons;
 import xyz.lilyflower.solaris.integration.galacticraft.TeleportTypeDropPod;
-import xyz.lilyflower.solaris.util.FifteenthCompetingStandard;
+import xyz.lilyflower.solaris.util.SolarisExtensions;
 
 public class PlanetSetup implements SolarisIntegrationModule {
     public static final SolarSystem MEDIAKORIA = new SolarSystem("mediakoria", "milkyWay")
@@ -92,7 +92,7 @@ public class PlanetSetup implements SolarisIntegrationModule {
             .setTierRequired(3)
             .setRelativeOrbitTime(45.0F)
             .setBodyIcon(BODY_TEXTURE("asteroid"))
-            .setPhaseShift(FifteenthCompetingStandard.TAU) // 2π
+            .setPhaseShift(SolarisExtensions.TAU) // 2π
             .setDimensionInfo(-30, WorldProviderAsteroids.class)
             .setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.75F, 1.75F));
 
