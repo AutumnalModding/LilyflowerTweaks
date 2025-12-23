@@ -65,8 +65,8 @@ public class SolarisBootstrap implements ITweaker {
             Instrumentation agent = ByteBuddyAgent.install();
             agent.addTransformer(new SolarisTransformer(), true);
         } catch (ExceptionInInitializerError error) { // JNA /should/ work but it might not? unsure.
-            LoggingHelper.oopsie(LOGGER, "FAILED TO INITIALIZE AGENT -- CRASHING! (Try running with a JDK!)", error);
-            TransformerMacros.__INTERNAL_KILL(1, true);
+            LoggingHelper.oopsie(LOGGER, "Failed to initialize agent, running in mixin-only mode - try running with a Java 8 JDK.", error);
+//            TransformerMacros.__INTERNAL_KILL(1, true); <-- no need to kill anymore
         }
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
@@ -100,5 +100,4 @@ public class SolarisBootstrap implements ITweaker {
 
         LOGGER.info("Attach completed. Handing over control...");
     }
-
 }
