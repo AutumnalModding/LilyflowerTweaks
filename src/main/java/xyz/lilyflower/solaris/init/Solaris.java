@@ -85,8 +85,10 @@ public class Solaris {
         }
 
         SolarisRegistry.initialize();
-        SolarisIntegrationModule.add(new PlanetSetup(), SolarisContent.MODPACK_IDENTIFIER.equals("illumos"));
-        SolarisIntegrationModule.add(new PlanetRegistrationHook(), !SolarisGalacticraft.MODDED_PLANET_INTEGRATION.isEmpty());
+        if (Loader.isModLoaded("GalacticraftCore")) {
+            SolarisIntegrationModule.add(new PlanetSetup(), SolarisContent.MODPACK_IDENTIFIER.equals("illumos"));
+            SolarisIntegrationModule.add(new PlanetRegistrationHook(), !SolarisGalacticraft.MODDED_PLANET_INTEGRATION.isEmpty());
+        }
         SolarisIntegrationModule.execute();
     }
 

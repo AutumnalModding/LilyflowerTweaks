@@ -20,7 +20,6 @@ import xyz.lilyflower.solaris.api.TransformerSettingsModule;
 import xyz.lilyflower.solaris.core.settings.SolarisTransformerSettings;
 import xyz.lilyflower.solaris.debug.LoggingHelper;
 import xyz.lilyflower.solaris.util.ClasspathScanning;
-import xyz.lilyflower.solaris.util.TransformerMacros;
 
 @SuppressWarnings("unused") // How early can we go?
 public class SolarisBootstrap implements ITweaker {
@@ -61,12 +60,27 @@ public class SolarisBootstrap implements ITweaker {
 
     static {
         LOGGER.info("Spinning up...");
+        System.setProperty("jdk.attach.allowAttachSelf", "true");
         try {
-            Instrumentation agent = ByteBuddyAgent.install();
+            ByteBuddyAgent.AttachmentProvider.Compound provider = new ByteBuddyAgent.AttachmentProvider.Compound(
+                    ByteBuddyAgent.AttachmentProvider.ForModularizedVm.INSTANCE,
+                    ByteBuddyAgent.AttachmentProvider.ForStandardToolsJarVm.JVM_ROOT,
+                    ByteBuddyAgent.AttachmentProvider.ForStandardToolsJarVm.JDK_ROOT,
+                    ByteBuddyAgent.AttachmentProvider.ForStandardToolsJarVm.MACINTOSH,
+                    ByteBuddyAgent.AttachmentProvider.ForUserDefinedToolsJar.INSTANCE
+            );
+            Instrumentation agent = ByteBuddyAgent.install(provider);
             agent.addTransformer(new SolarisTransformer(), true);
-        } catch (ExceptionInInitializerError error) { // JNA /should/ work but it might not? unsure.
-            LoggingHelper.oopsie(LOGGER, "Failed to initialize agent, running in mixin-only mode - try running with a Java 8 JDK.", error);
-//            TransformerMacros.__INTERNAL_KILL(1, true); <-- no need to kill anymore
+        } catch (ExceptionInInitializerError error) {
+
+            LOGGER.error("Failed to initialize agent with the standard method. Trying JNA. This might crash on Windows!");
+            try {
+                Class.forName("com.sun.jna.Native"); // Last resort - will sometimes fail on Windows.
+                Instrumentation agent = ByteBuddyAgent.install(ByteBuddyAgent.AttachmentProvider.ForEmulatedAttachment.INSTANCE);
+                agent.addTransformer(new SolarisTransformer(), true);
+            } catch (ExceptionInInitializerError | UnsatisfiedLinkError | ClassNotFoundException failure) {
+                LoggingHelper.oopsie(LOGGER, "Failed to initialize agent, running in mixin-only mode - try running with a Java 8 JDK.", failure);
+            }
         }
 
         String name = ManagementFactory.getRuntimeMXBean().getName();

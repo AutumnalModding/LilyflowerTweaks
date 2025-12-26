@@ -65,7 +65,7 @@ public class SolarisTransformer implements ClassFileTransformer {
 
                 for (MethodNode method : node.methods) {
                     boolean transformed = false; // i.e. solaris$init or solaris$clinit
-                    if (methods.contains(method.name.replaceAll("<", "solaris$").replaceAll(">", ""))) {
+                    if (methods.contains(method.name.replaceAll("<", "solaris\\$").replaceAll(">", ""))) {
                         transformed = invoke(transformer, instance, node, method);
                         modified |= transformed;
                     }
